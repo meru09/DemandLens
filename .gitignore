@@ -236,3 +236,4 @@ __pycache__/
 
 # Local datasets
 data/raw/
+data/processed/
