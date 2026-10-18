@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from functools import lru_cache
 import pandas as pd
+from backend.forecast_service import forecast_product
 
 
 
@@ -70,3 +71,32 @@ def get_product_history(stock_code: str):
         ].to_dict(orient="records")
 
     }
+
+
+
+@app.get("/products/{stock_code}/forecast")
+def get_product_forecast(stock_code: str):
+    sales = load_sales_data()
+
+    try:
+        result = forecast_product(
+            sales,
+            stock_code
+        )
+        return result
+
+    
+    except ValueError as error:
+        message = str(error)
+
+        if message == "Product not found.":
+            raise HTTPException(
+                status_code=404,
+                detail=message
+            )
+
+        raise HTTPException(
+            status_code=422,
+            detail=message
+        )
+

@@ -49,6 +49,7 @@ def create_naive_predictions(product_sales: pd.DataFrame) -> pd.DataFrame:
 
     return sales.dropna(subset=["PredictedUnits"]).reset_index(drop=True)
 
+
 def chronological_split(
     product_sales: pd.DataFrame,
     train_ratio: float = 0.8
@@ -144,3 +145,24 @@ def evaluate_product_baselines(
         "moving_average_mae": moving_mae,
         "test_weeks": len(test)
     }
+
+
+def moving_average_forecast(
+    product_sales: pd.DataFrame,
+    window: int = 3
+) -> float:
+    """
+    Forecast the next week's sales using
+    the most recent `window` weeks.
+    """
+    if window < 1:
+        raise ValueError("Window must be at least 1.")
+
+    sales = product_sales.sort_values("InvoiceDate")
+
+    if len(sales) < window:
+        raise ValueError(
+            f"At least {window} weeks of sales are required."
+        )
+
+    return float(sales["UnitsSold"].tail(window).mean())

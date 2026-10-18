@@ -2,7 +2,7 @@
 import pandas as pd
 import pytest
 
-from ml.forecast_baseline import naive_forecast, calculate_mae, create_naive_predictions, chronological_split, create_moving_average_predictions, evaluate_product_baselines
+from ml.forecast_baseline import naive_forecast, calculate_mae, create_naive_predictions, chronological_split, create_moving_average_predictions, evaluate_product_baselines, moving_average_forecast
 
 
 def test_naive_forecast():
@@ -142,3 +142,36 @@ def test_evaluate_product_baselines():
     assert results["test_weeks"] == 4
     assert results["naive_mae"] == 0.0
     assert results["moving_average_mae"] == 0.0
+
+
+def test_moving_average_forecast():
+    sales = pd.DataFrame({
+        "InvoiceDate": pd.to_datetime([
+            "2026-01-04",
+            "2026-01-11",
+            "2026-01-18",
+            "2026-01-25"
+        ]),
+        "UnitsSold": [10, 20, 30, 60]
+    })
+
+    prediction = moving_average_forecast(sales, window=3)
+
+    assert prediction == 110 / 3
+
+
+
+def test_moving_average_insufficient_history():
+    sales = pd.DataFrame({
+        "InvoiceDate": pd.to_datetime([
+            "2026-01-04",
+            "2026-01-11"
+        ]),
+        "UnitsSold": [20, 30]
+    })
+
+    with pytest.raises(
+        ValueError,
+        match="At least 3 weeks of sales are required"
+    ):
+        moving_average_forecast(sales, window=3)
