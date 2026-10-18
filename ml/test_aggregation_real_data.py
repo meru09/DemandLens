@@ -14,8 +14,12 @@ DATA_PATH = (
 df = pd.read_csv(
     DATA_PATH,
     parse_dates=["InvoiceDate"],
-    dtype={"StockCode": "string"}
+    dtype={
+        "StockCode": "string",
+        "Invoice": "string"
+    }
 )
+
 
 print("--- Original Cleaned Data ---")
 print("Transactions:", len(df))

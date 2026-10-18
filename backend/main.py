@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException
 from functools import lru_cache
 import pandas as pd
 from backend.forecast_service import forecast_product
+from backend.schemas import ForecastResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 
 
@@ -10,6 +12,18 @@ app = FastAPI(
     description="Sales forecasting API for DemandLens",
     version="0.1.0"
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
+    allow_credentials=False,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
+
 
 @lru_cache(maxsize=1)
 def load_sales_data():
@@ -74,7 +88,10 @@ def get_product_history(stock_code: str):
 
 
 
-@app.get("/products/{stock_code}/forecast")
+@app.get(
+    "/products/{stock_code}/forecast",
+    response_model=ForecastResponse
+)
 def get_product_forecast(stock_code: str):
     sales = load_sales_data()
 
