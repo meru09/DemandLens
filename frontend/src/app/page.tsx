@@ -25,12 +25,11 @@ export default async function Home() {
   return (
     <div className="flex min-h-screen bg-[#0B0B16] text-white">
 
-      {/* Sidebar */}
-      <Sidebar />
+        {/* Sidebar */}
+         <Sidebar />
 
-      {/* Main Dashboard */}
-      <main className="min-w-0 flex-1 px-8 py-12">
-        <div className="mx-auto max-w-6xl">
+          {/* Main Dashboard */}
+          <main className="min-w-0 flex-1 px-4 pb-10 pt-24 sm:px-6 md:px-8 md:py-12">        <div className="mx-auto max-w-6xl">
 
           {/* Dashboard Header */}
           <p className="mb-3 text-sm font-medium tracking-[0.3em] text-violet-400">

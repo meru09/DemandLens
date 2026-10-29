@@ -11,12 +11,12 @@ export default function StatCard({
   description,
 }: StatCardProps) {
   return (
-    <div className="rounded-xl border border-violet-900/40 bg-[#171728] p-6">
+    <div className="min-w-0 rounded-xl border border-violet-900/40 bg-[#171728] p-4 sm:p-6">
       <p className="text-sm text-slate-400">
         {title}
       </p>
 
-      <h2 className="mt-3 text-3xl font-bold text-white">
+      <h2 className="mt-3 break-words text-2xl font-bold text-white sm:text-3xl">
         {value}
       </h2>
 

@@ -13,9 +13,11 @@ import {
 
 import type { WeeklySale } from "@/types/api";
 
-// Format dates for display
+// Format dates for chart labels
 function formatDate(dateString: string) {
-  const [year, month, day] = dateString.split("-").map(Number);
+  const [year, month, day] = dateString
+    .split("-")
+    .map(Number);
 
   return new Date(
     Date.UTC(year, month - 1, day)
@@ -26,9 +28,11 @@ function formatDate(dateString: string) {
   });
 }
 
-// Format dates for the tooltip
+// Format full dates for tooltip
 function formatFullDate(dateString: string) {
-  const [year, month, day] = dateString.split("-").map(Number);
+  const [year, month, day] = dateString
+    .split("-")
+    .map(Number);
 
   return new Date(
     Date.UTC(year, month - 1, day)
@@ -48,24 +52,30 @@ export default function SalesChart({
   data,
 }: SalesChartProps) {
   return (
-    <div className="mt-6 rounded-xl border border-violet-900/40 bg-[#171728] p-6">
-      <h3 className="mb-2 text-lg font-semibold text-white">
+    <div className="mt-6 min-w-0 overflow-hidden rounded-xl border border-violet-900/40 bg-[#171728] p-4 sm:p-6">
+      {/* Chart header */}
+      <h3 className="mb-2 text-base font-semibold text-white sm:text-lg">
         Weekly Sales History
       </h3>
 
-      <p className="mb-6 text-sm text-slate-400">
+      <p className="mb-5 text-xs text-slate-400 sm:mb-6 sm:text-sm">
         Historical product demand over time
       </p>
 
-      <div className="h-80 w-full">
-        <ResponsiveContainer width="100%" height="100%">
+      {/* Responsive chart container */}
+      <div className="h-64 min-w-0 w-full sm:h-80">
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+          minWidth={0}
+        >
           <LineChart
             data={data}
             margin={{
               top: 10,
-              right: 20,
-              left: 0,
-              bottom: 10,
+              right: 8,
+              left: -20,
+              bottom: 5,
             }}
           >
             <CartesianGrid
@@ -77,18 +87,25 @@ export default function SalesChart({
             <XAxis
               dataKey="InvoiceDate"
               stroke="#94A3B8"
-              tick={{ fontSize: 11 }}
-              minTickGap={30}
+              tick={{ fontSize: 10 }}
+              minTickGap={35}
               tickFormatter={formatDate}
               tickLine={false}
+              axisLine={false}
             />
 
             <YAxis
               stroke="#94A3B8"
-              tick={{ fontSize: 11 }}
+              tick={{ fontSize: 10 }}
               tickLine={false}
               axisLine={false}
               allowDecimals={false}
+              width={55}
+              tickFormatter={(value: number) =>
+                value >= 1000
+                  ? `${(value / 1000).toFixed(1)}k`
+                  : String(value)
+              }
             />
 
             <Tooltip
@@ -104,6 +121,7 @@ export default function SalesChart({
                 border: "1px solid #303047",
                 borderRadius: "8px",
                 color: "#FFFFFF",
+                fontSize: "12px",
               }}
               labelStyle={{
                 color: "#C4B5FD",
