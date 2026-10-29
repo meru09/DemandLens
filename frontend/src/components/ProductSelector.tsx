@@ -29,7 +29,7 @@ export default function ProductSelector({
   const [error, setError] = useState("");
   const [forecastError, setForecastError] = useState("");
 
-  // Handle product selection and reset previous data
+  // Handle product selection and clear previous data
   function handleProductChange(product: string) {
     setSelectedProduct(product);
     setSalesHistory(null);
@@ -162,7 +162,7 @@ export default function ProductSelector({
   }, [selectedProduct]);
 
   return (
-    <div className="rounded-xl border border-violet-900/40 bg-[#171728] p-6">
+    <div className="min-w-0 rounded-xl border border-violet-900/40 bg-[#171728] p-4 sm:p-6">
       {/* Product selector */}
       <label
         htmlFor="product-select"
@@ -216,24 +216,28 @@ export default function ProductSelector({
         </div>
       )}
 
-      {/* Historical sales information */}
+      {/* Compact product summary */}
       {salesHistory && (
-        <div className="mt-6 rounded-lg border border-violet-800/30 bg-[#0B0B16] p-4">
-          <p className="text-sm text-slate-400">
-            Selected Product
-          </p>
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4">
+          {/* Product code */}
+          <div className="min-w-0 rounded-xl border border-violet-800/30 bg-[#0B0B16] p-3 sm:p-5">
+            <p className="text-xs font-medium text-slate-400 sm:text-sm">
+              Product Code
+            </p>
 
-          <p className="mt-2 text-xl font-semibold text-violet-300">
-            {salesHistory.stock_code}
-          </p>
+            <p className="mt-3 break-all text-xl font-bold text-violet-300 sm:text-2xl">
+              {salesHistory.stock_code}
+            </p>
+          </div>
 
-          <div className="mt-3 flex items-center justify-between">
-            <p className="text-sm text-slate-400">
+          {/* Historical weeks */}
+          <div className="min-w-0 rounded-xl border border-violet-800/30 bg-[#0B0B16] p-3 sm:p-5">
+            <p className="text-xs font-medium text-slate-400 sm:text-sm">
               Historical Weeks
             </p>
 
-            <p className="text-lg font-semibold text-white">
-              {salesHistory.total_weeks}
+            <p className="mt-3 text-xl font-bold text-white sm:text-2xl">
+              {salesHistory.total_weeks.toLocaleString()}
             </p>
           </div>
         </div>
