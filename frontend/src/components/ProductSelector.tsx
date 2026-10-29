@@ -1,7 +1,15 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
+
+import type { KeyboardEvent } from "react";
+
 import SalesChart from "@/components/SalesChart";
 import ForecastCard from "@/components/ForecastCard";
 
@@ -14,31 +22,154 @@ type ProductSelectorProps = {
   products: string[];
 };
 
+const MAX_RESULTS = 10;
+
 export default function ProductSelector({
   products,
 }: ProductSelectorProps) {
+  // Search and selection state
   const [selectedProduct, setSelectedProduct] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
+  // Product data
   const [salesHistory, setSalesHistory] =
     useState<ProductHistoryResponse | null>(null);
 
   const [forecast, setForecast] =
     useState<ForecastResponse | null>(null);
 
+  // Loading and error states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [forecastError, setForecastError] = useState("");
 
-  // Handle product selection and clear previous data
+  // References
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listboxId = useId();
+
+  // Filter the full product list
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+
+  const matchingProducts = products.filter((product) =>
+    product.toLowerCase().includes(normalizedQuery)
+  );
+
+  // Only limit the displayed results
+  const visibleProducts = matchingProducts.slice(
+    0,
+    MAX_RESULTS
+  );
+
+  // Select product and close dropdown
   function handleProductChange(product: string) {
     setSelectedProduct(product);
+    setSearchQuery(product);
+    setIsSearchOpen(false);
+    setActiveIndex(-1);
+
     setSalesHistory(null);
     setForecast(null);
     setError("");
     setForecastError("");
-    setLoading(Boolean(product));
+    setLoading(true);
+
+    // Remove focus from search input
+    inputRef.current?.blur();
   }
 
+  // Update search query
+  function handleSearchChange(value: string) {
+    setSearchQuery(value);
+    setIsSearchOpen(true);
+    setActiveIndex(-1);
+  }
+
+  // Keyboard navigation
+  function handleKeyDown(
+    event: KeyboardEvent<HTMLInputElement>
+  ) {
+    if (event.key === "Escape") {
+      setIsSearchOpen(false);
+      setActiveIndex(-1);
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setIsSearchOpen(true);
+
+      if (visibleProducts.length > 0) {
+        setActiveIndex((current) =>
+          current >= visibleProducts.length - 1
+            ? 0
+            : current + 1
+        );
+      }
+
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setIsSearchOpen(true);
+
+      if (visibleProducts.length > 0) {
+        setActiveIndex((current) =>
+          current <= 0
+            ? visibleProducts.length - 1
+            : current - 1
+        );
+      }
+
+      return;
+    }
+
+    if (
+      event.key === "Enter" &&
+      isSearchOpen &&
+      visibleProducts.length > 0
+    ) {
+      event.preventDefault();
+
+      const index = activeIndex >= 0 ? activeIndex : 0;
+
+      handleProductChange(visibleProducts[index]);
+    }
+  }
+
+  // Close dropdown on outside interaction
+  useEffect(() => {
+    function handleOutsideClick(event: PointerEvent) {
+      const container = searchContainerRef.current;
+
+      if (
+        container &&
+        !container.contains(event.target as Node)
+      ) {
+        setIsSearchOpen(false);
+        setActiveIndex(-1);
+      }
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      handleOutsideClick,
+      true
+    );
+
+    return () => {
+      document.removeEventListener(
+        "pointerdown",
+        handleOutsideClick,
+        true
+      );
+    };
+  }, []);
+
+  // Fetch history and forecast when product changes
   useEffect(() => {
     if (!selectedProduct) {
       return;
@@ -48,7 +179,7 @@ export default function ProductSelector({
 
     async function fetchProductData() {
       try {
-        // Fetch historical weekly sales
+        // Historical sales
         const historyResponse = await fetch(
           `http://127.0.0.1:8000/products/${encodeURIComponent(
             selectedProduct
@@ -86,7 +217,7 @@ export default function ProductSelector({
 
         setSalesHistory(historyData);
 
-        // Fetch forecast independently
+        // Forecast
         try {
           const forecastResponse = await fetch(
             `http://127.0.0.1:8000/products/${encodeURIComponent(
@@ -163,32 +294,124 @@ export default function ProductSelector({
 
   return (
     <div className="min-w-0 rounded-xl border border-violet-900/40 bg-[#171728] p-4 sm:p-6">
-      {/* Product selector */}
-      <label
-        htmlFor="product-select"
-        className="mb-3 block text-sm font-medium text-slate-300"
+      {/* Searchable product selector */}
+      <div
+        ref={searchContainerRef}
+        className="relative"
       >
-        Select a Product
-      </label>
+        <label
+          htmlFor="product-search"
+          className="mb-3 block text-sm font-medium text-slate-300"
+        >
+          Select a Product
+        </label>
 
-      <select
-        id="product-select"
-        value={selectedProduct}
-        onChange={(event) =>
-          handleProductChange(event.target.value)
-        }
-        className="w-full rounded-lg border border-violet-800/50 bg-[#0B0B16] px-4 py-3 text-white outline-none focus:border-violet-400 focus-visible:ring-2 focus-visible:ring-violet-400"
-      >
-        <option value="" disabled>
-          Choose a product...
-        </option>
+        <div className="relative">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-violet-400"
+          >
+            ⌕
+          </span>
 
-        {products.map((product) => (
-          <option key={product} value={product}>
-            Product {product}
-          </option>
-        ))}
-      </select>
+          <input
+            ref={inputRef}
+            id="product-search"
+            type="text"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={isSearchOpen}
+            aria-controls={listboxId}
+            aria-activedescendant={
+              isSearchOpen && activeIndex >= 0
+                ? `${listboxId}-option-${activeIndex}`
+                : undefined
+            }
+            value={searchQuery}
+            onChange={(event) =>
+              handleSearchChange(event.target.value)
+            }
+            onFocus={() => setIsSearchOpen(true)}
+            onKeyDown={handleKeyDown}
+            placeholder="Search by product code..."
+            autoComplete="off"
+            className="w-full rounded-lg border border-violet-800/50 bg-[#0B0B16] py-3 pl-11 pr-4 text-white placeholder:text-slate-500 outline-none focus:border-violet-400 focus-visible:ring-2 focus-visible:ring-violet-400"
+          />
+        </div>
+
+        {/* Search results */}
+        {isSearchOpen && (
+          <div className="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border border-violet-800/50 bg-[#10101F] shadow-xl shadow-black/30">
+            <div className="border-b border-violet-900/30 px-4 py-3">
+              <p
+                role="status"
+                className="text-xs text-slate-400"
+              >
+                {matchingProducts.length.toLocaleString()}{" "}
+                {matchingProducts.length === 1
+                  ? "product"
+                  : "products"}{" "}
+                found
+                {matchingProducts.length > MAX_RESULTS &&
+                  ` · Showing first ${MAX_RESULTS}`}
+              </p>
+            </div>
+
+            {visibleProducts.length > 0 ? (
+              <ul
+                id={listboxId}
+                role="listbox"
+                aria-label="Matching products"
+                className="max-h-64 overflow-y-auto p-2"
+              >
+                {visibleProducts.map((product, index) => (
+                  <li
+                    key={product}
+                    id={`${listboxId}-option-${index}`}
+                    role="option"
+                    aria-selected={
+                      product === selectedProduct
+                    }
+                    className={`cursor-pointer rounded-lg px-4 py-3 text-sm transition-colors ${
+                      index === activeIndex
+                        ? "bg-violet-600/20 text-violet-200"
+                        : "text-slate-200 hover:bg-violet-500/10"
+                    }`}
+                    onMouseDown={(event) =>
+                      event.preventDefault()
+                    }
+                    onClick={() =>
+                      handleProductChange(product)
+                    }
+                    onMouseEnter={() =>
+                      setActiveIndex(index)
+                    }
+                  >
+                    Product {product}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div
+                id={listboxId}
+                className="px-4 py-5 text-sm text-slate-400"
+              >
+                No matching products. Try another code.
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Selected product indicator */}
+      {selectedProduct && (
+        <p className="mt-4 text-xs text-slate-400">
+          Selected product:{" "}
+          <span className="font-medium text-violet-300">
+            {selectedProduct}
+          </span>
+        </p>
+      )}
 
       {/* Loading state */}
       {loading && (
@@ -219,7 +442,6 @@ export default function ProductSelector({
       {/* Compact product summary */}
       {salesHistory && (
         <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4">
-          {/* Product code */}
           <div className="min-w-0 rounded-xl border border-violet-800/30 bg-[#0B0B16] p-3 sm:p-5">
             <p className="text-xs font-medium text-slate-400 sm:text-sm">
               Product Code
@@ -230,7 +452,6 @@ export default function ProductSelector({
             </p>
           </div>
 
-          {/* Historical weeks */}
           <div className="min-w-0 rounded-xl border border-violet-800/30 bg-[#0B0B16] p-3 sm:p-5">
             <p className="text-xs font-medium text-slate-400 sm:text-sm">
               Historical Weeks
@@ -263,12 +484,12 @@ export default function ProductSelector({
           </div>
         ))}
 
-      {/* Next-week forecast */}
+      {/* Forecast */}
       {forecast && (
         <ForecastCard forecast={forecast} />
       )}
 
-      {/* Forecast unavailable state */}
+      {/* Forecast unavailable */}
       {forecastError && (
         <div
           role="alert"
