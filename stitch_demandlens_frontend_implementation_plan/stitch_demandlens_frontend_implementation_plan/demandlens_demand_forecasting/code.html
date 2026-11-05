@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin:0; padding:0; }
+      body { overscroll-behavior:none; }
+      main > :first-child { margin-top:0!important; }
+      main > :last-child { margin-bottom:0!important; }
+    }
+    ::-webkit-scrollbar { display:none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-high": "#1f2d28",
+            "inverse-on-surface": "#25332f",
+            "inverse-primary": "#006c49",
+            "on-surface": "#d6e6df",
+            "tertiary-fixed": "#b2f746",
+            "on-error": "#690005",
+            "on-primary-fixed": "#002113",
+            "surface-container-lowest": "#04110d",
+            "error": "#ffb4ab",
+            "outline-variant": "#3c4a42",
+            "inverse-surface": "#d6e6df",
+            "on-secondary-fixed-variant": "#005137",
+            "primary-container": "#10b981",
+            "on-tertiary": "#213600",
+            "tertiary": "#98da27",
+            "surface-bright": "#2e3c37",
+            "surface-container-low": "#101e1a",
+            "on-secondary-fixed": "#002114",
+            "primary-fixed": "#6ffbbe",
+            "surface-container": "#14221e",
+            "on-tertiary-container": "#283f00",
+            "primary": "#4edea3",
+            "surface-tint": "#4edea3",
+            "surface": "#081612",
+            "surface-dim": "#081612",
+            "on-primary-container": "#00422b",
+            "on-primary": "#003824",
+            "tertiary-container": "#78b300",
+            "secondary": "#45dfa4",
+            "secondary-fixed-dim": "#45dfa4",
+            "on-secondary-container": "#00452e",
+            "tertiary-fixed-dim": "#98da27",
+            "error-container": "#93000a",
+            "on-tertiary-fixed-variant": "#334f00",
+            "secondary-fixed": "#68fcbf",
+            "primary-fixed-dim": "#4edea3",
+            "on-background": "#d6e6df",
+            "surface-variant": "#293833",
+            "on-tertiary-fixed": "#121f00",
+            "secondary-container": "#00bd85",
+            "on-surface-variant": "#bbcabf",
+            "on-secondary": "#003825",
+            "surface-container-highest": "#293833",
+            "background": "#081612",
+            "on-primary-fixed-variant": "#005236",
+            "outline": "#86948a",
+            "on-error-container": "#ffdad6"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "margin-desktop": "2rem",
+            "gutter-desktop": "1.25rem",
+            "space-md": "0.75rem",
+            "space-lg": "1.25rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "1.75rem",
+            "margin": "1rem",
+            "gutter": "1rem"
+          },
+          fontFamily: {
+            "data-mono-sm": ["JetBrains Mono", "monospace"],
+            "headline-sm": ["Space Grotesk", "sans-serif"],
+            "headline-md": ["Space Grotesk", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "headline-xl-mobile": ["Space Grotesk", "sans-serif"],
+            "metric-display": ["Space Grotesk", "sans-serif"],
+            "headline-xl": ["Space Grotesk", "sans-serif"],
+            "label-caps": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "data-mono-lg": ["JetBrains Mono", "monospace"],
+            "headline-lg": ["Space Grotesk", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"]
+          },
+          fontSize: {
+            "data-mono-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }],
+            "headline-sm": ["15px", { lineHeight: "20px", fontWeight: "500" }],
+            "headline-md": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+            "headline-xl-mobile": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "metric-display": ["28px", { lineHeight: "34px", letterSpacing: "-0.03em", fontWeight: "700" }],
+            "headline-xl": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.05em", fontWeight: "600" }],
+            "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            "data-mono-lg": ["14px", { lineHeight: "18px", fontWeight: "600" }],
+            "headline-lg": ["22px", { lineHeight: "28px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "body-lg": ["15px", { lineHeight: "22px", fontWeight: "400" }]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen">
+<!-- SIDEBAR NAVIGATION -->
+<aside class="fixed left-0 top-0 bottom-0 w-[284px] bg-surface-container-lowest border-r border-outline-variant/60 z-50 flex flex-col justify-between overflow-hidden shadow-[4px_0_24px_rgba(0,0,0,0.4)]">
+<div class="absolute inset-0 pointer-events-none opacity-10 flex items-end justify-center">
+<svg class="w-full h-80 text-primary" fill="none" preserveaspectratio="none" viewbox="0 0 284 320">
+<path d="M0,220 C80,180 120,290 284,200 L284,320 L0,320 Z" fill="currentColor"></path>
+<path d="M0,250 C90,210 150,280 284,230 L284,320 L0,320 Z" fill="currentColor" opacity="0.6"></path>
+<path d="M0,280 C60,260 170,290 284,270 L284,320 L0,320 Z" fill="currentColor" opacity="0.4"></path>
+</svg>
+</div>
+<div class="relative z-10 flex flex-col p-space-md">
+<!-- App Brand -->
+<div class="flex items-center gap-space-md px-space-xs py-space-sm mb-space-lg">
+<div class="w-[50px] h-[50px] rounded-xl bg-gradient-to-br from-primary-container via-surface-container-high to-surface-container-lowest border border-primary/30 flex items-center justify-center shadow-[0_0_22px_rgba(16,185,129,0.25)] shrink-0">
+<span class="material-symbols-outlined text-primary text-[28px]">bar_chart</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-lg text-headline-lg text-on-surface tracking-tight truncate">DemandLens</span>
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+</div>
+<span class="font-data-mono-sm text-[10px] text-outline tracking-wider uppercase truncate">Retail Intelligence Platform</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1.5">
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="dashboard" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">home</span>
+<span class="font-body-md text-body-md font-medium">Dashboard</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl bg-surface-variant/90 text-primary border border-primary/30 shadow-[0_0_18px_-4px_rgba(16,185,129,0.35)] font-semibold transition-all group" data-path="product-explorer" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] text-primary transition-colors">inventory_2</span>
+<span class="font-body-md text-body-md">Product Explorer</span>
+<span class="ml-auto font-data-mono-sm text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded-full font-bold">3.9k</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="sales-analytics" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">analytics</span>
+<span class="font-body-md text-body-md font-medium">Sales Analytics</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="demand-forecasting" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">trending_up</span>
+<span class="font-body-md text-body-md font-medium">Demand Forecasting</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="model-evaluation" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">military_tech</span>
+<span class="font-body-md text-body-md font-medium">Model Evaluation</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="data-quality" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">database</span>
+<span class="font-body-md text-body-md font-medium">Data Quality</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Bottom Footer -->
+<div class="relative z-10 p-space-md border-t border-outline-variant/60 bg-surface-container-lowest/90 backdrop-blur-sm">
+<nav class="flex flex-col gap-1">
+<a class="flex items-center h-10 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="settings" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px] group-hover:text-primary transition-colors">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</a>
+<a class="flex items-center h-10 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="help-and-docs" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px] group-hover:text-primary transition-colors">help</span>
+<span class="font-body-sm text-body-sm">Help &amp; Docs</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- MAIN APP CONTAINER -->
+<div class="pl-[284px]">
+<!-- GLOBAL TOP APP BAR -->
+<header class="fixed top-0 left-[284px] right-0 h-20 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/50 z-40 px-gutter-desktop">
+<div class="h-20 w-full flex items-center justify-between gap-space-lg">
+<!-- Breadcrumb & Workspace Location -->
+<div class="flex items-center gap-2.5">
+<div class="flex items-center gap-1.5 text-body-sm text-outline">
+<span class="font-label-caps text-outline hover:text-on-surface transition-colors cursor-pointer">Platform</span>
+<span class="material-symbols-outlined text-[15px]">chevron_right</span>
+<span class="font-label-caps text-primary font-semibold">Catalog Intelligence</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/60">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-data-mono-sm text-[11px] text-on-surface-variant">Continuous Sync Active</span>
+</div>
+</div>
+<!-- Right Header Utility Cluster -->
+<div class="flex items-center gap-3 shrink-0">
+<!-- Quick Find -->
+<div class="relative w-[360px] hidden xl:flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-[19px] pointer-events-none">search</span>
+<input class="w-full h-10 pl-10 pr-16 bg-surface-container border border-outline-variant/70 rounded-xl font-body-sm text-body-sm text-on-surface placeholder:text-outline/80 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Search catalog or jump to SKU..." type="text"/>
+<span class="absolute right-2.5 font-data-mono-sm text-[10px] text-outline bg-surface-container-highest border border-outline-variant px-1.5 py-0.5 rounded shadow-sm pointer-events-none">⌘ K</span>
+</div>
+<!-- Notification Bell -->
+<button aria-label="Notifications" class="relative w-10 h-10 rounded-xl bg-surface-container border border-outline-variant/70 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-surface shadow-[0_0_8px_#4edea3]"></span>
+</button>
+<!-- User Profile -->
+<div class="flex items-center gap-2 pl-1.5 pr-2 py-1 rounded-xl bg-surface-container border border-outline-variant/60 hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-container to-surface-container-high border border-primary/40 flex items-center justify-center text-primary font-headline-sm text-xs font-semibold shadow-inner">
+                SA
+              </div>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-primary ring-1.5 ring-surface"></span>
+</div>
+<div class="hidden sm:flex flex-col text-left">
+<span class="font-headline-sm text-xs text-on-surface font-semibold leading-tight">Sarah Al-Mansoor</span>
+<span class="font-data-mono-sm text-[10px] text-outline leading-tight">Head of Merchandising</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px] ml-0.5">expand_more</span>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT VIEW -->
+<main class="w-full pt-24 min-h-screen bg-surface px-gutter-desktop pb-space-xl"><div class="flex flex-col w-full gap-space-lg">
+<!-- TOP CONTEXT SYNC (Re-align Shell Active State to Demand Forecasting) -->
+<script>
+    (function syncDemandForecastingNav() {
+      // Re-target sidebar active state seamlessly
+      const navLinks = document.querySelectorAll('aside nav a');
+      navLinks.forEach(link => {
+        const path = link.getAttribute('data-path');
+        if (path === 'demand-forecasting') {
+          link.className = "flex items-center h-11 px-3.5 rounded-xl bg-surface-variant/90 text-primary border border-primary/30 shadow-[0_0_18px_-4px_rgba(16,185,129,0.35)] font-semibold transition-all group";
+          const icon = link.querySelector('.material-symbols-outlined');
+          if (icon) icon.className = "material-symbols-outlined mr-3 text-[22px] text-primary transition-colors";
+        } else if (path === 'product-explorer') {
+          link.className = "flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group";
+          const badge = link.querySelector('span.ml-auto');
+          if (badge) badge.remove();
+          const icon = link.querySelector('.material-symbols-outlined');
+          if (icon) icon.className = "material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors";
+        }
+      });
+      // Synchronize breadcrumb text
+      const breadcrumb = document.querySelector('header .font-label-caps.text-primary');
+      if (breadcrumb) breadcrumb.textContent = 'Demand Forecasting';
+      // Synchronize live status badge in header
+      const syncBadge = document.querySelector('header .font-data-mono-sm');
+      if (syncBadge) syncBadge.innerHTML = '● Inference Engine Active • TFT + XGBoost Ensemble v4.81';
+    })();
+  </script>
+<!-- PAGE HEADER & MULTI-HORIZON CONTROL STRIP -->
+<div class="flex flex-col xl:flex-row xl:items-end justify-between gap-space-md bg-surface-container-low p-space-lg rounded-2xl shadow-sm">
+<div class="flex flex-col gap-1 max-w-3xl">
+<div class="flex items-center gap-3">
+<span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-data-mono-sm text-[11px] font-semibold tracking-wide uppercase">
+          Predictive Horizon 2024.Q4
+        </span>
+<span class="text-outline-variant">•</span>
+<span class="font-data-mono-sm text-[11px] text-on-surface-variant flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping"></span>
+          Simulations synchronized 4m ago
+        </span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight mt-1">
+        Demand Forecasting
+      </h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+        Multi-horizon machine learning forecast models, probabilistic confidence cones (P10/P50/P90), and promotional scenario simulations.
+      </p>
+</div>
+<!-- Quick Parameters & Actions -->
+<div class="flex flex-wrap items-center gap-2.5 shrink-0">
+<!-- Model Selector Pill -->
+<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-high text-on-surface text-body-sm shadow-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">neurology</span>
+<div class="flex flex-col text-left">
+<span class="font-headline-sm text-xs font-semibold leading-none">Ensemble (Prophet + TFT + XGBoost)</span>
+<span class="font-data-mono-sm text-[10px] text-primary mt-0.5">94.6% Test Accuracy</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px] ml-1">expand_more</span>
+</div>
+<!-- Forecast Horizon Toggle -->
+<div class="flex items-center bg-surface-container-lowest p-1 rounded-xl">
+<button class="px-3 py-1.5 rounded-lg font-data-mono-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" type="button">4W</button>
+<button class="px-3 py-1.5 rounded-lg font-data-mono-sm text-body-sm font-semibold bg-primary text-on-primary shadow-sm transition-all" type="button">12W (Active)</button>
+<button class="px-3 py-1.5 rounded-lg font-data-mono-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" type="button">26W</button>
+<button class="px-3 py-1.5 rounded-lg font-data-mono-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" type="button">52W</button>
+</div>
+<!-- Action CTAs -->
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-surface-container-high hover:bg-surface-variant text-on-surface font-body-sm font-medium transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px] text-outline">file_download</span>
+<span>Export Forecast CSV</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-on-primary font-body-sm font-semibold hover:bg-primary-fixed-dim transition-all shadow-[0_0_16px_rgba(78,222,163,0.3)]" type="button">
+<span class="material-symbols-outlined text-[19px]">play_circle</span>
+<span>Run Simulation</span>
+</button>
+</div>
+</div>
+</div>
+<!-- TOP KPI STRIP (4 HIGH-DENSITY ANALYTICAL CARDS) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- KPI 1 -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-low shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">show_chart</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Projected Demand</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15 text-primary font-data-mono-sm text-[11px] font-semibold">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span> +11.8%
+        </span>
+</div>
+<div class="mt-3">
+<div class="flex items-baseline gap-2">
+<span class="font-metric-display text-metric-display text-on-surface">1.48M</span>
+<span class="font-data-mono-sm text-[12px] text-outline">units</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-outline mt-1 font-body-sm">
+<span>P50 median aggregate</span>
+<span class="text-on-surface-variant font-data-mono-sm text-[11px]">vs 1.32M prior</span>
+</div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-low shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Confidence Score</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary/15 text-tertiary font-data-mono-sm text-[11px] font-semibold">
+          High Certainty
+        </span>
+</div>
+<div class="mt-3">
+<div class="flex items-baseline gap-2">
+<span class="font-metric-display text-metric-display text-on-surface">94.2%</span>
+<span class="font-data-mono-sm text-[12px] text-outline">±3.4% band</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-outline mt-1 font-body-sm">
+<span>Model drift metric</span>
+<span class="text-primary font-data-mono-sm text-[11px]">0.38% (Stable)</span>
+</div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-low shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-error-container/40 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Stockout Deficit</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container/40 text-error font-data-mono-sm text-[11px] font-semibold">
+          Action Trigger
+        </span>
+</div>
+<div class="mt-3">
+<div class="flex items-baseline gap-2">
+<span class="font-metric-display text-metric-display text-error">42,150</span>
+<span class="font-data-mono-sm text-[12px] text-error/80">units at risk</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-outline mt-1 font-body-sm">
+<span>3 Categories impacted</span>
+<span class="text-error font-data-mono-sm text-[11px]">Breach by W6</span>
+</div>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-low shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Revenue at Forecast</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary/15 text-secondary font-data-mono-sm text-[11px] font-semibold">
+<span class="material-symbols-outlined text-[13px]">trending_up</span> +14.2%
+        </span>
+</div>
+<div class="mt-3">
+<div class="flex items-baseline gap-2">
+<span class="font-metric-display text-metric-display text-on-surface">$14.28M</span>
+<span class="font-data-mono-sm text-[12px] text-outline">GMV target</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-outline mt-1 font-body-sm">
+<span>Buffer capital req.</span>
+<span class="text-on-surface-variant font-data-mono-sm text-[11px]">$1.12M safety stock</span>
+</div>
+</div>
+</div>
+</div>
+<!-- MAIN BODY SECTION 1: PROBABILISTIC DEMAND FORECAST & SENSITIVITY CONTROLS -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg">
+<!-- CHART AREA (8 COLUMNS) -->
+<div class="xl:col-span-8 flex flex-col p-space-lg rounded-2xl bg-surface-container-low shadow-sm gap-space-md">
+<!-- Chart Header & Interactive Series Legend -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm pb-space-sm">
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-headline-md text-headline-md text-on-surface">Probabilistic Demand Horizon &amp; Confidence Interval</h2>
+<span class="px-2 py-0.5 rounded bg-surface-container-high font-data-mono-sm text-[10px] text-outline">12-Week Trajectory</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Historical actuals vs multi-quantile parametric projections (P10 / P50 / P90)</p>
+</div>
+<!-- Legend Checkboxes -->
+<div class="flex flex-wrap items-center gap-3">
+<label class="flex items-center gap-1.5 cursor-pointer text-body-sm text-on-surface-variant hover:text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="text-[12px]">Historical Sales</span>
+</label>
+<label class="flex items-center gap-1.5 cursor-pointer text-body-sm text-on-surface-variant hover:text-on-surface">
+<span class="w-3 h-0.5 bg-primary-fixed border-dashed"></span>
+<span class="text-[12px]">P50 Baseline</span>
+</label>
+<label class="flex items-center gap-1.5 cursor-pointer text-body-sm text-on-surface-variant hover:text-on-surface">
+<span class="w-3 h-2 rounded bg-primary/20"></span>
+<span class="text-[12px]">P90/P10 Cone</span>
+</label>
+<label class="flex items-center gap-1.5 cursor-pointer text-body-sm text-on-surface-variant hover:text-on-surface">
+<span class="w-3 h-0.5 bg-tertiary"></span>
+<span class="text-[12px]">Promo Lift Scenario</span>
+</label>
+</div>
+</div>
+<!-- High-Fidelity Probabilistic Forecast Chart SVG -->
+<div class="relative w-full h-[360px] bg-surface-container-lowest/60 rounded-xl overflow-hidden p-2 flex flex-col justify-between">
+<!-- Live Tooltip Marker pinned at W12 Forecast Surge -->
+<div class="absolute left-[58%] top-[22%] -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none transition-transform hover:scale-105">
+<div class="px-3 py-1.5 rounded-lg bg-surface-container-highest shadow-xl backdrop-blur-md flex flex-col gap-0.5">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-headline-sm text-xs text-on-surface font-semibold">W12 Holiday Promo Peak</span>
+</div>
+<div class="flex items-center gap-2 font-data-mono-sm text-[11px]">
+<span class="text-tertiary font-bold">1,540,200 units</span>
+<span class="text-outline">P90: 1.68M</span>
+</div>
+</div>
+<div class="w-2 h-2 bg-surface-container-highest rotate-45 -mt-1"></div>
+</div>
+<svg class="w-full h-full" fill="none" preserveaspectratio="none" viewbox="0 0 960 330">
+<defs>
+<!-- Confidence Interval Gradient -->
+<lineargradient id="coneGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#4edea3" stop-opacity="0.32"></stop>
+<stop offset="50%" stop-color="#10b981" stop-opacity="0.14"></stop>
+<stop offset="100%" stop-color="#04110d" stop-opacity="0.0"></stop>
+</lineargradient>
+<!-- Historical Area Gradient -->
+<lineargradient id="histArea" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#10b981" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#10b981" stop-opacity="0.0"></stop>
+</lineargradient>
+<!-- Neon Glow Filters -->
+<filter height="140%" id="emeraldGlow" width="140%" x="-20%" y="-20%">
+<fedropshadow dx="0" dy="0" flood-color="#4edea3" flood-opacity="0.6" stddeviation="3"></fedropshadow>
+</filter>
+<filter height="140%" id="limeGlow" width="140%" x="-20%" y="-20%">
+<fedropshadow dx="0" dy="0" flood-color="#98da27" flood-opacity="0.8" stddeviation="3"></fedropshadow>
+</filter>
+</defs>
+<!-- Horizontal Grid Lines & Scale -->
+<g stroke="#3c4a42" stroke-dasharray="3 3" stroke-opacity="0.3">
+<line x1="40" x2="940" y1="40" y2="40"></line>
+<line x1="40" x2="940" y1="105" y2="105"></line>
+<line x1="40" x2="940" y1="170" y2="170"></line>
+<line x1="40" x2="940" y1="235" y2="235"></line>
+<line x1="40" x2="940" y1="295" y2="295"></line>
+</g>
+<!-- Y-Axis Labels -->
+<text fill="#86948a" font-family="JetBrains Mono" font-size="10" text-anchor="end" x="32" y="44">2.0M</text>
+<text fill="#86948a" font-family="JetBrains Mono" font-size="10" text-anchor="end" x="32" y="109">1.5M</text>
+<text fill="#86948a" font-family="JetBrains Mono" font-size="10" text-anchor="end" x="32" y="174">1.0M</text>
+<text fill="#86948a" font-family="JetBrains Mono" font-size="10" text-anchor="end" x="32" y="239">500k</text>
+<text fill="#86948a" font-family="JetBrains Mono" font-size="10" text-anchor="end" x="32" y="299">0</text>
+<!-- Vertical Divider: "Today (Current Week)" -->
+<g>
+<rect fill="#14221e" fill-opacity="0.4" height="280" width="540" x="400" y="20"></rect>
+<line stroke="#4edea3" stroke-dasharray="4 4" stroke-opacity="0.9" stroke-width="1.5" x1="400" x2="400" y1="20" y2="295"></line>
+<rect fill="#04110d" fill-opacity="0.9" height="18" rx="4" width="110" x="345" y="14"></rect>
+<text fill="#4edea3" font-family="JetBrains Mono" font-size="10" font-weight="600" text-anchor="middle" x="400" y="27">TODAY (W8)</text>
+</g>
+<!-- CONFIDENCE INTERVAL CONE (W8 to W20) -->
+<!-- P90 Upper bound to P10 Lower bound closed polygon -->
+<path d="M 400 128 
+                   L 445 116 L 490 102 L 535 90 L 580 72 L 625 64 L 670 70 L 715 62 L 760 56 L 805 50 L 850 44 L 895 38 L 940 32
+                   L 940 210 L 895 204 L 850 198 L 805 190 L 760 185 L 715 178 L 670 184 L 625 174 L 580 168 L 535 158 L 490 148 L 445 138
+                   Z" fill="url(#coneGradient)"></path>
+<!-- Historical Curve Area Fill (W1 to W8) -->
+<path d="M 60 162 L 105 156 L 150 168 L 195 150 L 240 142 L 285 138 L 330 144 L 375 130 L 400 128 L 400 295 L 60 295 Z" fill="url(#histArea)"></path>
+<!-- Historical Sales Line (W1 to W8) -->
+<path d="M 60 162 L 105 156 L 150 168 L 195 150 L 240 142 L 285 138 L 330 144 L 375 130 L 400 128" stroke="#10b981" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<!-- Historical Sales Node Points -->
+<circle cx="60" cy="162" fill="#081612" r="3" stroke="#10b981" stroke-width="2"></circle>
+<circle cx="105" cy="156" fill="#081612" r="3" stroke="#10b981" stroke-width="2"></circle>
+<circle cx="150" cy="168" fill="#081612" r="3" stroke="#10b981" stroke-width="2"></circle>
+<circle cx="195" cy="150" fill="#081612" r="3" stroke="#10b981" stroke-width="2"></circle>
+<circle cx="240" cy="142" fill="#081612" r="3" stroke="#10b981" stroke-width="2"></circle>
+<circle cx="285" cy="138" fill="#081612" r="3" stroke="#10b981" stroke-width="2"></circle>
+<circle cx="330" cy="144" fill="#081612" r="3" stroke="#10b981" stroke-width="2"></circle>
+<circle cx="375" cy="130" fill="#081612" r="3" stroke="#10b981" stroke-width="2"></circle>
+<circle cx="400" cy="128" fill="#4edea3" filter="url(#emeraldGlow)" r="4.5" stroke="#081612" stroke-width="2"></circle>
+<!-- P50 BASELINE PROJECTION LINE (W8 to W20) -->
+<path d="M 400 128 L 445 124 L 490 118 L 535 110 L 580 98 L 625 94 L 670 100 L 715 92 L 760 84 L 805 78 L 850 72 L 895 65 L 940 58" filter="url(#emeraldGlow)" stroke="#4edea3" stroke-dasharray="5 3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<!-- PROMOTIONAL SURGE SIMULATION LINE (Lime / Tertiary) -->
+<path d="M 400 128 L 445 120 L 490 108 L 535 96 L 580 78 L 625 70 L 670 76 L 715 68 L 760 60 L 805 54 L 850 48 L 895 42 L 940 36" filter="url(#limeGlow)" stroke="#98da27" stroke-dasharray="2 3" stroke-width="2"></path>
+<!-- Pinned Diamond Marker at W12 Promo Peak -->
+<polygon fill="#98da27" filter="url(#limeGlow)" points="580,72 585,78 580,84 575,78" stroke="#081612" stroke-width="1.5"></polygon>
+<!-- X-Axis Labels (W1 to W20) -->
+<g fill="#86948a" font-family="JetBrains Mono" font-size="10" text-anchor="middle">
+<text x="60" y="315">W1</text>
+<text x="105" y="315">W2</text>
+<text x="150" y="315">W3</text>
+<text x="195" y="315">W4</text>
+<text x="240" y="315">W5</text>
+<text x="285" y="315">W6</text>
+<text x="330" y="315">W7</text>
+<text x="375" y="315">W8</text>
+<text fill="#4edea3" x="445" y="315">W9</text>
+<text fill="#4edea3" x="490" y="315">W10</text>
+<text fill="#4edea3" x="535" y="315">W11</text>
+<text fill="#98da27" font-weight="700" x="580" y="315">W12★</text>
+<text fill="#4edea3" x="625" y="315">W13</text>
+<text fill="#4edea3" x="670" y="315">W14</text>
+<text fill="#4edea3" x="715" y="315">W15</text>
+<text fill="#4edea3" x="760" y="315">W16</text>
+<text fill="#4edea3" x="805" y="315">W17</text>
+<text fill="#4edea3" x="850" y="315">W18</text>
+<text fill="#4edea3" x="895" y="315">W19</text>
+<text fill="#4edea3" x="940" y="315">W20</text>
+</g>
+</svg>
+<!-- Bottom Chart Annotations Bar -->
+<div class="flex items-center justify-between pt-1 px-3 border-t border-outline-variant/30 text-[11px] font-data-mono-sm text-outline">
+<div class="flex items-center gap-3">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Historical Calibration: Mean Absolute Scaled Error (MASE) = 0.61</span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant">Quantile Loss Pinball = 0.043</span>
+</div>
+<span class="text-primary font-semibold">TFT Multi-Horizon Quantile Decoder</span>
+</div>
+</div>
+</div>
+<!-- RIGHT PANEL: SCENARIO MODELING & SENSITIVITY CONTROLS (4 COLUMNS) -->
+<div class="xl:col-span-4 flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-low shadow-sm gap-space-md">
+<div>
+<div class="flex items-center justify-between pb-space-sm border-b border-outline-variant/40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">tune</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Scenario &amp; Sensitivity</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-tertiary/15 text-tertiary font-data-mono-sm text-[10px] font-semibold">
+            Live Sandbox
+          </span>
+</div>
+<!-- Interactive Sliders -->
+<div class="flex flex-col gap-4 mt-space-md">
+<!-- Slider 1: Price Elasticity -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-on-surface-variant font-medium">Price Elasticity &amp; Discount</span>
+<span class="font-data-mono-sm text-primary font-semibold" id="discount-val">-15% Promo</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" id="discount-slider" max="30" min="0" type="range" value="15"/>
+<div class="flex justify-between text-[11px] font-data-mono-sm text-outline">
+<span>0% Baseline</span>
+<span class="text-tertiary">Proj. Lift: +19.4%</span>
+<span>-30% Flash</span>
+</div>
+</div>
+<!-- Slider 2: Marketing Ad Spend -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-on-surface-variant font-medium">Marketing Ad Spend Surge</span>
+<span class="font-data-mono-sm text-primary font-semibold" id="adspend-val">+$25k/wk Spend</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" id="adspend-slider" max="50" min="0" type="range" value="25"/>
+<div class="flex justify-between text-[11px] font-data-mono-sm text-outline">
+<span>$0</span>
+<span class="text-tertiary">Proj. Lift: +8.2%</span>
+<span>+$50k/wk</span>
+</div>
+</div>
+<!-- Slider 3: Lead Time Buffer -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-on-surface-variant font-medium">Supplier Lead Time Buffer</span>
+<span class="font-data-mono-sm text-on-surface font-semibold">14 Days (+3d buffer)</span>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<button class="py-1 px-2 rounded-lg bg-surface-container font-data-mono-sm text-[11px] text-outline hover:text-on-surface text-center" type="button">7 Days</button>
+<button class="py-1 px-2 rounded-lg bg-primary/20 text-primary font-data-mono-sm text-[11px] font-semibold text-center border border-primary/30" type="button">14 Days (Rec)</button>
+<button class="py-1 px-2 rounded-lg bg-surface-container font-data-mono-sm text-[11px] text-outline hover:text-on-surface text-center" type="button">21 Days</button>
+</div>
+</div>
+</div>
+<!-- Instant Impact Readout Matrix -->
+<div class="mt-space-md p-space-md rounded-xl bg-surface-container-high/70 flex flex-col gap-2.5">
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider">Instant Scenario Impact</span>
+<div class="grid grid-cols-2 gap-2 pt-1">
+<div class="p-2 rounded-lg bg-surface-container-lowest">
+<span class="font-data-mono-sm text-[10px] text-outline block">Demand Lift</span>
+<span class="font-headline-sm text-headline-sm text-tertiary font-bold" id="readout-lift">+242,500</span>
+<span class="font-data-mono-sm text-[9px] text-on-surface-variant block">units simulated</span>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-lowest">
+<span class="font-data-mono-sm text-[10px] text-outline block">Stockout Risk</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold">Low (2.4%)</span>
+<span class="font-data-mono-sm text-[9px] text-on-surface-variant block">within SLA</span>
+</div>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-lowest flex items-center justify-between">
+<div>
+<span class="font-data-mono-sm text-[10px] text-outline block">Incremental Revenue</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold" id="readout-rev">+$1.84M GMV</span>
+</div>
+<span class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">currency_exchange</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="flex flex-col gap-2 pt-space-xs">
+<button class="w-full py-2.5 px-4 rounded-xl bg-primary text-on-primary font-body-sm font-semibold hover:bg-primary-fixed-dim transition-all shadow-[0_0_12px_rgba(78,222,163,0.25)] flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+<span>Save Scenario Preset</span>
+</button>
+<button class="w-full py-1.5 text-center font-data-mono-sm text-[11px] text-outline hover:text-on-surface transition-colors" type="button">
+          Reset to Baseline Defaults
+        </button>
+</div>
+</div>
+</div>
+<!-- MAIN BODY SECTION 2: SKU-LEVEL FORECAST BREAKDOWN & ANOMALY DETECTION (TABLE) -->
+<div class="flex flex-col p-space-lg rounded-2xl bg-surface-container-low shadow-sm gap-space-md">
+<!-- Table Bar Controls -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm pb-space-sm border-b border-outline-variant/40">
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">SKU-Level Demand Trajectory &amp; Replenishment Schedule</h3>
+<span class="px-2 py-0.5 rounded-full bg-primary/15 text-primary font-data-mono-sm text-[10px] font-semibold">5 At-Risk SKUs Pinned</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Continuous ML inference by individual item inventory velocity and lead times</p>
+</div>
+<!-- Search & Filters -->
+<div class="flex flex-wrap items-center gap-2">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
+<input class="w-full h-9 pl-9 pr-3 bg-surface-container-high rounded-xl text-body-sm text-on-surface placeholder:text-outline/70 focus:outline-none focus:ring-1 focus:ring-primary border-0" id="sku-table-search" placeholder="Search forecasted SKU..." type="text"/>
+</div>
+<select class="h-9 px-3 bg-surface-container-high rounded-xl text-body-sm text-on-surface focus:outline-none focus:ring-1 focus:ring-primary border-0 cursor-pointer">
+<option>All Categories</option>
+<option>Audio &amp; Acoustics</option>
+<option>Wearables &amp; Fitness</option>
+<option>Peripherals</option>
+<option>Video &amp; Optics</option>
+</select>
+<button class="h-9 px-3 rounded-xl bg-surface-container-high hover:bg-surface-variant text-on-surface flex items-center gap-1.5 text-body-sm font-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">filter_list</span>
+<span>Sort: Variance Surge</span>
+</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/30 text-outline font-label-caps text-label-caps uppercase tracking-wider">
+<th class="py-3 px-3 font-semibold">Product &amp; SKU</th>
+<th class="py-3 px-3 font-semibold">Category</th>
+<th class="py-3 px-3 font-semibold">Run-Rate (4W Avg)</th>
+<th class="py-3 px-3 font-semibold">P50 Forecast (Next 4W)</th>
+<th class="py-3 px-3 font-semibold w-36">Horizon Trajectory</th>
+<th class="py-3 px-3 font-semibold">Variance</th>
+<th class="py-3 px-3 font-semibold">Replenishment Trigger</th>
+<th class="py-3 px-3 font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-sm">
+<!-- ROW 1 -->
+<tr class="hover:bg-surface-container-high/60 transition-colors group">
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">headphones</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md text-on-surface font-semibold group-hover:text-primary transition-colors">Wireless Headphones WH-1001</span>
+<span class="px-1.5 py-0.2 rounded bg-primary/20 text-primary font-data-mono-sm text-[9px] font-bold">A-Rank</span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-outline">SKU: WH-1001-BLK • Lead: 14d</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 text-on-surface-variant">Audio &amp; Acoustics</td>
+<td class="py-3.5 px-3 font-data-mono-sm text-on-surface">32,400 <span class="text-outline text-[10px]">u/mo</span></td>
+<td class="py-3.5 px-3 font-data-mono-sm text-on-surface font-semibold">41,200 <span class="text-outline text-[10px]">u/mo</span></td>
+<td class="py-3.5 px-3">
+<!-- Inline Sparkline Trend (Surge) -->
+<svg class="w-28 h-6" fill="none" viewbox="0 0 100 24">
+<path d="M 0 18 Q 25 16 50 14 T 100 4" stroke="#4edea3" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="100" cy="4" fill="#4edea3" r="2.5"></circle>
+</svg>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15 text-primary font-data-mono-sm text-[11px] font-bold">
+                +27.1%
+              </span>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+<span class="font-data-mono-sm text-error font-semibold text-[11px]">Oct 24 (Urgent)</span>
+</div>
+</td>
+<td class="py-3.5 px-3 text-right">
+<button class="px-2.5 py-1 rounded-lg bg-primary/20 hover:bg-primary text-primary hover:text-on-primary font-data-mono-sm text-[11px] font-semibold transition-all" type="button">
+                Create PO
+              </button>
+</td>
+</tr>
+<!-- ROW 2 -->
+<tr class="hover:bg-surface-container-high/60 transition-colors group">
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">watch</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md text-on-surface font-semibold group-hover:text-primary transition-colors">Smart Fitness Band SB-204</span>
+<span class="px-1.5 py-0.2 rounded bg-primary/20 text-primary font-data-mono-sm text-[9px] font-bold">A-Rank</span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-outline">SKU: SB-204-GRY • Lead: 10d</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 text-on-surface-variant">Wearables &amp; Fitness</td>
+<td class="py-3.5 px-3 font-data-mono-sm text-on-surface">54,100 <span class="text-outline text-[10px]">u/mo</span></td>
+<td class="py-3.5 px-3 font-data-mono-sm text-on-surface font-semibold">67,500 <span class="text-outline text-[10px]">u/mo</span></td>
+<td class="py-3.5 px-3">
+<!-- Inline Sparkline Trend (Surge) -->
+<svg class="w-28 h-6" fill="none" viewbox="0 0 100 24">
+<path d="M 0 16 Q 30 14 55 10 T 100 2" stroke="#98da27" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="100" cy="2" fill="#98da27" r="2.5"></circle>
+</svg>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary/15 text-tertiary font-data-mono-sm text-[11px] font-bold">
+                +24.8%
+              </span>
+</td>
+<td class="py-3.5 px-3">
+<span class="font-data-mono-sm text-tertiary font-medium text-[11px]">Nov 02 (Optimal)</span>
+</td>
+<td class="py-3.5 px-3 text-right">
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-variant text-on-surface font-data-mono-sm text-[11px] font-medium transition-all" type="button">
+                Adjust Target
+              </button>
+</td>
+</tr>
+<!-- ROW 3 -->
+<tr class="hover:bg-surface-container-high/60 transition-colors group">
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">graphic_eq</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md text-on-surface font-semibold group-hover:text-primary transition-colors">Noise-Cancelling Buds NC-80</span>
+<span class="px-1.5 py-0.2 rounded bg-tertiary/20 text-tertiary font-data-mono-sm text-[9px] font-bold">High Growth</span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-outline">SKU: NC-80-WHT • Lead: 21d</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 text-on-surface-variant">Audio &amp; Acoustics</td>
+<td class="py-3.5 px-3 font-data-mono-sm text-on-surface">19,800 <span class="text-outline text-[10px]">u/mo</span></td>
+<td class="py-3.5 px-3 font-data-mono-sm text-on-surface font-semibold">23,400 <span class="text-outline text-[10px]">u/mo</span></td>
+<td class="py-3.5 px-3">
+<!-- Inline Sparkline Trend (Steady Up) -->
+<svg class="w-28 h-6" fill="none" viewbox="0 0 100 24">
+<path d="M 0 17 Q 35 15 65 11 T 100 7" stroke="#4edea3" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="100" cy="7" fill="#4edea3" r="2.5"></circle>
+</svg>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15 text-primary font-data-mono-sm text-[11px] font-bold">
+                +18.2%
+              </span>
+</td>
+<td class="py-3.5 px-3">
+<span class="font-data-mono-sm text-on-surface-variant font-medium text-[11px]">Nov 05 (Normal)</span>
+</td>
+<td class="py-3.5 px-3 text-right">
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-variant text-on-surface font-data-mono-sm text-[11px] font-medium transition-all" type="button">
+                Adjust Target
+              </button>
+</td>
+</tr>
+<!-- ROW 4 -->
+<tr class="hover:bg-surface-container-high/60 transition-colors group">
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">keyboard</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md text-on-surface font-semibold group-hover:text-primary transition-colors">Ergonomic Keyboard KB-500</span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-outline">SKU: KB-500-ENG • Lead: 18d</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 text-on-surface-variant">Peripherals</td>
+<td class="py-3.5 px-3 font-data-mono-sm text-on-surface">14,200 <span class="text-outline text-[10px]">u/mo</span></td>
+<td class="py-3.5 px-3 font-data-mono-sm text-on-surface font-semibold">13,900 <span class="text-outline text-[10px]">u/mo</span></td>
+<td class="py-3.5 px-3">
+<!-- Inline Sparkline Trend (Flat / Slight Dip) -->
+<svg class="w-28 h-6" fill="none" viewbox="0 0 100 24">
+<path d="M 0 10 Q 30 11 60 12 T 100 14" stroke="#86948a" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="100" cy="14" fill="#86948a" r="2.5"></circle>
+</svg>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-outline font-data-mono-sm text-[11px] font-medium">
+                -2.1%
+              </span>
+</td>
+<td class="py-3.5 px-3">
+<span class="font-data-mono-sm text-outline font-medium text-[11px]">Nov 18 (Safe)</span>
+</td>
+<td class="py-3.5 px-3 text-right">
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-variant text-on-surface font-data-mono-sm text-[11px] font-medium transition-all" type="button">
+                Adjust Target
+              </button>
+</td>
+</tr>
+<!-- ROW 5 -->
+<tr class="hover:bg-surface-container-high/60 transition-colors group">
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">videocam</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md text-on-surface font-semibold group-hover:text-primary transition-colors">Ultra-HD Webcam WC-4K</span>
+<span class="px-1.5 py-0.2 rounded bg-primary/20 text-primary font-data-mono-sm text-[9px] font-bold">A-Rank</span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-outline">SKU: WC-4K-PRO • Lead: 14d</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 text-on-surface-variant">Video &amp; Optics</td>
+<td class="py-3.5 px-3 font-data-mono-sm text-on-surface">22,100 <span class="text-outline text-[10px]">u/mo</span></td>
+<td class="py-3.5 px-3 font-data-mono-sm text-on-surface font-semibold">27,800 <span class="text-outline text-[10px]">u/mo</span></td>
+<td class="py-3.5 px-3">
+<!-- Inline Sparkline Trend (Surge) -->
+<svg class="w-28 h-6" fill="none" viewbox="0 0 100 24">
+<path d="M 0 16 Q 30 14 60 9 T 100 5" stroke="#4edea3" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="100" cy="5" fill="#4edea3" r="2.5"></circle>
+</svg>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15 text-primary font-data-mono-sm text-[11px] font-bold">
+                +25.8%
+              </span>
+</td>
+<td class="py-3.5 px-3">
+<span class="font-data-mono-sm text-primary font-medium text-[11px]">Oct 28 (Actionable)</span>
+</td>
+<td class="py-3.5 px-3 text-right">
+<button class="px-2.5 py-1 rounded-lg bg-primary/20 hover:bg-primary text-primary hover:text-on-primary font-data-mono-sm text-[11px] font-semibold transition-all" type="button">
+                Create PO
+              </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/30 text-body-sm text-outline">
+<span class="font-data-mono-sm text-[11px]">Displaying top 5 of 3,892 active catalog forecasts</span>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-outline hover:text-on-surface disabled:opacity-30" disabled="" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<span class="px-3 font-data-mono-sm text-[11px] text-on-surface">Page 1 of 78</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-outline hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- MAIN BODY SECTION 3: FORECAST INTELLIGENCE INSIGHTS (3-CARD GRID) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-md">
+<!-- CARD 1: Seasonal Trend Decomposition -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-low shadow-sm gap-space-sm">
+<div>
+<div class="flex items-center gap-2 pb-2">
+<span class="material-symbols-outlined text-primary text-[20px]">calendar_month</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Seasonal Trend Decomposition</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Residual trend vs cyclic pattern demonstrates +34% volume acceleration in Q4 Holiday ramp compared to standard baselines.
+        </p>
+<!-- Mini Dual Bar Chart Visualizer -->
+<div class="mt-4 p-3 rounded-xl bg-surface-container-lowest/70 flex flex-col gap-2">
+<div class="flex justify-between text-[11px] font-data-mono-sm text-outline">
+<span>Quarterly Phase Velocity</span>
+<span class="text-primary">+34% Peak Multiplier</span>
+</div>
+<div class="flex items-end justify-between h-20 pt-2 gap-2">
+<!-- Q1 -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-surface-container-highest rounded-t h-9"></div>
+<span class="font-data-mono-sm text-[10px] text-outline">Q1</span>
+</div>
+<!-- Q2 -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-surface-container-highest rounded-t h-11"></div>
+<span class="font-data-mono-sm text-[10px] text-outline">Q2</span>
+</div>
+<!-- Q3 -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-surface-container-highest rounded-t h-12"></div>
+<span class="font-data-mono-sm text-[10px] text-outline">Q3</span>
+</div>
+<!-- Q4 (Projected Surge) -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-gradient-to-t from-primary-container to-primary rounded-t h-18 shadow-[0_0_12px_rgba(78,222,163,0.3)]"></div>
+<span class="font-data-mono-sm text-[10px] text-primary font-bold">Q4★</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-[11px] font-data-mono-sm text-outline pt-2 border-t border-outline-variant/30">
+<span>Auto-ARIMA Seasonality Order: (1, 1, 2)</span>
+<span class="text-on-surface">p &lt; 0.001</span>
+</div>
+</div>
+<!-- CARD 2: Model Feature Attribution (SHAP) -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-low shadow-sm gap-space-sm">
+<div>
+<div class="flex items-center gap-2 pb-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">hub</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Model Feature Attribution (SHAP)</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Predictive signal weights ranking the key drivers influencing the 12-week forecast trajectory.
+        </p>
+<!-- Ranked Drivers List -->
+<div class="mt-4 flex flex-col gap-2.5">
+<!-- Item 1 -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-body-sm">
+<span class="text-on-surface text-[13px]">1. Historical 4-Week Moving Avg</span>
+<span class="font-data-mono-sm text-[12px] text-primary font-bold">38%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 38%"></div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-body-sm">
+<span class="text-on-surface text-[13px]">2. Planned Promotion Calendar</span>
+<span class="font-data-mono-sm text-[12px] text-tertiary font-bold">27%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 27%"></div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex justify-between text-body-sm">
+<span class="text-on-surface-variant text-[13px]">3. Macro Category Velocity</span>
+<span class="font-data-mono-sm text-[12px] text-outline font-semibold">21%</span>
+</div>
+<!-- Item 4 -->
+<div class="flex justify-between text-body-sm">
+<span class="text-on-surface-variant text-[13px]">4. Stock Availability SLA Rate</span>
+<span class="font-data-mono-sm text-[12px] text-outline font-semibold">14%</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-[11px] font-data-mono-sm text-outline pt-2 border-t border-outline-variant/30">
+<span>KernelExplainer v0.42</span>
+<span class="text-secondary font-semibold">Normalized Sum: 100%</span>
+</div>
+</div>
+<!-- CARD 3: Supply Chain Action Plan (Prescriptive Recommendation) -->
+<div class="flex flex-col justify-between p-space-lg rounded-2xl bg-surface-container-high/90 shadow-sm gap-space-sm relative overflow-hidden">
+<!-- Glow ambient background inside card -->
+<div class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
+<div>
+<div class="flex items-center gap-2 pb-2">
+<div class="w-6 h-6 rounded-lg bg-tertiary/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Prescriptive Action Plan</h3>
+</div>
+<div class="mt-2 p-3.5 rounded-xl bg-surface-container-lowest/80 flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+<span class="font-data-mono-sm text-xs text-error font-semibold uppercase">Bottleneck Prevention</span>
+</div>
+<p class="font-body-md text-body-sm text-on-surface leading-relaxed">
+            Issue bulk purchase order for <strong class="text-tertiary font-semibold">3,800 units</strong> of <strong class="text-primary font-semibold">NC-80</strong> and <strong class="text-primary font-semibold">WH-1001</strong> by Friday to avoid W11 fulfillment bottleneck.
+          </p>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-3 text-body-sm font-data-mono-sm text-[11px]">
+<div class="p-2 rounded-lg bg-surface-container-lowest/50">
+<span class="text-outline block text-[10px]">Capital Impact</span>
+<span class="text-on-surface font-bold">$184,200</span>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-lowest/50">
+<span class="text-outline block text-[10px]">Protected Revenue</span>
+<span class="text-primary font-bold">+$520,000</span>
+</div>
+</div>
+</div>
+<div class="pt-2">
+<button class="w-full py-2.5 px-4 rounded-xl bg-primary text-on-primary font-body-sm font-semibold hover:bg-primary-fixed-dim transition-all shadow-[0_0_14px_rgba(78,222,163,0.3)] flex items-center justify-center gap-2" type="button">
+<span>Export Purchase Plan</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- INTERACTIVE CLIENT-SIDE SIMULATION LOGIC -->
+<script>
+    (function initSimulationControls() {
+      const discountSlider = document.getElementById('discount-slider');
+      const discountVal = document.getElementById('discount-val');
+      const adspendSlider = document.getElementById('adspend-slider');
+      const adspendVal = document.getElementById('adspend-val');
+      const readoutLift = document.getElementById('readout-lift');
+      const readoutRev = document.getElementById('readout-rev');
+
+      function updateSim() {
+        if (!discountSlider || !adspendSlider) return;
+        const discount = parseInt(discountSlider.value, 10);
+        const adspend = parseInt(adspendSlider.value, 10);
+
+        if (discountVal) discountVal.textContent = '-' + discount + '% Promo';
+        if (adspendVal) adspendVal.textContent = '+$' + adspend + 'k/wk Spend';
+
+        // Approximate dynamic readout update
+        const baseLiftUnits = 120000;
+        const calcLift = Math.round(baseLiftUnits + (discount * 8400) + (adspend * 3200));
+        const calcRev = ((calcLift * 7.6) / 1000000).toFixed(2);
+
+        if (readoutLift) readoutLift.textContent = '+' + calcLift.toLocaleString();
+        if (readoutRev) readoutRev.textContent = '+$' + calcRev + 'M GMV';
+      }
+
+      if (discountSlider) discountSlider.addEventListener('input', updateSim);
+      if (adspendSlider) adspendSlider.addEventListener('input', updateSim);
+
+      // SKU Search Filter
+      const skuSearch = document.getElementById('sku-table-search');
+      if (skuSearch) {
+        skuSearch.addEventListener('input', function(e) {
+          const query = e.target.value.toLowerCase();
+          const rows = document.querySelectorAll('tbody tr');
+          rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(query) ? '' : 'none';
+          });
+        });
+      }
+    })();
+  </script>
+</div></main>
+</div>
+<!-- Interactive script for Search Filter -->
+<script>
+    (function initProductExplorer() {
+      const searchInput = document.getElementById('sku-search');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          const val = e.target.value.toLowerCase();
+          const rows = document.querySelectorAll('tbody tr');
+          rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            if (text.includes(val)) {
+              row.style.display = '';
+            } else {
+              row.style.display = 'none';
+            }
+          });
+        });
+      }
+    })();
+  </script>
+</body></html>

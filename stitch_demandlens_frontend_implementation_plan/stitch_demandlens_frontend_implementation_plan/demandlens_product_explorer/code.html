@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin:0; padding:0; }
+      body { overscroll-behavior:none; }
+      main > :first-child { margin-top:0!important; }
+      main > :last-child { margin-bottom:0!important; }
+    }
+    ::-webkit-scrollbar { display:none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-high": "#1f2d28",
+            "inverse-on-surface": "#25332f",
+            "inverse-primary": "#006c49",
+            "on-surface": "#d6e6df",
+            "tertiary-fixed": "#b2f746",
+            "on-error": "#690005",
+            "on-primary-fixed": "#002113",
+            "surface-container-lowest": "#04110d",
+            "error": "#ffb4ab",
+            "outline-variant": "#3c4a42",
+            "inverse-surface": "#d6e6df",
+            "on-secondary-fixed-variant": "#005137",
+            "primary-container": "#10b981",
+            "on-tertiary": "#213600",
+            "tertiary": "#98da27",
+            "surface-bright": "#2e3c37",
+            "surface-container-low": "#101e1a",
+            "on-secondary-fixed": "#002114",
+            "primary-fixed": "#6ffbbe",
+            "surface-container": "#14221e",
+            "on-tertiary-container": "#283f00",
+            "primary": "#4edea3",
+            "surface-tint": "#4edea3",
+            "surface": "#081612",
+            "surface-dim": "#081612",
+            "on-primary-container": "#00422b",
+            "on-primary": "#003824",
+            "tertiary-container": "#78b300",
+            "secondary": "#45dfa4",
+            "secondary-fixed-dim": "#45dfa4",
+            "on-secondary-container": "#00452e",
+            "tertiary-fixed-dim": "#98da27",
+            "error-container": "#93000a",
+            "on-tertiary-fixed-variant": "#334f00",
+            "secondary-fixed": "#68fcbf",
+            "primary-fixed-dim": "#4edea3",
+            "on-background": "#d6e6df",
+            "surface-variant": "#293833",
+            "on-tertiary-fixed": "#121f00",
+            "secondary-container": "#00bd85",
+            "on-surface-variant": "#bbcabf",
+            "on-secondary": "#003825",
+            "surface-container-highest": "#293833",
+            "background": "#081612",
+            "on-primary-fixed-variant": "#005236",
+            "outline": "#86948a",
+            "on-error-container": "#ffdad6"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "margin-desktop": "2rem",
+            "gutter-desktop": "1.25rem",
+            "space-md": "0.75rem",
+            "space-lg": "1.25rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "1.75rem",
+            "margin": "1rem",
+            "gutter": "1rem"
+          },
+          fontFamily: {
+            "data-mono-sm": ["JetBrains Mono", "monospace"],
+            "headline-sm": ["Space Grotesk", "sans-serif"],
+            "headline-md": ["Space Grotesk", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "headline-xl-mobile": ["Space Grotesk", "sans-serif"],
+            "metric-display": ["Space Grotesk", "sans-serif"],
+            "headline-xl": ["Space Grotesk", "sans-serif"],
+            "label-caps": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "data-mono-lg": ["JetBrains Mono", "monospace"],
+            "headline-lg": ["Space Grotesk", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"]
+          },
+          fontSize: {
+            "data-mono-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }],
+            "headline-sm": ["15px", { lineHeight: "20px", fontWeight: "500" }],
+            "headline-md": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+            "headline-xl-mobile": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "metric-display": ["28px", { lineHeight: "34px", letterSpacing: "-0.03em", fontWeight: "700" }],
+            "headline-xl": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.05em", fontWeight: "600" }],
+            "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            "data-mono-lg": ["14px", { lineHeight: "18px", fontWeight: "600" }],
+            "headline-lg": ["22px", { lineHeight: "28px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "body-lg": ["15px", { lineHeight: "22px", fontWeight: "400" }]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen">
+<!-- SIDEBAR NAVIGATION -->
+<aside class="fixed left-0 top-0 bottom-0 w-[284px] bg-surface-container-lowest border-r border-outline-variant/60 z-50 flex flex-col justify-between overflow-hidden shadow-[4px_0_24px_rgba(0,0,0,0.4)]">
+<div class="absolute inset-0 pointer-events-none opacity-10 flex items-end justify-center">
+<svg class="w-full h-80 text-primary" fill="none" preserveaspectratio="none" viewbox="0 0 284 320">
+<path d="M0,220 C80,180 120,290 284,200 L284,320 L0,320 Z" fill="currentColor"></path>
+<path d="M0,250 C90,210 150,280 284,230 L284,320 L0,320 Z" fill="currentColor" opacity="0.6"></path>
+<path d="M0,280 C60,260 170,290 284,270 L284,320 L0,320 Z" fill="currentColor" opacity="0.4"></path>
+</svg>
+</div>
+<div class="relative z-10 flex flex-col p-space-md">
+<!-- App Brand -->
+<div class="flex items-center gap-space-md px-space-xs py-space-sm mb-space-lg">
+<div class="w-[50px] h-[50px] rounded-xl bg-gradient-to-br from-primary-container via-surface-container-high to-surface-container-lowest border border-primary/30 flex items-center justify-center shadow-[0_0_22px_rgba(16,185,129,0.25)] shrink-0">
+<span class="material-symbols-outlined text-primary text-[28px]">bar_chart</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-lg text-headline-lg text-on-surface tracking-tight truncate">DemandLens</span>
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+</div>
+<span class="font-data-mono-sm text-[10px] text-outline tracking-wider uppercase truncate">Retail Intelligence Platform</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1.5">
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="dashboard" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">home</span>
+<span class="font-body-md text-body-md font-medium">Dashboard</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl bg-surface-variant/90 text-primary border border-primary/30 shadow-[0_0_18px_-4px_rgba(16,185,129,0.35)] font-semibold transition-all group" data-path="product-explorer" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] text-primary transition-colors">inventory_2</span>
+<span class="font-body-md text-body-md">Product Explorer</span>
+<span class="ml-auto font-data-mono-sm text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded-full font-bold">3.9k</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="sales-analytics" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">analytics</span>
+<span class="font-body-md text-body-md font-medium">Sales Analytics</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="demand-forecasting" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">trending_up</span>
+<span class="font-body-md text-body-md font-medium">Demand Forecasting</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="model-evaluation" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">military_tech</span>
+<span class="font-body-md text-body-md font-medium">Model Evaluation</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="data-quality" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">database</span>
+<span class="font-body-md text-body-md font-medium">Data Quality</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Bottom Footer -->
+<div class="relative z-10 p-space-md border-t border-outline-variant/60 bg-surface-container-lowest/90 backdrop-blur-sm">
+<nav class="flex flex-col gap-1">
+<a class="flex items-center h-10 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="settings" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px] group-hover:text-primary transition-colors">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</a>
+<a class="flex items-center h-10 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="help-and-docs" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px] group-hover:text-primary transition-colors">help</span>
+<span class="font-body-sm text-body-sm">Help &amp; Docs</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- MAIN APP CONTAINER -->
+<div class="pl-[284px]">
+<!-- GLOBAL TOP APP BAR -->
+<header class="fixed top-0 left-[284px] right-0 h-20 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/50 z-40 px-gutter-desktop">
+<div class="h-20 w-full flex items-center justify-between gap-space-lg">
+<!-- Breadcrumb & Workspace Location -->
+<div class="flex items-center gap-2.5">
+<div class="flex items-center gap-1.5 text-body-sm text-outline">
+<span class="font-label-caps text-outline hover:text-on-surface transition-colors cursor-pointer">Platform</span>
+<span class="material-symbols-outlined text-[15px]">chevron_right</span>
+<span class="font-label-caps text-primary font-semibold">Catalog Intelligence</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/60">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-data-mono-sm text-[11px] text-on-surface-variant">Continuous Sync Active</span>
+</div>
+</div>
+<!-- Right Header Utility Cluster -->
+<div class="flex items-center gap-3 shrink-0">
+<!-- Quick Find -->
+<div class="relative w-[360px] hidden xl:flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-[19px] pointer-events-none">search</span>
+<input class="w-full h-10 pl-10 pr-16 bg-surface-container border border-outline-variant/70 rounded-xl font-body-sm text-body-sm text-on-surface placeholder:text-outline/80 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Search catalog or jump to SKU..." type="text"/>
+<span class="absolute right-2.5 font-data-mono-sm text-[10px] text-outline bg-surface-container-highest border border-outline-variant px-1.5 py-0.5 rounded shadow-sm pointer-events-none">⌘ K</span>
+</div>
+<!-- Notification Bell -->
+<button aria-label="Notifications" class="relative w-10 h-10 rounded-xl bg-surface-container border border-outline-variant/70 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-surface shadow-[0_0_8px_#4edea3]"></span>
+</button>
+<!-- User Profile -->
+<div class="flex items-center gap-2 pl-1.5 pr-2 py-1 rounded-xl bg-surface-container border border-outline-variant/60 hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-container to-surface-container-high border border-primary/40 flex items-center justify-center text-primary font-headline-sm text-xs font-semibold shadow-inner">
+                SA
+              </div>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-primary ring-1.5 ring-surface"></span>
+</div>
+<div class="hidden sm:flex flex-col text-left">
+<span class="font-headline-sm text-xs text-on-surface font-semibold leading-tight">Sarah Al-Mansoor</span>
+<span class="font-data-mono-sm text-[10px] text-outline leading-tight">Head of Merchandising</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px] ml-0.5">expand_more</span>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT VIEW -->
+<main class="w-full pt-24 min-h-screen bg-surface px-gutter-desktop pb-space-xl">
+<div class="flex flex-col w-full gap-5 text-on-surface">
+<!-- 1. PAGE TITLE & PRIMARY ACTIONS -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-1 pb-1">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 rounded bg-primary/10 border border-primary/20 text-primary font-data-mono-sm text-[11px] font-semibold uppercase tracking-wider">
+                Catalog Intelligence
+              </span>
+<span class="font-data-mono-sm text-[11px] text-outline">
+                Cluster Health • 3,927 Tracked SKUs
+              </span>
+</div>
+<h1 class="font-headline-xl text-3xl lg:text-[34px] font-bold text-on-surface tracking-tight">
+              Product Explorer
+            </h1>
+<p class="font-body-md text-sm text-outline mt-0.5 max-w-3xl">
+              Real-time catalog demand velocity, safety stock buffers, and ML-driven 4-week forecast rankings across active store SKUs.
+            </p>
+</div>
+<!-- Top Actions -->
+<div class="flex items-center gap-3 shrink-0">
+<button class="h-10 px-4 rounded-xl bg-surface-container border border-outline-variant/70 text-on-surface font-headline-sm text-sm flex items-center gap-2 hover:bg-surface-container-high hover:border-outline transition-all shadow-sm">
+<span class="material-symbols-outlined text-[19px] text-outline">file_download</span>
+<span>Export Catalog</span>
+</button>
+<button class="h-10 px-4 rounded-xl bg-gradient-to-r from-primary-container to-secondary-container text-on-primary font-headline-sm text-sm font-semibold flex items-center gap-2 hover:shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:brightness-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Add Product</span>
+</button>
+</div>
+</div>
+<!-- 2. KPI METRICS STRIP -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- KPI 1: Total SKUs -->
+<div class="bg-surface-container-low/90 border border-outline-variant/50 hover:border-primary/40 rounded-2xl p-4 flex flex-col justify-between shadow-sm relative overflow-hidden transition-all group backdrop-blur-sm">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl pointer-events-none group-hover:bg-primary/15 transition-all"></div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-xs uppercase tracking-wider text-outline font-semibold">Total Tracked SKUs</span>
+<div class="w-9 h-9 rounded-xl bg-surface-container-high border border-outline-variant/60 flex items-center justify-center text-primary shadow-inner">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-3">
+<span class="font-metric-display text-3xl font-bold text-on-surface tracking-tight">3,927</span>
+<span class="font-data-mono-sm text-xs text-primary px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> +4.8%
+              </span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-outline mt-1.5 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary/60"></span>
+              Active across 14 clusters
+            </span>
+</div>
+<!-- KPI 2: High Velocity -->
+<div class="bg-surface-container-low/90 border border-outline-variant/50 hover:border-secondary/40 rounded-2xl p-4 flex flex-col justify-between shadow-sm relative overflow-hidden transition-all group backdrop-blur-sm">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-secondary/10 rounded-full blur-2xl pointer-events-none group-hover:bg-secondary/15 transition-all"></div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-xs uppercase tracking-wider text-outline font-semibold">High Demand Velocity</span>
+<div class="w-9 h-9 rounded-xl bg-surface-container-high border border-outline-variant/60 flex items-center justify-center text-secondary shadow-inner">
+<span class="material-symbols-outlined text-[20px]">trending_up</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-3">
+<span class="font-metric-display text-3xl font-bold text-on-surface tracking-tight">412</span>
+<span class="font-data-mono-sm text-xs text-secondary px-2 py-0.5 rounded-full bg-secondary/10 border border-secondary/20 flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> +14.2%
+              </span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-outline mt-1.5 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary/60"></span>
+              Exceeding baseline momentum
+            </span>
+</div>
+<!-- KPI 3: Stockout Risk -->
+<div class="bg-surface-container-low/90 border border-error/30 hover:border-error/60 rounded-2xl p-4 flex flex-col justify-between shadow-sm relative overflow-hidden transition-all group backdrop-blur-sm">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-error/10 rounded-full blur-2xl pointer-events-none group-hover:bg-error/20 transition-all"></div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-xs uppercase tracking-wider text-error/90 font-semibold">Stockout Risk</span>
+<div class="w-9 h-9 rounded-xl bg-error-container/30 border border-error/40 flex items-center justify-center text-error shadow-inner">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-3">
+<span class="font-metric-display text-3xl font-bold text-error tracking-tight">18</span>
+<span class="font-data-mono-sm text-[11px] text-error px-2 py-0.5 rounded-full bg-error-container/40 border border-error/50 flex items-center gap-1 font-semibold uppercase">
+                Critical Alert
+              </span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-outline mt-1.5 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+              &lt; 7 days supply remaining
+            </span>
+</div>
+<!-- KPI 4: Avg Forecast Accuracy -->
+<div class="bg-surface-container-low/90 border border-outline-variant/50 hover:border-tertiary/40 rounded-2xl p-4 flex flex-col justify-between shadow-sm relative overflow-hidden transition-all group backdrop-blur-sm">
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-tertiary/10 rounded-full blur-2xl pointer-events-none group-hover:bg-tertiary/15 transition-all"></div>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-xs uppercase tracking-wider text-outline font-semibold">Avg Forecast Accuracy</span>
+<div class="w-9 h-9 rounded-xl bg-surface-container-high border border-outline-variant/60 flex items-center justify-center text-tertiary shadow-inner">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mt-3">
+<span class="font-metric-display text-3xl font-bold text-tertiary tracking-tight">94.6%</span>
+<span class="font-data-mono-sm text-xs text-tertiary px-2 py-0.5 rounded-full bg-tertiary/10 border border-tertiary/20 flex items-center gap-1 font-semibold">
+                MAPE 5.4%
+              </span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-outline mt-1.5 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary/60"></span>
+              Prophet + LightGBM Ensemble
+            </span>
+</div>
+</div>
+<!-- 3. SEARCH, FILTERS & VIEW BAR -->
+<div class="bg-surface-container-low/95 border border-outline-variant/60 rounded-2xl p-3.5 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-3 shadow-md">
+<!-- Search Field -->
+<div class="relative flex-1 min-w-[300px]">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full h-10 pl-11 pr-14 bg-surface-container-high/90 border border-outline-variant/50 rounded-xl font-body-sm text-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" id="sku-search" placeholder="Search SKU, product title, category, or barcode..." type="text"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 font-data-mono-sm text-xs text-outline bg-surface-container-lowest border border-outline-variant/60 px-1.5 py-0.5 rounded pointer-events-none">/</span>
+</div>
+<!-- Dropdowns & Controls -->
+<div class="flex flex-wrap items-center gap-2">
+<!-- Category Filter -->
+<div class="relative">
+<button class="h-10 px-3 rounded-xl bg-surface-container-high/80 border border-outline-variant/60 text-on-surface font-body-sm text-xs font-medium flex items-center gap-1.5 hover:bg-surface-variant hover:border-outline transition-colors">
+<span class="material-symbols-outlined text-outline text-[17px]">category</span>
+<span class="text-outline">Category:</span>
+<span class="text-primary font-semibold">All Categories</span>
+<span class="material-symbols-outlined text-outline text-[16px]">expand_more</span>
+</button>
+</div>
+<!-- Status Filter -->
+<div class="relative">
+<button class="h-10 px-3 rounded-xl bg-surface-container-high/80 border border-outline-variant/60 text-on-surface font-body-sm text-xs font-medium flex items-center gap-1.5 hover:bg-surface-variant hover:border-outline transition-colors">
+<span class="material-symbols-outlined text-outline text-[17px]">pie_chart</span>
+<span class="text-outline">Status:</span>
+<span class="text-on-surface font-semibold">All Status</span>
+<span class="material-symbols-outlined text-outline text-[16px]">expand_more</span>
+</button>
+</div>
+<!-- Velocity Sorting -->
+<div class="relative">
+<button class="h-10 px-3 rounded-xl bg-surface-container-high/80 border border-outline-variant/60 text-on-surface font-body-sm text-xs font-medium flex items-center gap-1.5 hover:bg-surface-variant hover:border-outline transition-colors">
+<span class="material-symbols-outlined text-outline text-[17px]">sort</span>
+<span class="text-outline">Velocity:</span>
+<span class="text-tertiary font-semibold">High to Low</span>
+<span class="material-symbols-outlined text-outline text-[16px]">expand_more</span>
+</button>
+</div>
+<!-- Vertical Divider -->
+<div class="h-6 w-px bg-outline-variant/70 hidden sm:block mx-0.5"></div>
+<!-- View Switcher (Table / Grid) -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant/70 rounded-xl p-0.5">
+<button class="w-8 h-8 rounded-lg bg-surface-variant text-primary flex items-center justify-center shadow-sm" title="Table View">
+<span class="material-symbols-outlined text-[18px]">table_rows</span>
+</button>
+<button class="w-8 h-8 rounded-lg text-outline hover:text-on-surface flex items-center justify-center transition-colors" title="Grid View">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+</button>
+</div>
+<!-- Reset Filter -->
+<button class="h-10 w-10 rounded-xl bg-surface-container-high/80 border border-outline-variant/60 text-outline hover:text-on-surface flex items-center justify-center hover:bg-surface-variant transition-colors" title="Reset all filters">
+<span class="material-symbols-outlined text-[19px]">filter_alt_off</span>
+</button>
+</div>
+</div>
+<!-- 4. PRODUCT CATALOG TABLE (CORE ENHANCEMENT) -->
+<div class="bg-surface-container-low border border-outline-variant/60 rounded-2xl overflow-hidden shadow-lg flex flex-col">
+<!-- Table Info Bar -->
+<div class="px-5 py-3 bg-surface-container border-b border-outline-variant/60 flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<span class="font-headline-sm text-sm font-semibold text-on-surface tracking-tight">Catalog SKU Inventory</span>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-outline font-data-mono-sm text-[11px] border border-outline-variant/50">
+                Showing 1–7 of 3,927 items
+              </span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-data-mono-sm text-[11px] text-outline">Continuous Inference Synced</span>
+</div>
+</div>
+<!-- Responsive Table -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse min-w-[1100px]">
+<thead>
+<tr class="bg-surface-container-high/70 border-b border-outline-variant/60 text-outline font-label-caps text-[11px] uppercase tracking-wider">
+<th class="py-3 px-5 font-semibold">Product &amp; SKU</th>
+<th class="py-3 px-4 font-semibold">Category</th>
+<th class="py-3 px-4 font-semibold text-right">Current Stock &amp; Cover</th>
+<th class="py-3 px-4 font-semibold text-right">Weekly Demand</th>
+<th class="py-3 px-4 font-semibold text-center w-36">4-Wk Forecast</th>
+<th class="py-3 px-4 font-semibold">Velocity &amp; Risk</th>
+<th class="py-3 px-4 font-semibold text-right">Accuracy</th>
+<th class="py-3 px-5 font-semibold text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/40 font-body-md text-sm">
+<!-- ROW 1: Active Product (Wireless Headphones WH-1001) -->
+<tr class="bg-surface-variant/40 hover:bg-surface-variant/70 border-l-4 border-l-primary transition-colors group">
+<td class="py-3.5 px-5">
+<div class="flex items-center gap-3.5">
+<div class="relative w-12 h-12 rounded-xl bg-surface-container-highest overflow-hidden flex items-center justify-center shrink-0 border border-primary/40 shadow-[0_0_12px_rgba(78,222,163,0.25)]">
+<img class="w-full h-full object-cover" data-alt="Matte black wireless studio over-ear headphones resting on dark obsidian display block, soft emerald ambient rim light, high-end retail consumer tech product photography, clean minimalist studio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrW9-wfBgGY0y8h7v7DIIPzraRhDHqcvp7fyLBy5UjeO4Qa31IOUzs9iL2T2Ws-KT85o18MxXsLJjQ8Av14myC9yCrGiRnmtM0XYTiwEdo3ZG-3h6CDGqHvNeexkk58VfXRAF6vqS0zJt8XfyRc13PXj8ybwfaQjcqKU3qUUsyG9mBDtvKaZ3JppAK5flQFzdlNm_K2ixTroaBwBthwRGrNoBgO1bBJJbTyc2vz7U"/>
+<span class="absolute top-1 left-1 w-2 h-2 rounded-full bg-primary ring-1 ring-surface"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">
+                            Wireless Headphones
+                          </span>
+<span class="font-data-mono-sm text-[10px] px-1.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/30 uppercase font-bold tracking-wider">
+                            Active in Dashboard
+                          </span>
+</div>
+<span class="font-data-mono-sm text-xs text-primary/80 tracking-wide mt-0.5">
+                          WH-1001 <span class="text-outline/60">•</span> <span class="text-outline">84920412</span>
+</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-body-sm text-xs">
+                      Electronics &amp; Audio
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-bold">1,420 units</span>
+<div class="flex items-center gap-1.5 mt-1">
+<div class="w-16 h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 25%"></div>
+</div>
+<span class="font-data-mono-sm text-[11px] text-error font-medium">4.1d cover</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-semibold">2,380 units</span>
+<span class="font-data-mono-sm text-xs text-primary flex items-center gap-0.5 font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span> +11.2%
+                      </span>
+</div>
+</td>
+<!-- Sparkline SVG -->
+<td class="py-3.5 px-4 text-center">
+<div class="inline-flex items-center justify-center w-28 h-8">
+<svg class="w-full h-full overflow-visible" fill="none" viewbox="0 0 100 28">
+<defs>
+<lineargradient id="grad-spark-1" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#4edea3" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#4edea3" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M 0 18 Q 20 12 40 16 T 70 8 T 100 4 L 100 28 L 0 28 Z" fill="url(#grad-spark-1)"></path>
+<path d="M 0 18 Q 20 12 40 16 T 70 8 T 100 4" fill="none" stroke="#4edea3" stroke-linecap="round" stroke-width="2.5"></path>
+<circle cx="100" cy="4" fill="#98da27" r="3.5" stroke="#081612" stroke-width="1.5"></circle>
+</svg>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-md bg-secondary-container/20 border border-primary/30 text-primary font-data-mono-sm text-[11px] font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bolt</span> Surge Velocity
+                      </span>
+<span class="px-2 py-0.5 rounded-md bg-error-container/40 border border-error/40 text-error font-data-mono-sm text-[11px] font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span> Low Cover
+                      </span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-tertiary font-bold">97.2%</span>
+<span class="font-data-mono-sm text-[10px] text-outline">MAE 118.4</span>
+</div>
+</td>
+<td class="py-3.5 px-5 text-center whitespace-nowrap">
+<div class="flex items-center justify-center gap-1.5">
+<button class="h-8 px-2.5 rounded-lg bg-primary-container text-on-primary font-headline-sm text-xs font-semibold flex items-center gap-1 hover:bg-primary transition-colors shadow-sm" title="View Forecast">
+<span>Details</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 2: Smart Fitness Band SB-204 -->
+<tr class="hover:bg-surface-container/60 transition-colors group">
+<td class="py-3.5 px-5">
+<div class="flex items-center gap-3.5">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high overflow-hidden flex items-center justify-center shrink-0 border border-outline-variant/60 shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Sleek black silicone fitness tracker smartwatch with neon green digital interface glow, set against polished dark stone background, macro product visual." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjUk1X6PzpFeAbzyJcs_WGjCduzO3ZmLKhNjrCk_Fnd7yCn9B8tbyILmR3DI4DDcLEqwloUVUv3MU3SU22RS2ef9Oi5vkoivGpTlcUBhkd0tEfSM82JJEHU5tjkapyFer58pYHAiRhZ7cOQ27a-WpVSbzWkI9BXIXqT1JIOit4WhXvMw-XG2HnHD279ff8uP7ZhyAmP8LoJaqNcbbGuc8IrcumJHoOK8HPYMAbwx4"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">
+                          Smart Fitness Band
+                        </span>
+<span class="font-data-mono-sm text-xs text-outline tracking-wide mt-0.5">
+                          SB-204 <span class="text-outline/60">•</span> 84920876
+                        </span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-body-sm text-xs">
+                      Wearables
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-bold">3,890 units</span>
+<div class="flex items-center gap-1.5 mt-1">
+<div class="w-16 h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 78%"></div>
+</div>
+<span class="font-data-mono-sm text-[11px] text-primary font-medium">18.2d cover</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-semibold">1,495 units</span>
+<span class="font-data-mono-sm text-xs text-primary flex items-center gap-0.5 font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span> +6.4%
+                      </span>
+</div>
+</td>
+<!-- Sparkline SVG -->
+<td class="py-3.5 px-4 text-center">
+<div class="inline-flex items-center justify-center w-28 h-8">
+<svg class="w-full h-full overflow-visible" fill="none" viewbox="0 0 100 28">
+<path d="M 0 20 Q 25 18 50 12 T 75 14 T 100 10" fill="none" stroke="#4edea3" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="100" cy="10" fill="#4edea3" r="3" stroke="#081612" stroke-width="1.5"></circle>
+</svg>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-md bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-data-mono-sm text-[11px] font-semibold flex items-center gap-1 w-max">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span> Healthy Stock
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-tertiary font-bold">95.4%</span>
+<span class="font-data-mono-sm text-[10px] text-outline">MAE 82.1</span>
+</div>
+</td>
+<td class="py-3.5 px-5 text-center whitespace-nowrap">
+<button class="h-8 w-8 rounded-lg bg-surface-container-high hover:bg-surface-variant text-outline hover:text-on-surface flex items-center justify-center transition-colors mx-auto" title="Inspect SKU">
+<span class="material-symbols-outlined text-[17px]">tune</span>
+</button>
+</td>
+</tr>
+<!-- ROW 3: Noise-Cancelling Buds NC-80 (Critical Alert) -->
+<tr class="bg-error/5 hover:bg-error/10 transition-colors group">
+<td class="py-3.5 px-5">
+<div class="flex items-center gap-3.5">
+<div class="relative w-12 h-12 rounded-xl bg-surface-container-high overflow-hidden flex items-center justify-center shrink-0 border border-error/50 shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Premium in-ear wireless true wireless earbuds in matte dark metallic charging case, glowing emerald indicator diode, high resolution studio product render." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA98H49GRZlGwRyueDSONM4VeznzhhG9RtZep1fyUmbaDsE1KHJtrsp1md9KAMeXM9Sd6b0LhgH3jVI__uGn1Z2H8Eh3babq5K9r5CWzD2mdRmX0b0ulzsHuhGhr-D7KyvFZfyNneGK1tJHhRJFK_jruafHLQ9k9QKfUSQwKhogWW0jF0mr-535fIXk1iy1M4gH1MDkecAet2aUf1tmlEkRYkVMcSZIuZwec4u9gXA"/>
+<span class="absolute top-1 left-1 w-2 h-2 rounded-full bg-error ring-1 ring-surface"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-sm text-on-surface font-semibold group-hover:text-error transition-colors truncate">
+                            Noise-Cancelling Buds
+                          </span>
+<span class="font-data-mono-sm text-[10px] px-1.5 py-0.2 rounded bg-error-container/40 text-error border border-error/50 uppercase font-bold">
+                            Reorder Now
+                          </span>
+</div>
+<span class="font-data-mono-sm text-xs text-error/90 tracking-wide mt-0.5 font-medium">
+                          NC-80 <span class="text-outline/60">•</span> 84921901
+                        </span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-body-sm text-xs">
+                      Electronics &amp; Audio
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-error font-bold">310 units</span>
+<div class="flex items-center gap-1.5 mt-1">
+<div class="w-16 h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 12%"></div>
+</div>
+<span class="font-data-mono-sm text-[11px] text-error font-semibold">1.4d cover</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-semibold">1,820 units</span>
+<span class="font-data-mono-sm text-xs text-primary flex items-center gap-0.5 font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span> +24.8%
+                      </span>
+</div>
+</td>
+<!-- Sparkline SVG -->
+<td class="py-3.5 px-4 text-center">
+<div class="inline-flex items-center justify-center w-28 h-8">
+<svg class="w-full h-full overflow-visible" fill="none" viewbox="0 0 100 28">
+<path d="M 0 24 L 30 16 L 60 12 L 80 6 L 100 2" fill="none" stroke="#ffb4ab" stroke-linecap="round" stroke-width="2.5"></path>
+<circle cx="100" cy="2" fill="#ffb4ab" r="3" stroke="#081612" stroke-width="1.5"></circle>
+</svg>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-md bg-error-container/50 border border-error/50 text-error font-data-mono-sm text-[11px] font-bold flex items-center gap-1 w-max">
+<span class="material-symbols-outlined text-[14px]">emergency</span> Stockout Imminent
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-tertiary font-bold">93.1%</span>
+<span class="font-data-mono-sm text-[10px] text-outline">MAE 142.0</span>
+</div>
+</td>
+<td class="py-3.5 px-5 text-center whitespace-nowrap">
+<button class="h-8 px-2 rounded-lg bg-error-container/60 hover:bg-error-container text-on-error font-headline-sm text-xs font-semibold flex items-center gap-1 transition-colors mx-auto" title="Create PO for NC-80">
+<span>Restock</span>
+<span class="material-symbols-outlined text-[15px]">add_shopping_cart</span>
+</button>
+</td>
+</tr>
+<!-- ROW 4: Ergonomic Mechanical Keyboard KB-500 -->
+<tr class="hover:bg-surface-container/60 transition-colors group">
+<td class="py-3.5 px-5">
+<div class="flex items-center gap-3.5">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high overflow-hidden flex items-center justify-center shrink-0 border border-outline-variant/60 shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Custom split ergonomic mechanical keyboard with low-profile keycaps and dark forest green backlit keys, high tech desktop hardware visual." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYmI9OBsBzw_rVrMNvG3vpHQ5B-dCKlKrYfazic3iwzMypiUbQO9WdaZQZ4jrEiPPcgPdVsyUfw8vcITx-8dkTIR771HsKqy7swTUdb_wtplUWMRnBlzIrmlmjfBo2Nt5Y4B-43gKQHFcCG5KJd5hLudyNAmjgVNyh_dOwnKtLDMUXQPu1WjKxxVQzOUE9CgiO4maC3XREm6fXAa8UdBBu22_uB-yy4f8is2r_BPU"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">
+                          Ergonomic Mechanical Keyboard
+                        </span>
+<span class="font-data-mono-sm text-xs text-outline tracking-wide mt-0.5">
+                          KB-500 <span class="text-outline/60">•</span> 84922115
+                        </span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-body-sm text-xs">
+                      Peripherals &amp; Input
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-bold">2,210 units</span>
+<div class="flex items-center gap-1.5 mt-1">
+<div class="w-16 h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 58%"></div>
+</div>
+<span class="font-data-mono-sm text-[11px] text-tertiary font-medium">14.6d cover</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-semibold">1,050 units</span>
+<span class="font-data-mono-sm text-xs text-outline flex items-center gap-0.5 font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]">arrow_downward</span> -1.2%
+                      </span>
+</div>
+</td>
+<!-- Sparkline SVG -->
+<td class="py-3.5 px-4 text-center">
+<div class="inline-flex items-center justify-center w-28 h-8">
+<svg class="w-full h-full overflow-visible" fill="none" viewbox="0 0 100 28">
+<path d="M 0 10 Q 30 12 50 14 T 80 16 T 100 18" fill="none" stroke="#86948a" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="100" cy="18" fill="#86948a" r="2.5"></circle>
+</svg>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-md bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-data-mono-sm text-[11px] font-semibold flex items-center gap-1 w-max">
+<span class="material-symbols-outlined text-[14px] text-outline">horizontal_rule</span> Steady Plateau
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-tertiary font-bold">96.0%</span>
+<span class="font-data-mono-sm text-[10px] text-outline">MAE 54.3</span>
+</div>
+</td>
+<td class="py-3.5 px-5 text-center whitespace-nowrap">
+<button class="h-8 w-8 rounded-lg bg-surface-container-high hover:bg-surface-variant text-outline hover:text-on-surface flex items-center justify-center transition-colors mx-auto" title="Inspect SKU">
+<span class="material-symbols-outlined text-[17px]">tune</span>
+</button>
+</td>
+</tr>
+<!-- ROW 5: Ultra-HD Webcam 4K WC-4K -->
+<tr class="hover:bg-surface-container/60 transition-colors group">
+<td class="py-3.5 px-5">
+<div class="flex items-center gap-3.5">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high overflow-hidden flex items-center justify-center shrink-0 border border-outline-variant/60 shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Compact cylindrical 4K streaming studio webcam with emerald optical coating and dark anodized aluminum ring, mounted on modern monitor bezel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOG8ZWYr8CZWx8CVUtmmgaJQ2y7XEC96pzaCCrrWFX8V4pxtCrCSFtXVVXAsskh_WaMp4Iat8oeS8cPWUjBlUCyVfox0ydmuPB-N2buCE1eus9Sm3x2pcKWulZHcCsoQoFOZH0jptIk0NS0mnri9hcwhzj4-fiqds6YLKbupyYPwdCSxTSTAI_fNGJ1JD-qJs25MvpRDFV0RkYK0Wa_7zLZ__gGdAQTj6AbwIKH6I"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">
+                          Ultra-HD Webcam 4K
+                        </span>
+<span class="font-data-mono-sm text-xs text-outline tracking-wide mt-0.5">
+                          WC-4K <span class="text-outline/60">•</span> 84923309
+                        </span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-body-sm text-xs">
+                      Video &amp; Streaming
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-bold">980 units</span>
+<div class="flex items-center gap-1.5 mt-1">
+<div class="w-16 h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 29%"></div>
+</div>
+<span class="font-data-mono-sm text-[11px] text-error font-medium">6.8d cover</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-semibold">994 units</span>
+<span class="font-data-mono-sm text-xs text-primary flex items-center gap-0.5 font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span> +8.9%
+                      </span>
+</div>
+</td>
+<!-- Sparkline SVG -->
+<td class="py-3.5 px-4 text-center">
+<div class="inline-flex items-center justify-center w-28 h-8">
+<svg class="w-full h-full overflow-visible" fill="none" viewbox="0 0 100 28">
+<path d="M 0 20 L 25 15 L 50 18 L 75 10 L 100 6" fill="none" stroke="#4edea3" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="100" cy="6" fill="#4edea3" r="2.5"></circle>
+</svg>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-md bg-secondary-container/20 border border-secondary/30 text-primary font-data-mono-sm text-[11px] font-semibold flex items-center gap-1 w-max">
+<span class="material-symbols-outlined text-[14px]">speed</span> High Velocity
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-tertiary font-bold">95.8%</span>
+<span class="font-data-mono-sm text-[10px] text-outline">MAE 62.8</span>
+</div>
+</td>
+<td class="py-3.5 px-5 text-center whitespace-nowrap">
+<button class="h-8 w-8 rounded-lg bg-surface-container-high hover:bg-surface-variant text-outline hover:text-on-surface flex items-center justify-center transition-colors mx-auto" title="Inspect SKU">
+<span class="material-symbols-outlined text-[17px]">tune</span>
+</button>
+</td>
+</tr>
+<!-- ROW 6: USB-C Fast Charger Pod CP-65W -->
+<tr class="hover:bg-surface-container/60 transition-colors group">
+<td class="py-3.5 px-5">
+<div class="flex items-center gap-3.5">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high overflow-hidden flex items-center justify-center shrink-0 border border-outline-variant/60 shadow-inner">
+<img class="w-full h-full object-cover" data-alt="GaN 65W dual-port USB-C travel power brick in charcoal matte finish with deep green accent plug prongs, compact technology product photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPw7Wm3cSPmxpd34EaI18uOLtHgRv06ju9410PjEUrgzWYDvfP7GMb84puF1Kx08lAXpIlSYjOv1XwUDybo_CsMlqi-SMYKr58V25r3QAyo0o_KpT5eMm0XN716BmnEzGmrH09YWH2AgboSy1svKPwnsPdXd61Z7LJeAHaG_9KVwYw7a1FwGY6Zn2N7cfYBkPNr_USHsAh03Tw6qRDQtrL2fC_fBzZSDJq4cEvmWU"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">
+                          Fast Charger Pod 65W
+                        </span>
+<span class="font-data-mono-sm text-xs text-outline tracking-wide mt-0.5">
+                          CP-65W <span class="text-outline/60">•</span> 84924401
+                        </span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-body-sm text-xs">
+                      Power &amp; Cables
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-bold">5,400 units</span>
+<div class="flex items-center gap-1.5 mt-1">
+<div class="w-16 h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 95%"></div>
+</div>
+<span class="font-data-mono-sm text-[11px] text-primary font-medium">26.5d cover</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-semibold">1,420 units</span>
+<span class="font-data-mono-sm text-xs text-primary flex items-center gap-0.5 font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span> +3.1%
+                      </span>
+</div>
+</td>
+<!-- Sparkline SVG -->
+<td class="py-3.5 px-4 text-center">
+<div class="inline-flex items-center justify-center w-28 h-8">
+<svg class="w-full h-full overflow-visible" fill="none" viewbox="0 0 100 28">
+<path d="M 0 14 Q 30 16 60 12 T 100 14" fill="none" stroke="#4edea3" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="100" cy="14" fill="#4edea3" r="2.5"></circle>
+</svg>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-md bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-data-mono-sm text-[11px] font-semibold flex items-center gap-1 w-max">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span> Abundant Stock
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-tertiary font-bold">97.8%</span>
+<span class="font-data-mono-sm text-[10px] text-outline">MAE 39.4</span>
+</div>
+</td>
+<td class="py-3.5 px-5 text-center whitespace-nowrap">
+<button class="h-8 w-8 rounded-lg bg-surface-container-high hover:bg-surface-variant text-outline hover:text-on-surface flex items-center justify-center transition-colors mx-auto" title="Inspect SKU">
+<span class="material-symbols-outlined text-[17px]">tune</span>
+</button>
+</td>
+</tr>
+<!-- ROW 7: Smart Desk LED Bar DL-02 -->
+<tr class="hover:bg-surface-container/60 transition-colors group">
+<td class="py-3.5 px-5">
+<div class="flex items-center gap-3.5">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high overflow-hidden flex items-center justify-center shrink-0 border border-outline-variant/60 shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Slim linear aluminum monitor light bar with dual wireless dial controller, emitting soft calibrated warm-to-cool reading light in dark workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1gUiF9_tIy_FZDmobsoJAPYu3L9f_XVGewSiuvK4cdlNWlUiWTrSCwIigqF_pn7DlAvaUD-tGOPrF_lwR1Tq7aiz_V9HGyOq1uAHbNqLENRbwDB3TeX3nDmy8YPfZiLQo5SHz6Ju22_pYJEQ7Ud3gp_j4xVMJA07LlLZsbe12ihSOUJKLCCzh11M99GSPuxDDQmXjbpcWPP0L44nxVQAei0wB9Dk8VFYg4Ew8zYs"/>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-sm text-on-surface font-semibold group-hover:text-primary transition-colors truncate">
+                          Smart Desk Lamp ScreenBar
+                        </span>
+<span class="font-data-mono-sm text-xs text-outline tracking-wide mt-0.5">
+                          DL-02 <span class="text-outline/60">•</span> 84925890
+                        </span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-body-sm text-xs">
+                      Smart Workspace
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-bold">1,120 units</span>
+<div class="flex items-center gap-1.5 mt-1">
+<div class="w-16 h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 50%"></div>
+</div>
+<span class="font-data-mono-sm text-[11px] text-tertiary font-medium">12.0d cover</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-on-surface font-semibold">654 units</span>
+<span class="font-data-mono-sm text-xs text-primary flex items-center gap-0.5 font-medium mt-0.5">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span> +5.5%
+                      </span>
+</div>
+</td>
+<!-- Sparkline SVG -->
+<td class="py-3.5 px-4 text-center">
+<div class="inline-flex items-center justify-center w-28 h-8">
+<svg class="w-full h-full overflow-visible" fill="none" viewbox="0 0 100 28">
+<path d="M 0 16 L 30 14 L 60 18 L 85 10 L 100 8" fill="none" stroke="#4edea3" stroke-linecap="round" stroke-width="2"></path>
+<circle cx="100" cy="8" fill="#4edea3" r="2.5"></circle>
+</svg>
+</div>
+</td>
+<td class="py-3.5 px-4 whitespace-nowrap">
+<span class="px-2.5 py-1 rounded-md bg-surface-container-high border border-outline-variant/60 text-on-surface-variant font-data-mono-sm text-[11px] font-semibold flex items-center gap-1 w-max">
+<span class="material-symbols-outlined text-[14px] text-primary">check_circle</span> Balanced
+                    </span>
+</td>
+<td class="py-3.5 px-4 text-right whitespace-nowrap">
+<div class="flex flex-col items-end">
+<span class="font-data-mono-lg text-sm text-tertiary font-bold">94.9%</span>
+<span class="font-data-mono-sm text-[10px] text-outline">MAE 48.0</span>
+</div>
+</td>
+<td class="py-3.5 px-5 text-center whitespace-nowrap">
+<button class="h-8 w-8 rounded-lg bg-surface-container-high hover:bg-surface-variant text-outline hover:text-on-surface flex items-center justify-center transition-colors mx-auto" title="Inspect SKU">
+<span class="material-symbols-outlined text-[17px]">tune</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer Pagination -->
+<div class="px-5 py-3 bg-surface-container border-t border-outline-variant/60 flex flex-col sm:flex-row items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<span class="font-body-sm text-xs text-outline">Items per page:</span>
+<select class="bg-surface-container-high border border-outline-variant/60 text-on-surface text-xs rounded-lg px-2.5 py-1 focus:outline-none focus:border-primary">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+<option>100</option>
+</select>
+<span class="font-data-mono-sm text-[11px] text-outline">1–7 of 3,927 products</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/60 text-outline hover:text-on-surface flex items-center justify-center disabled:opacity-40 transition-colors" disabled="">
+<span class="material-symbols-outlined text-[18px]">first_page</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/60 text-outline hover:text-on-surface flex items-center justify-center disabled:opacity-40 transition-colors" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary-container text-on-primary font-headline-sm text-xs font-semibold flex items-center justify-center shadow-sm">
+                1
+              </button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface-variant hover:text-on-surface font-headline-sm text-xs flex items-center justify-center transition-colors">
+                2
+              </button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface-variant hover:text-on-surface font-headline-sm text-xs flex items-center justify-center transition-colors">
+                3
+              </button>
+<span class="px-1 text-outline font-data-mono-sm text-xs">...</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface-variant hover:text-on-surface font-headline-sm text-xs flex items-center justify-center transition-colors">
+                393
+              </button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/60 text-outline hover:text-on-surface flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/60 text-outline hover:text-on-surface flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[18px]">last_page</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 5. BOTTOM STRATEGIC INSIGHTS ROW (Equalized 3 Cards) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+<!-- CARD 1: Urgent Stockout Mitigation -->
+<div class="bg-surface-container-low/95 border border-error/30 rounded-2xl p-4 flex flex-col justify-between shadow-md relative overflow-hidden group">
+<div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-error-container/40 border border-error/40 text-error flex items-center justify-center shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-[22px]">priority_high</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-sm font-semibold text-on-surface">Urgent Stockout Mitigation</span>
+<span class="font-body-sm text-xs text-error font-medium">18 Critical SKUs Identified</span>
+</div>
+</div>
+<p class="font-body-md text-xs text-on-surface-variant mt-3 leading-relaxed">
+                Noise-Cancelling Buds (<span class="font-data-mono-sm text-error font-semibold">NC-80</span>) and 2 related accessories have depleted safety buffers to <span class="text-error font-semibold">&lt;36 hours</span>. Forecast indicates +24.8% demand surge next week.
+              </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/40 mt-4 flex items-center justify-between">
+<span class="font-data-mono-sm text-[11px] text-outline">Est. Loss: <span class="text-error font-semibold">$18,450/wk</span></span>
+<button class="px-3.5 py-1.5 rounded-lg bg-error-container/40 border border-error/50 text-error hover:bg-error-container hover:text-on-error font-headline-sm text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm">
+<span>Create PO Draft</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- CARD 2: Category Velocity Leaders -->
+<div class="bg-surface-container-low/95 border border-outline-variant/60 rounded-2xl p-4 flex flex-col justify-between shadow-md relative overflow-hidden group">
+<div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high border border-outline-variant/60 text-secondary flex items-center justify-center shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-[22px]">hub</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-sm font-semibold text-on-surface">Category Velocity Leaders</span>
+<span class="font-body-sm text-xs text-outline">Top sales contribution volume</span>
+</div>
+</div>
+<div class="space-y-2 mt-3">
+<div>
+<div class="flex items-center justify-between text-xs mb-1">
+<span class="text-on-surface">Electronics &amp; Audio</span>
+<span class="font-data-mono-sm text-primary font-semibold">41.8%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 41.8%"></div>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between text-xs mb-1">
+<span class="text-on-surface">Peripherals &amp; Input</span>
+<span class="font-data-mono-sm text-secondary font-semibold">27.3%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 27.3%"></div>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between text-xs mb-1">
+<span class="text-on-surface">Wearables</span>
+<span class="font-data-mono-sm text-tertiary font-semibold">18.5%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 18.5%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/40 mt-3 flex items-center justify-between">
+<span class="font-data-mono-sm text-[11px] text-outline">3,142 Units/day combined</span>
+<button class="font-headline-sm text-xs text-primary hover:underline flex items-center gap-1 font-semibold">
+                Explore Categories <span class="material-symbols-outlined text-[15px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- CARD 3: Forecast Horizon & Model Health -->
+<div class="bg-surface-container-low/95 border border-outline-variant/60 rounded-2xl p-4 flex flex-col justify-between shadow-md relative overflow-hidden group">
+<div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high border border-outline-variant/60 text-tertiary flex items-center justify-center shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-[22px]">model_training</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-sm font-semibold text-on-surface">Forecast Horizon Health</span>
+<span class="font-body-sm text-xs text-outline">Ensemble Model v4.81</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-3">
+<div class="p-2.5 rounded-xl bg-surface-container-high/70 border border-outline-variant/50 flex flex-col">
+<span class="font-body-sm text-[11px] text-outline">Current Drift</span>
+<span class="font-data-mono-lg text-base text-tertiary font-bold mt-0.5">0.42%</span>
+<span class="font-data-mono-sm text-[10px] text-outline">Within tolerance</span>
+</div>
+<div class="p-2.5 rounded-xl bg-surface-container-high/70 border border-outline-variant/50 flex flex-col">
+<span class="font-body-sm text-[11px] text-outline">Residual StdDev</span>
+<span class="font-data-mono-lg text-base text-primary font-bold mt-0.5">14.2 u</span>
+<span class="font-data-mono-sm text-[10px] text-outline">Normal dist.</span>
+</div>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/40 mt-3 flex items-center justify-between">
+<span class="font-data-mono-sm text-[11px] text-outline">Next retrain: <span class="text-on-surface font-medium">5h 22m</span></span>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-high border border-outline-variant/60 text-on-surface hover:bg-surface-variant font-headline-sm text-xs font-semibold transition-colors flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[15px] text-tertiary">tune</span>
+                Model Params
+              </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Interactive script for Search Filter -->
+<script>
+    (function initProductExplorer() {
+      const searchInput = document.getElementById('sku-search');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          const val = e.target.value.toLowerCase();
+          const rows = document.querySelectorAll('tbody tr');
+          rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            if (text.includes(val)) {
+              row.style.display = '';
+            } else {
+              row.style.display = 'none';
+            }
+          });
+        });
+      }
+    })();
+  </script>
+</body></html>

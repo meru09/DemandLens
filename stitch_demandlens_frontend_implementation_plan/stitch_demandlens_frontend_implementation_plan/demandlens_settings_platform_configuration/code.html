@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"primary":"#4edea3","on-background":"#d6e6df","surface-bright":"#2e3c37","inverse-surface":"#d6e6df","on-primary-fixed":"#002113","on-surface-variant":"#bbcabf","on-primary-container":"#00422b","surface-container-highest":"#293833","on-primary-fixed-variant":"#005236","surface-dim":"#081612","surface-container-low":"#101e1a","primary-container":"#10b981","outline":"#86948a","primary-fixed":"#6ffbbe","on-tertiary-fixed-variant":"#334f00","surface":"#081612","tertiary-fixed-dim":"#98da27","on-secondary-fixed":"#002114","inverse-on-surface":"#25332f","surface-variant":"#293833","background":"#081612","secondary-container":"#00bd85","on-secondary":"#003825","tertiary-container":"#78b300","on-tertiary":"#213600","outline-variant":"#3c4a42","surface-container-lowest":"#04110d","primary-fixed-dim":"#4edea3","surface-container-high":"#1f2d28","secondary":"#45dfa4","on-tertiary-container":"#283f00","error-container":"#93000a","secondary-fixed":"#68fcbf","on-secondary-container":"#00452e","tertiary":"#98da27","on-surface":"#d6e6df","on-secondary-fixed-variant":"#005137","on-error-container":"#ffdad6","error":"#ffb4ab","tertiary-fixed":"#b2f746","surface-tint":"#4edea3","secondary-fixed-dim":"#45dfa4","inverse-primary":"#006c49","on-error":"#690005","on-primary":"#003824","surface-container":"#14221e","on-tertiary-fixed":"#121f00"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin":"1rem","space-xl":"1.75rem","space-xs":"0.25rem","space-sm":"0.5rem","gutter-desktop":"1.25rem","gutter":"1rem","space-lg":"1.25rem","margin-desktop":"2rem","space-md":"0.75rem"},"fontFamily":{"headline-lg":["Space Grotesk"],"label-caps":["Inter"],"body-md":["Inter"],"headline-xl":["Space Grotesk"],"headline-md":["Space Grotesk"],"data-mono-sm":["JetBrains Mono"],"headline-xl-mobile":["Space Grotesk"],"metric-display":["Space Grotesk"],"headline-sm":["Space Grotesk"],"body-lg":["Inter"],"body-sm":["Inter"],"data-mono-lg":["JetBrains Mono"]},"fontSize":{"headline-lg":["22px",{"lineHeight":"28px","letterSpacing":"-0.015em","fontWeight":"600"}],"label-caps":["11px",{"lineHeight":"14px","letterSpacing":"0.05em","fontWeight":"600"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"headline-xl":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"600"}],"headline-md":["18px",{"lineHeight":"24px","letterSpacing":"-0.01em","fontWeight":"600"}],"data-mono-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.02em","fontWeight":"500"}],"headline-xl-mobile":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"600"}],"metric-display":["28px",{"lineHeight":"34px","letterSpacing":"-0.03em","fontWeight":"700"}],"headline-sm":["15px",{"lineHeight":"20px","fontWeight":"500"}],"body-lg":["15px",{"lineHeight":"22px","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"data-mono-lg":["14px",{"lineHeight":"18px","fontWeight":"600"}]}}}};</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest z-50 flex flex-col justify-between py-space-lg shadow-[0_0_24px_-4px_rgba(0,0,0,0.5)]"><div class="flex flex-col gap-space-xl"><div class="px-space-lg flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="relative flex items-center justify-center w-8 h-8 rounded-lg bg-surface-container-high"><span class="material-symbols-outlined text-primary text-[20px]">insights</span><span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_8px_rgba(78,222,163,0.8)]"></span></div><span class="font-headline-md text-headline-md tracking-tight text-on-surface">DemandLens</span></div><span class="font-data-mono-sm text-data-mono-sm text-primary px-space-xs py-0.5 rounded bg-surface-container-high">v2.4</span></div><div class="px-space-md"><div class="px-space-sm mb-space-xs font-label-caps text-label-caps uppercase tracking-wider text-outline">Intelligence Core</div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-headline-sm shadow-[0_0_12px_rgba(16,185,129,0.35)]"><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[20px]">grid_view</span><span class="font-headline-sm text-headline-sm">Dashboard</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="product-explorer" href="#"><div class="flex items-center gap-space-md"><span class="material-symbols-outlined text-[20px]">inventory_2</span><span class="font-headline-sm text-headline-sm">Product Explorer</span></div><span class="font-data-mono-sm text-data-mono-sm px-space-xs py-0.5 rounded bg-surface-container-high text-secondary">3.9k</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="sales-analytics" href="#"><span class="material-symbols-outlined text-[20px]">bar_chart_4_bars</span><span class="font-headline-sm text-headline-sm">Sales Analytics</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="demand-forecasting" href="#"><span class="material-symbols-outlined text-[20px]">timeline</span><span class="font-headline-sm text-headline-sm">Demand Forecasting</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="model-evaluation" href="#"><span class="material-symbols-outlined text-[20px]">analytics</span><span class="font-headline-sm text-headline-sm">Model Evaluation</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="data-quality" href="#"><span class="material-symbols-outlined text-[20px]">verified</span><span class="font-headline-sm text-headline-sm">Data Quality</span></a></nav></div></div><div class="px-space-md"><div class="px-space-sm mb-space-xs font-label-caps text-label-caps uppercase tracking-wider text-outline">System</div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-headline-sm shadow-[0_0_12px_rgba(16,185,129,0.35)]"><a aria-current="page" class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg transition-all bg-primary-container text-on-primary-container font-headline-sm shadow-[0_0_12px_rgba(16,185,129,0.35)]" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span class="font-headline-sm text-headline-sm">Settings</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="help-and-docs" href="#"><span class="material-symbols-outlined text-[20px]">menu_book</span><span class="font-headline-sm text-headline-sm">Help &amp; Docs</span></a></nav><div class="mt-space-md p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_6px_rgba(78,222,163,0.7)]"></span><span class="font-body-sm text-body-sm text-on-surface-variant">Forecast Sync</span></div><span class="font-data-mono-sm text-data-mono-sm text-tertiary">Real-time</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/85 backdrop-blur-xl z-40 px-gutter-desktop shadow-[0_1px_8px_rgba(0,0,0,0.4)]"><div class="h-16 w-full flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-sm"><div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant"><span class="text-on-surface-variant">Platform</span><span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span><span class="text-primary font-headline-sm">Settings</span></div></div><div class="flex-1 max-w-xl mx-space-lg"><div class="relative flex items-center w-full"><span class="material-symbols-outlined absolute left-space-md text-outline text-[18px]">search</span><input class="w-full bg-surface-container-low text-on-surface placeholder:text-outline pl-10 pr-14 py-space-sm rounded-lg text-body-sm font-body-sm focus:outline-none focus:bg-surface-container-high transition-all" placeholder="Search settings, integrations, or models..." type="text"/><kbd class="absolute right-space-md px-1.5 py-0.5 rounded bg-surface-container-highest text-outline font-data-mono-sm text-data-mono-sm select-none">⌘K</kbd></div></div><div class="flex items-center gap-space-lg"><button class="relative p-space-xs rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary shadow-[0_0_6px_rgba(78,222,163,0.8)]"></span></button><div class="flex items-center gap-space-md pl-space-md"><div class="flex flex-col text-right hidden sm:flex"><span class="font-headline-sm text-headline-sm text-on-surface">Sarah Al-Mansoor</span><span class="font-body-sm text-body-sm text-on-surface-variant">Head of Merchandising</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><main class="relative pt-16 w-full min-h-screen bg-background"><div class="flex flex-col w-full">
+<!-- Interactive Feedback Banner (Hidden by default, triggered on Save) -->
+<div class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-space-md px-space-lg py-space-md rounded-xl bg-surface-container-high shadow-2xl shadow-primary/20" id="saveNotification">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Configuration Synchronized</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Cluster node prod-useast1 updated across all active workers.</span>
+</div>
+</div>
+<div class="px-gutter-desktop py-space-xl flex flex-col gap-space-xl max-w-[1720px] mx-auto w-full">
+<!-- Screen Header Area -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
+<div class="flex flex-col gap-space-sm max-w-3xl">
+<div class="flex items-center gap-space-sm flex-wrap">
+<span class="font-label-caps text-label-caps uppercase tracking-wider text-primary px-space-sm py-0.5 rounded-full bg-surface-container-high">
+            Enterprise Workspace &amp; Configuration
+          </span>
+<div class="flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-surface-container-low font-data-mono-sm text-data-mono-sm text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(78,222,163,0.8)]"></span>
+<span>Cluster ID: prod-useast1-demandlens-09</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-outline">AWS us-east-1a • Mesh v4.81</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight mt-1">
+          Platform Configuration &amp; System Settings
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Manage enterprise data pipelines, ML ensemble retraining schedules, API integrations, role-based access control (RBAC), and alerting thresholds across continuous micro-batches.
+        </p>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-space-md self-start lg:self-end shrink-0">
+<button class="px-space-lg py-2.5 rounded-lg font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface bg-surface-container hover:bg-surface-container-high transition-all flex items-center gap-space-sm shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">undo</span>
+<span>Discard Unsaved</span>
+</button>
+<button class="relative group px-space-lg py-2.5 rounded-lg font-headline-sm text-headline-sm text-on-primary font-bold bg-primary hover:bg-secondary transition-all shadow-[0_0_16px_rgba(78,222,163,0.35)] hover:shadow-[0_0_24px_rgba(78,222,163,0.5)] flex items-center gap-space-sm active:scale-95" id="saveConfigBtn" type="button">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+<span>Save Changes (⌘S)</span>
+</button>
+</div>
+</div>
+<!-- Navigation Tabs Strip -->
+<div class="w-full bg-surface-container-lowest p-1.5 rounded-xl shadow-inner flex items-center gap-1 overflow-x-auto">
+<button class="px-space-md py-2 rounded-lg font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all whitespace-nowrap">
+        General &amp; Organization
+      </button>
+<button class="px-space-md py-2 rounded-lg font-headline-sm text-headline-sm text-on-primary-container bg-primary-container shadow-[0_0_12px_rgba(16,185,129,0.35)] flex items-center gap-space-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">sync_alt</span>
+<span>Data Pipeline &amp; Sync</span>
+<span class="font-data-mono-sm text-data-mono-sm px-1.5 py-0.5 rounded-full bg-on-primary-container/20 text-on-primary-container font-semibold">5 Connected</span>
+</button>
+<button class="px-space-md py-2 rounded-lg font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all flex items-center gap-space-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">psychology</span>
+<span>ML Models &amp; Hyperparameters</span>
+</button>
+<button class="px-space-md py-2 rounded-lg font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all flex items-center gap-space-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">key</span>
+<span>API Keys &amp; Webhooks</span>
+</button>
+<button class="px-space-md py-2 rounded-lg font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all flex items-center gap-space-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">shield_person</span>
+<span>Team &amp; Access Control</span>
+</button>
+<button class="px-space-md py-2 rounded-lg font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all flex items-center gap-space-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+<span>Alerts &amp; Telemetry</span>
+</button>
+</div>
+<!-- Quick Health Summary Strip -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">database</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Daily Throughput</span>
+<span class="font-metric-display text-metric-display text-on-surface">42.8M <span class="font-data-mono-sm text-data-mono-sm text-primary">rows/day</span></span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-tertiary bg-surface-container-high px-2 py-1 rounded">Optimal</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">speed</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pipeline P99 Lag</span>
+<span class="font-metric-display text-metric-display text-on-surface">14.2s <span class="font-data-mono-sm text-data-mono-sm text-primary">-3.1s</span></span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-primary bg-surface-container-high px-2 py-1 rounded">Normal</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[22px]">auto_graph</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Mean Ensemble MAPE</span>
+<span class="font-metric-display text-metric-display text-on-surface">4.12% <span class="font-data-mono-sm text-data-mono-sm text-tertiary">v4.81</span></span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-tertiary bg-surface-container-high px-2 py-1 rounded">Target &lt;6%</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface-variant">RBAC Audit Compliance</span>
+<span class="font-metric-display text-metric-display text-on-surface">SOC2 <span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">Type II</span></span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps text-primary bg-surface-container-high px-2 py-1 rounded">Enforced</span>
+</div>
+</div>
+<!-- Main Grid: Sections A & B (2-Column Desktop Architecture) -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-space-xl">
+<!-- Section A: Pipeline Synchronization & Ingestion Schedules -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col gap-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface">Continuous Sync &amp; Ingestion Parameters</h2>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Streaming buffer configuration and schema hygiene rules</span>
+</div>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-primary bg-surface-container px-2 py-1 rounded">Kafka &amp; Parquet</span>
+</div>
+<div class="flex flex-col gap-space-lg">
+<!-- Control 1: Default Forecast Horizon -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex justify-between items-center">
+<label class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-1.5">
+                Default Forecast Horizon
+                <span class="material-symbols-outlined text-outline text-[16px]" title="Standard projection window calculated during automated runs">info</span>
+</label>
+<span class="font-data-mono-sm text-data-mono-sm text-tertiary">Evaluated weekly</span>
+</div>
+<div class="grid grid-cols-4 gap-2 bg-surface-container-lowest p-1 rounded-lg">
+<button class="py-2 rounded font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface transition-all text-center">
+                4 Weeks
+              </button>
+<button class="py-2 rounded font-headline-sm text-headline-sm bg-primary-container text-on-primary-container font-semibold shadow-[0_0_8px_rgba(16,185,129,0.3)] text-center">
+                12W (Default)
+              </button>
+<button class="py-2 rounded font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface transition-all text-center">
+                26 Weeks
+              </button>
+<button class="py-2 rounded font-headline-sm text-headline-sm text-on-surface-variant hover:text-on-surface transition-all text-center">
+                52 Weeks
+              </button>
+</div>
+</div>
+<!-- Control 2: Ingestion Frequency -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-headline-sm text-headline-sm text-on-surface">Ingestion Frequency &amp; Polling Window</label>
+<div class="relative">
+<select class="w-full bg-surface-container text-on-surface font-body-md text-body-md py-2.5 px-space-md rounded-lg appearance-none focus:outline-none focus:bg-surface-container-high transition-all cursor-pointer">
+<option selected="">Real-time Webhook + Hourly Micro-Batch (Recommended)</option>
+<option>Continuous Streaming Only (Strict Kafka Low-Latency)</option>
+<option>Every 6 Hours Scheduled Batch</option>
+<option>Overnight Consolidation (Daily at 01:00 UTC)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-outline pointer-events-none text-[20px]">expand_more</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Captures POS adjustments and immediate order cancels with zero queue pressure.</span>
+</div>
+<!-- Control 3: Automatic Circuit Breaker (Toggle) -->
+<div class="bg-surface-container p-space-md rounded-xl flex items-start justify-between gap-space-md">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Automatic SKU Circuit Breaker</span>
+<span class="font-data-mono-sm text-data-mono-sm px-1.5 py-0.5 rounded bg-surface-container-highest text-primary font-semibold">Active</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Quarantine SKUs with anomalous price spikes (&gt;80% drop or zero price) automatically before feeding downstream Transformer models. Prevents demand curve poisoning.
+              </p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-12 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary shadow-[0_0_10px_rgba(78,222,163,0.4)]"></div>
+</label>
+</div>
+<!-- Control 4: Data Retention Policy Slider -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<label class="font-headline-sm text-headline-sm text-on-surface">Data Retention Policy</label>
+<span class="font-data-mono-sm text-data-mono-sm text-primary font-semibold px-2 py-0.5 rounded bg-surface-container">90 Days High-Res Telemetry</span>
+</div>
+<div class="py-2">
+<input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" max="365" min="30" step="30" type="range" value="90"/>
+</div>
+<div class="flex justify-between font-data-mono-sm text-data-mono-sm text-outline px-1">
+<span>30D (Fast)</span>
+<span class="text-primary font-semibold">90D (Standard)</span>
+<span>180D (Enterprise)</span>
+<span>365D (Deep Archive)</span>
+</div>
+</div>
+<!-- Control 5: Raw Parquet Archival Path -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-headline-sm text-headline-sm text-on-surface">Raw Parquet Cold Lake Path</label>
+<div class="flex items-center bg-surface-container rounded-lg px-space-md py-2 justify-between gap-space-md">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="material-symbols-outlined text-outline text-[18px]">cloud</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface truncate select-all">s3://demandlens-prod-lake/raw-telemetry/v2/</span>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<span class="font-data-mono-sm text-data-mono-sm text-primary flex items-center gap-1 bg-surface-container-high px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px]">check</span> Verified
+                </span>
+<button class="p-1 rounded text-outline hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Copy URI" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section B: ML Model Training & Retraining Policies -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col gap-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">memory</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface">Ensemble Retraining &amp; Drift Triggers</h2>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Automated validation gates &amp; hyperparameter bounds</span>
+</div>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-tertiary bg-surface-container px-2 py-1 rounded">Torch v2.3</span>
+</div>
+<div class="flex flex-col gap-space-lg">
+<!-- Active Primary Model Banner -->
+<div class="bg-surface-container p-space-md rounded-xl flex items-center justify-between gap-space-md">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline">Active Primary Model Pipeline</span>
+<span class="font-headline-sm text-headline-sm text-on-surface mt-0.5">Ensemble v4.81 (TFT 48% + XGBoost 34% + Prophet 18%)</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm bg-primary/10 text-primary px-space-md py-1 rounded-full flex items-center gap-1.5 shrink-0 shadow-[0_0_8px_rgba(78,222,163,0.2)]">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Production Active
+            </span>
+</div>
+<!-- Retraining Cadence Radio Cards -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-headline-sm text-headline-sm text-on-surface">Retraining Orchestration Cadence</label>
+<div class="grid grid-cols-1 gap-2.5">
+<!-- Option 1: Selected -->
+<label class="cursor-pointer bg-surface-container-high p-space-md rounded-xl flex items-center justify-between transition-all shadow-[0_0_12px_rgba(16,185,129,0.1)]">
+<div class="flex items-center gap-space-md">
+<div class="w-4 h-4 rounded-full bg-primary flex items-center justify-center shrink-0">
+<div class="w-1.5 h-1.5 rounded-full bg-surface-container-lowest"></div>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Scheduled Overnight (Recommended)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Runs daily at 02:00 UTC during off-peak ingestion with snapshot rollback</span>
+</div>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-primary px-2 py-0.5 rounded bg-surface-container">02:00 UTC</span>
+</label>
+<!-- Option 2 -->
+<label class="cursor-pointer bg-surface-container p-space-md rounded-xl flex items-center justify-between hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-space-md">
+<div class="w-4 h-4 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0"></div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Continuous Drift-Triggered</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Auto-trains asynchronously when Population Stability Index (PSI) &gt; 0.10</span>
+</div>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-outline">Auto-spawn</span>
+</label>
+<!-- Option 3 -->
+<label class="cursor-pointer bg-surface-container p-space-md rounded-xl flex items-center justify-between hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-space-md">
+<div class="w-4 h-4 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0"></div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Manual Approval Required</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Requires Head of Merchandising digital sign-off on staging backtest runs</span>
+</div>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-outline">Dual sign-off</span>
+</label>
+</div>
+</div>
+<!-- Model Rollback Circuit -->
+<div class="bg-surface-container p-space-md rounded-xl flex items-start justify-between gap-space-md">
+<div class="flex flex-col gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface">Automated Rollback Safety Circuit</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Auto-rollback to previous checkpoint if backtest MAPE exceeds <strong class="text-on-surface font-semibold">7.5%</strong> across top 500 velocity SKUs during shadow inference.
+              </p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-1">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-12 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-container after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary shadow-[0_0_10px_rgba(78,222,163,0.4)]"></div>
+</label>
+</div>
+<!-- Quantile Loss Penalties -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-headline-sm text-headline-sm text-on-surface">Quantile Asymmetric Loss Penalties (Pinball Loss)</label>
+<div class="grid grid-cols-2 gap-space-md">
+<div class="bg-surface-container p-space-sm rounded-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-outline">Under-forecast (P10)</span>
+<span class="font-data-mono-lg text-data-mono-lg text-on-surface">0.100</span>
+</div>
+<span class="font-body-sm text-body-sm text-primary">Overstock Safe</span>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-outline">Over-forecast (P90)</span>
+<span class="font-data-mono-lg text-data-mono-lg text-tertiary">0.900</span>
+</div>
+<span class="font-body-sm text-body-sm text-tertiary">Stockout Bias</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section C: Active Connected Data Sources & Credentials -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col gap-space-lg shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md pb-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+</div>
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface">Connected Data Sources &amp; Integration Credentials</h2>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Live streaming feeds, ERP synchronization instances, and POS telemetry</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-data-mono-sm text-data-mono-sm text-primary bg-surface-container-high px-space-md py-1 rounded-full flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> 4 of 4 Healthy
+          </span>
+</div>
+</div>
+<!-- Connector Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Connector 1 -->
+<div class="bg-surface-container p-space-md rounded-xl flex flex-col justify-between gap-space-md group hover:bg-surface-container-high transition-all">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+</div>
+<span class="font-label-caps text-label-caps px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 100%
+              </span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">DTC Shopify Storefront</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-0.5">Kafka Stream • 12s lag</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Order events, cart abandons, regional price adjustments.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="font-data-mono-sm text-data-mono-sm text-outline">TLS 1.3 AES</span>
+<button class="font-headline-sm text-headline-sm text-primary hover:text-secondary flex items-center gap-1 transition-colors">
+              Configure <span class="material-symbols-outlined text-[16px]">tune</span>
+</button>
+</div>
+</div>
+<!-- Connector 2 -->
+<div class="bg-surface-container p-space-md rounded-xl flex flex-col justify-between gap-space-md group hover:bg-surface-container-high transition-all">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary font-bold">
+<span class="material-symbols-outlined text-[22px]">corporate_fare</span>
+</div>
+<span class="font-label-caps text-label-caps px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 99.9%
+              </span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">SAP S/4HANA ERP</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-0.5">Airflow Batch • Every 30m</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Master SKU registry, COGS updates, multi-warehouse stock.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="font-data-mono-sm text-data-mono-sm text-outline">OData v4</span>
+<button class="font-headline-sm text-headline-sm text-primary hover:text-secondary flex items-center gap-1 transition-colors">
+              Configure <span class="material-symbols-outlined text-[16px]">tune</span>
+</button>
+</div>
+</div>
+<!-- Connector 3 -->
+<div class="bg-surface-container p-space-md rounded-xl flex flex-col justify-between gap-space-md group hover:bg-surface-container-high transition-all">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-tertiary font-bold">
+<span class="material-symbols-outlined text-[22px]">point_of_sale</span>
+</div>
+<span class="font-label-caps text-label-caps px-2 py-0.5 rounded bg-tertiary/10 text-tertiary font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> 98.4%
+              </span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Omnichannel POS Network</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-0.5">Hourly Micro-Batch • 18m lag</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Store register receipts across 280 brick-and-mortar locations.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="font-data-mono-sm text-data-mono-sm text-outline">Syncing 3/280</span>
+<button class="font-headline-sm text-headline-sm text-primary hover:text-secondary flex items-center gap-1 transition-colors">
+              Sync Now <span class="material-symbols-outlined text-[16px]">refresh</span>
+</button>
+</div>
+</div>
+<!-- Connector 4 -->
+<div class="bg-surface-container p-space-md rounded-xl flex flex-col justify-between gap-space-md group hover:bg-surface-container-high transition-all">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-[22px]">local_shipping</span>
+</div>
+<span class="font-label-caps text-label-caps px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 100%
+              </span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">3PL &amp; WMS Logistics</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-0.5">Webhook Stream • Real-time</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Fulfillment tracking, transit delay flags, container status.</p>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<span class="font-data-mono-sm text-data-mono-sm text-outline">HTTPS Hook</span>
+<button class="font-headline-sm text-headline-sm text-primary hover:text-secondary flex items-center gap-1 transition-colors">
+              Configure <span class="material-symbols-outlined text-[16px]">tune</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Add Connector Row Button -->
+<button class="w-full py-3 rounded-xl bg-surface-container hover:bg-surface-container-high transition-all text-on-surface-variant hover:text-primary flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">add_circle</span>
+<span class="font-headline-sm text-headline-sm font-medium">+ Add New Enterprise Ingestion Connector</span>
+</button>
+</div>
+<!-- Section D: Security, RBAC & API Tokens (Split Card Row) -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-space-xl">
+<!-- Card 1: API Keys & Service Accounts -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col justify-between gap-space-lg shadow-sm">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">vpn_key</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface">API Keys &amp; Service Accounts</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">High-throughput token authorization &amp; egress endpoints</span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps px-2 py-1 rounded bg-surface-container text-primary font-semibold">Tier 1 Org</span>
+</div>
+<!-- Secret Key Box -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex justify-between items-center">
+<label class="font-headline-sm text-headline-sm text-on-surface">Live Production Secret Key</label>
+<span class="font-data-mono-sm text-data-mono-sm text-outline">Created 14 days ago</span>
+</div>
+<div class="flex items-center justify-between bg-surface-container rounded-lg px-space-md py-2.5">
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface tracking-wider" id="keyDisplay">dl_live_sec_9948*******************f8</span>
+<div class="flex items-center gap-space-sm">
+<button class="p-1 rounded text-outline hover:text-on-surface transition-colors" id="toggleSecretBtn" title="Toggle Visibility" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1 rounded text-outline hover:text-on-surface transition-colors" title="Copy Key" type="button">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Rate Limiting Metric -->
+<div class="bg-surface-container p-space-md rounded-xl flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps uppercase text-outline">Quota &amp; Rate Allocation</span>
+<span class="font-headline-sm text-headline-sm text-on-surface mt-0.5">10,000 requests / minute</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-tertiary bg-surface-container-high px-2 py-1 rounded font-semibold">Burst 15k Cap</span>
+</div>
+<!-- Active Webhook Target -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-headline-sm text-headline-sm text-on-surface">Active Webhook Callback Endpoint</label>
+<div class="flex items-center bg-surface-container rounded-lg px-space-md py-2.5 justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<span class="material-symbols-outlined text-outline text-[18px]">link</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface truncate select-all">https://api.demandlens.internal/v1/forecast/webhook</span>
+</div>
+<span class="font-data-mono-sm text-data-mono-sm text-primary bg-primary/10 px-2 py-0.5 rounded shrink-0">
+                200 OK • 38ms
+              </span>
+</div>
+</div>
+</div>
+<div class="pt-space-sm flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-outline">Last key rotation by Sarah Al-Mansoor</span>
+<button class="px-space-md py-2 rounded-lg font-headline-sm text-headline-sm text-error hover:bg-error-container/20 transition-all flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span>Rotate API Secret</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Notification & PagerDuty Alerting Thresholds -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col justify-between gap-space-lg shadow-sm">
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">notifications_paused</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline-md text-headline-md text-on-surface">Notification &amp; PagerDuty Alerting Thresholds</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Escalation criteria for supply-chain shocks &amp; statistical drift</span>
+</div>
+</div>
+<span class="font-label-caps text-label-caps px-2 py-1 rounded bg-surface-container text-tertiary font-semibold">2 Active Escalations</span>
+</div>
+<!-- Alert 1: Stockout Warning -->
+<div class="bg-surface-container p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-error text-[18px]">warning</span> Critical Stockout Warning
+              </span>
+<span class="font-data-mono-sm text-data-mono-sm text-error bg-error-container/20 px-2 py-0.5 rounded">P1 High Severity</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm mt-1">
+<div class="bg-surface-container-high p-space-xs px-space-sm rounded">
+<span class="font-label-caps text-label-caps text-outline block">Condition Trigger</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface">Velocity surge &gt; 35% with &lt; 10d runway</span>
+</div>
+<div class="bg-surface-container-high p-space-xs px-space-sm rounded">
+<span class="font-label-caps text-label-caps text-outline block">Dispatch Targets</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface">#merch-alerts, Slack &amp; PagerDuty</span>
+</div>
+</div>
+</div>
+<!-- Alert 2: Model Drift Breach -->
+<div class="bg-surface-container p-space-md rounded-xl flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-tertiary text-[18px]">trending_up</span> Model Drift Breach
+              </span>
+<span class="font-data-mono-sm text-data-mono-sm text-tertiary bg-tertiary-container/20 px-2 py-0.5 rounded">P2 Medium Severity</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm mt-1">
+<div class="bg-surface-container-high p-space-xs px-space-sm rounded">
+<span class="font-label-caps text-label-caps text-outline block">Drift Metric Bound</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface">PSI &gt; 0.08 over 72h window</span>
+</div>
+<div class="bg-surface-container-high p-space-xs px-space-sm rounded">
+<span class="font-label-caps text-label-caps text-outline block">Routing</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface">ML Platform On-Call (PagerDuty)</span>
+</div>
+</div>
+</div>
+<!-- Checkbox: Daily Morning Briefing -->
+<label class="flex items-start gap-space-md cursor-pointer bg-surface-container p-space-md rounded-xl">
+<input checked="" class="mt-1 h-4 w-4 rounded accent-primary bg-surface-container-highest cursor-pointer" type="checkbox"/>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Daily Morning Briefing Executive Dispatch</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+                Send 07:30 AM UTC aggregated risk digest to <span class="text-primary font-data-mono-sm">s.almansoor@demandlens.ai</span> and regional category managers.
+              </span>
+</div>
+</label>
+</div>
+<div class="pt-space-sm flex justify-end">
+<button class="font-headline-sm text-headline-sm text-primary hover:text-secondary flex items-center gap-1 transition-colors">
+            Test Alert Webhooks <span class="material-symbols-outlined text-[16px]">send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Cluster Audit Trail Footer Meta -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-space-md p-space-md rounded-xl bg-surface-container-lowest text-on-surface-variant">
+<div class="flex items-center gap-space-md">
+<span class="material-symbols-outlined text-outline text-[20px]">fingerprint</span>
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-data-mono-sm text-data-mono-sm">Audit Hash: e94f27a3c4</span>
+<span class="text-outline">•</span>
+<span class="font-body-sm text-body-sm">Last deployed by s.almansoor@demandlens.ai (2h 14m ago)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="font-data-mono-sm text-data-mono-sm text-primary">Status: Synced (Node 1-8)</span>
+</div>
+</div>
+</div>
+<script>
+    // Micro-interactions for Settings Screen
+    document.addEventListener('DOMContentLoaded', () => {
+      const saveBtn = document.getElementById('saveConfigBtn');
+      const notification = document.getElementById('saveNotification');
+      const toggleSecretBtn = document.getElementById('toggleSecretBtn');
+      const keyDisplay = document.getElementById('keyDisplay');
+
+      // Secret visibility toggle
+      let isVisible = false;
+      const maskedKey = 'dl_live_sec_9948*******************f8';
+      const actualKey = 'dl_live_sec_9948ab12e87c014fbc90f8';
+
+      if (toggleSecretBtn && keyDisplay) {
+        toggleSecretBtn.addEventListener('click', () => {
+          isVisible = !isVisible;
+          keyDisplay.textContent = isVisible ? actualKey : maskedKey;
+          const icon = toggleSecretBtn.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.textContent = isVisible ? 'visibility_off' : 'visibility';
+          }
+        });
+      }
+
+      // Save animation trigger
+      function triggerSaveToast() {
+        if (!notification) return;
+        notification.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+        notification.classList.add('translate-y-0', 'opacity-100');
+
+        setTimeout(() => {
+          notification.classList.remove('translate-y-0', 'opacity-100');
+          notification.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+        }, 3200);
+      }
+
+      if (saveBtn) {
+        saveBtn.addEventListener('click', triggerSaveToast);
+      }
+
+      // Keyboard shortcut ⌘S / Ctrl+S
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+          e.preventDefault();
+          triggerSaveToast();
+        }
+      });
+    });
+  </script>
+</div></main></div></body></html>

@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_dashboard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin:0; padding:0; }
+      body { overscroll-behavior:none; }
+      main > :first-child { margin-top:0!important; }
+      main > :last-child { margin-bottom:0!important; }
+    }
+    ::-webkit-scrollbar { display:none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-high": "#1f2d28",
+            "inverse-on-surface": "#25332f",
+            "inverse-primary": "#006c49",
+            "on-surface": "#d6e6df",
+            "tertiary-fixed": "#b2f746",
+            "on-error": "#690005",
+            "on-primary-fixed": "#002113",
+            "surface-container-lowest": "#04110d",
+            "error": "#ffb4ab",
+            "outline-variant": "#3c4a42",
+            "inverse-surface": "#d6e6df",
+            "on-secondary-fixed-variant": "#005137",
+            "primary-container": "#10b981",
+            "on-tertiary": "#213600",
+            "tertiary": "#98da27",
+            "surface-bright": "#2e3c37",
+            "surface-container-low": "#101e1a",
+            "on-secondary-fixed": "#002114",
+            "primary-fixed": "#6ffbbe",
+            "surface-container": "#14221e",
+            "on-tertiary-container": "#283f00",
+            "primary": "#4edea3",
+            "surface-tint": "#4edea3",
+            "surface": "#081612",
+            "surface-dim": "#081612",
+            "on-primary-container": "#00422b",
+            "on-primary": "#003824",
+            "tertiary-container": "#78b300",
+            "secondary": "#45dfa4",
+            "secondary-fixed-dim": "#45dfa4",
+            "on-secondary-container": "#00452e",
+            "tertiary-fixed-dim": "#98da27",
+            "error-container": "#93000a",
+            "on-tertiary-fixed-variant": "#334f00",
+            "secondary-fixed": "#68fcbf",
+            "primary-fixed-dim": "#4edea3",
+            "on-background": "#d6e6df",
+            "surface-variant": "#293833",
+            "on-tertiary-fixed": "#121f00",
+            "secondary-container": "#00bd85",
+            "on-surface-variant": "#bbcabf",
+            "on-secondary": "#003825",
+            "surface-container-highest": "#293833",
+            "background": "#081612",
+            "on-primary-fixed-variant": "#005236",
+            "outline": "#86948a",
+            "on-error-container": "#ffdad6"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "margin-desktop": "2rem",
+            "gutter-desktop": "1.25rem",
+            "space-md": "0.75rem",
+            "space-lg": "1.25rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-xl": "1.75rem",
+            "margin": "1rem",
+            "gutter": "1rem"
+          },
+          fontFamily: {
+            "data-mono-sm": ["JetBrains Mono", "monospace"],
+            "headline-sm": ["Space Grotesk", "sans-serif"],
+            "headline-md": ["Space Grotesk", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "headline-xl-mobile": ["Space Grotesk", "sans-serif"],
+            "metric-display": ["Space Grotesk", "sans-serif"],
+            "headline-xl": ["Space Grotesk", "sans-serif"],
+            "label-caps": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "data-mono-lg": ["JetBrains Mono", "monospace"],
+            "headline-lg": ["Space Grotesk", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"]
+          },
+          fontSize: {
+            "data-mono-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }],
+            "headline-sm": ["15px", { lineHeight: "20px", fontWeight: "500" }],
+            "headline-md": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+            "headline-xl-mobile": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "metric-display": ["28px", { lineHeight: "34px", letterSpacing: "-0.03em", fontWeight: "700" }],
+            "headline-xl": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.05em", fontWeight: "600" }],
+            "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            "data-mono-lg": ["14px", { lineHeight: "18px", fontWeight: "600" }],
+            "headline-lg": ["22px", { lineHeight: "28px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "body-lg": ["15px", { lineHeight: "22px", fontWeight: "400" }]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen">
+<!-- SIDEBAR NAVIGATION -->
+<aside class="fixed left-0 top-0 bottom-0 w-[284px] bg-surface-container-lowest border-r border-outline-variant/60 z-50 flex flex-col justify-between overflow-hidden shadow-[4px_0_24px_rgba(0,0,0,0.4)]">
+<div class="absolute inset-0 pointer-events-none opacity-10 flex items-end justify-center">
+<svg class="w-full h-80 text-primary" fill="none" preserveaspectratio="none" viewbox="0 0 284 320">
+<path d="M0,220 C80,180 120,290 284,200 L284,320 L0,320 Z" fill="currentColor"></path>
+<path d="M0,250 C90,210 150,280 284,230 L284,320 L0,320 Z" fill="currentColor" opacity="0.6"></path>
+<path d="M0,280 C60,260 170,290 284,270 L284,320 L0,320 Z" fill="currentColor" opacity="0.4"></path>
+</svg>
+</div>
+<div class="relative z-10 flex flex-col p-space-md">
+<!-- App Brand -->
+<div class="flex items-center gap-space-md px-space-xs py-space-sm mb-space-lg">
+<div class="w-[50px] h-[50px] rounded-xl bg-gradient-to-br from-primary-container via-surface-container-high to-surface-container-lowest border border-primary/30 flex items-center justify-center shadow-[0_0_22px_rgba(16,185,129,0.25)] shrink-0">
+<span class="material-symbols-outlined text-primary text-[28px]">bar_chart</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-lg text-headline-lg text-on-surface tracking-tight truncate">DemandLens</span>
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+</div>
+<span class="font-data-mono-sm text-[10px] text-outline tracking-wider uppercase truncate">Retail Intelligence Platform</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1.5" data-active-classes="bg-surface-variant/90 text-primary border border-primary/30 shadow-[0_0_18px_-4px_rgba(16,185,129,0.35)] font-semibold">
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="dashboard" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">home</span>
+<span class="font-body-md text-body-md font-medium">Dashboard</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="product-explorer" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">inventory_2</span>
+<span class="font-body-md text-body-md font-medium">Product Explorer</span>
+<span class="ml-auto font-data-mono-sm text-[10px] bg-surface-container-high text-outline px-1.5 py-0.5 rounded-full font-bold">3.9k</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="sales-analytics" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">analytics</span>
+<span class="font-body-md text-body-md font-medium">Sales Analytics</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="demand-forecasting" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">trending_up</span>
+<span class="font-body-md text-body-md font-medium">Demand Forecasting</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="model-evaluation" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] group-hover:text-primary transition-colors">military_tech</span>
+<span class="font-body-md text-body-md font-medium">Model Evaluation</span>
+</a>
+<a class="flex items-center h-11 px-3.5 rounded-xl bg-surface-variant/90 text-primary border border-primary/30 shadow-[0_0_18px_-4px_rgba(16,185,129,0.35)] font-semibold transition-all group" data-path="data-quality" href="#">
+<span class="material-symbols-outlined mr-3 text-[22px] text-primary transition-colors">database</span>
+<span class="font-body-md text-body-md">Data Quality</span>
+<span class="ml-auto flex h-2 w-2 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Bottom Footer -->
+<div class="relative z-10 p-space-md border-t border-outline-variant/60 bg-surface-container-lowest/90 backdrop-blur-sm">
+<nav class="flex flex-col gap-1">
+<a class="flex items-center h-10 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="settings" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px] group-hover:text-primary transition-colors">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</a>
+<a class="flex items-center h-10 px-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all group" data-path="help-and-docs" href="#">
+<span class="material-symbols-outlined mr-3 text-[20px] group-hover:text-primary transition-colors">help</span>
+<span class="font-body-sm text-body-sm">Help &amp; Docs</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- MAIN APP CONTAINER -->
+<div class="pl-[284px]">
+<!-- GLOBAL TOP APP BAR -->
+<header class="fixed top-0 left-[284px] right-0 h-20 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/50 z-40 px-gutter-desktop">
+<div class="h-20 w-full flex items-center justify-between gap-space-lg">
+<!-- Breadcrumb & Workspace Location -->
+<div class="flex items-center gap-2.5">
+<div class="flex items-center gap-1.5 text-body-sm text-outline">
+<span class="font-label-caps text-outline hover:text-on-surface transition-colors cursor-pointer">Platform</span>
+<span class="material-symbols-outlined text-[15px]">chevron_right</span>
+<span class="font-label-caps text-primary font-semibold">Data Quality</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container border border-outline-variant/60">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-data-mono-sm text-[11px] text-on-surface-variant">Data Health 99.8% • Ingestion Engine Active • Synced 3m ago</span>
+</div>
+</div>
+<!-- Right Header Utility Cluster -->
+<div class="flex items-center gap-3 shrink-0">
+<!-- Quick Find -->
+<div class="relative w-[360px] hidden xl:flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-[19px] pointer-events-none">search</span>
+<input class="w-full h-10 pl-10 pr-16 bg-surface-container border border-outline-variant/70 rounded-xl font-body-sm text-body-sm text-on-surface placeholder:text-outline/80 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Search catalog or jump to SKU..." type="text"/>
+<span class="absolute right-2.5 font-data-mono-sm text-[10px] text-outline bg-surface-container-highest border border-outline-variant px-1.5 py-0.5 rounded shadow-sm pointer-events-none">⌘ K</span>
+</div>
+<!-- Notification Bell -->
+<button aria-label="Notifications" class="relative w-10 h-10 rounded-xl bg-surface-container border border-outline-variant/70 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary ring-2 ring-surface shadow-[0_0_8px_#4edea3]"></span>
+</button>
+<!-- User Profile -->
+<div class="flex items-center gap-2 pl-1.5 pr-2 py-1 rounded-xl bg-surface-container border border-outline-variant/60 hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-container to-surface-container-high border border-primary/40 flex items-center justify-center text-primary font-headline-sm text-xs font-semibold shadow-inner">
+                SA
+              </div>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-primary ring-1.5 ring-surface"></span>
+</div>
+<div class="hidden sm:flex flex-col text-left">
+<span class="font-headline-sm text-xs text-on-surface font-semibold leading-tight">Sarah Al-Mansoor</span>
+<span class="font-data-mono-sm text-[10px] text-outline leading-tight">Head of Merchandising</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px] ml-0.5">expand_more</span>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT VIEW -->
+<main class="w-full pt-20 min-h-screen bg-surface px-gutter-desktop pb-space-xl"><div class="flex flex-col w-full">
+<!-- Top Ambient Glow Field (Contained) -->
+<div class="relative w-full overflow-hidden">
+<div class="absolute -top-32 left-1/4 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -top-24 right-1/4 w-80 h-80 bg-tertiary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<!-- 1. Page Header & Control Strip -->
+<div class="flex flex-col gap-6 pt-2 pb-8">
+<!-- Topmost Row: Titles & Global Primary Actions -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+<div class="flex flex-col gap-1.5 max-w-3xl">
+<div class="flex items-center gap-3">
+<span class="font-data-mono-sm text-data-mono-sm uppercase text-primary tracking-widest bg-surface-container-high px-2.5 py-1 rounded">Telemetry &amp; Observability</span>
+<span class="flex items-center gap-1.5 font-data-mono-sm text-data-mono-sm text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+              Airflow Orchestrator 2.8.2 Active
+            </span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface font-semibold tracking-tight">Data Quality &amp; Pipeline Health</h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Continuous telemetry on catalog freshness, schema drift, null-value density, and POS transaction stream integrity powering downstream ML forecasting models.
+          </p>
+</div>
+<!-- Global CTAs -->
+<div class="flex items-center gap-3 shrink-0 self-start lg:self-center">
+<button class="group relative flex items-center gap-2.5 px-4 h-11 rounded-xl bg-surface-container-high hover:bg-surface-variant text-on-surface font-headline-sm text-headline-sm transition-all shadow-sm" id="runAuditBtn" type="button">
+<span class="material-symbols-outlined text-[19px] text-primary group-hover:rotate-180 transition-transform duration-500">sync_problem</span>
+<span>Run Pipeline Audit</span>
+<span class="font-data-mono-sm text-[10px] text-outline ml-1">⌘R</span>
+</button>
+<button class="group relative flex items-center gap-2 px-5 h-11 rounded-xl bg-primary hover:bg-primary-fixed-dim text-on-primary font-headline-sm text-headline-sm transition-all shadow-md" id="syncAllBtn" type="button">
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:rotate-90">sync</span>
+<span>Sync All Sources</span>
+</button>
+</div>
+</div>
+<!-- Control Toolbar / Filtering Strip -->
+<div class="flex flex-wrap items-center justify-between gap-4 p-3 rounded-xl bg-surface-container-low shadow-sm">
+<div class="flex flex-wrap items-center gap-2.5">
+<!-- Pipeline Source Selector Dropdown -->
+<div class="relative">
+<button class="flex items-center gap-2 px-3.5 h-9 rounded-lg bg-surface-container text-on-surface font-body-sm text-body-sm hover:bg-surface-container-high transition-colors" id="sourceDropdownBtn" type="button">
+<span class="material-symbols-outlined text-primary text-[17px]">hub</span>
+<span class="font-medium" id="selectedSourceLabel">All Ingestion Streams (DTC, ERP, POS, 3PL)</span>
+<span class="material-symbols-outlined text-outline text-[16px]">arrow_drop_down</span>
+</button>
+</div>
+<!-- Validation Scope Dropdown -->
+<div class="relative">
+<button class="flex items-center gap-2 px-3.5 h-9 rounded-lg bg-surface-container text-on-surface font-body-sm text-body-sm hover:bg-surface-container-high transition-colors" id="scopeDropdownBtn" type="button">
+<span class="material-symbols-outlined text-primary text-[17px]">schedule</span>
+<span class="font-medium" id="selectedScopeLabel">Last 24 Hours (Active)</span>
+<span class="material-symbols-outlined text-outline text-[16px]">arrow_drop_down</span>
+</button>
+</div>
+<!-- Divider -->
+<span class="hidden sm:inline-block w-px h-6 bg-surface-variant mx-1"></span>
+<!-- Severity Filter Pills -->
+<div class="flex items-center gap-1.5 p-0.5 rounded-lg bg-surface-container">
+<button class="quality-filter-pill active px-3 py-1.5 rounded-md font-data-mono-sm text-data-mono-sm bg-primary text-on-primary font-medium transition-all" data-filter="all" type="button">
+              All Checks (142)
+            </button>
+<button class="quality-filter-pill px-3 py-1.5 rounded-md font-data-mono-sm text-data-mono-sm text-on-surface-variant hover:text-on-surface transition-all" data-filter="healthy" type="button">
+              Healthy (136)
+            </button>
+<button class="quality-filter-pill px-3 py-1.5 rounded-md font-data-mono-sm text-data-mono-sm text-on-surface-variant hover:text-on-surface transition-all" data-filter="warnings" type="button">
+              Warnings (5)
+            </button>
+<button class="quality-filter-pill px-3 py-1.5 rounded-md font-data-mono-sm text-data-mono-sm text-error hover:bg-error-container/30 transition-all" data-filter="failures" type="button">
+              Failures (1)
+            </button>
+</div>
+</div>
+<!-- Global Health Metric Badge -->
+<div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-surface-container">
+<div class="w-2 h-2 rounded-full bg-primary animate-ping"></div>
+<div class="flex items-center gap-1.5">
+<span class="font-body-sm text-body-sm text-outline">Overall Quality:</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold">99.82%</span>
+<span class="font-data-mono-sm text-[11px] text-tertiary font-semibold">(+0.14% vs yesterday)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. High-Density Data Quality KPI Strip -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 pb-8">
+<!-- Card 1: Pipeline Freshness & SLA -->
+<div class="relative flex flex-col justify-between p-5 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all group overflow-hidden shadow-sm">
+<div class="flex items-start justify-between gap-3 mb-4">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">timer</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-medium leading-snug">Pipeline Freshness</div>
+<div class="font-data-mono-sm text-[10px] text-outline uppercase tracking-wider">Sync Latency SLA</div>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-data-mono-sm text-[10px] font-semibold">
+            Optimal Pacing
+          </span>
+</div>
+<div class="flex items-baseline gap-2 mb-1.5">
+<span class="font-metric-display text-metric-display text-on-surface tracking-tight font-bold">4.2 min</span>
+<span class="font-data-mono-sm text-data-mono-sm text-tertiary">P95</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant pt-2 mt-auto">
+<span>Target: &lt; 15 min</span>
+<span class="font-data-mono-sm text-[11px] text-primary font-medium">99.94% On-Time</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mt-3">
+<div class="h-full bg-primary rounded-full" style="width: 94%"></div>
+</div>
+</div>
+<!-- Card 2: Record Completeness -->
+<div class="relative flex flex-col justify-between p-5 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all group overflow-hidden shadow-sm">
+<div class="flex items-start justify-between gap-3 mb-4">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">fact_check</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-medium leading-snug">Record Completeness</div>
+<div class="font-data-mono-sm text-[10px] text-outline uppercase tracking-wider">Null Field Rate: 0.04%</div>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-tertiary font-data-mono-sm text-[10px] font-semibold">
+            ↑ +0.08% W-1
+          </span>
+</div>
+<div class="flex items-baseline gap-2 mb-1.5">
+<span class="font-metric-display text-metric-display text-on-surface tracking-tight font-bold">99.96%</span>
+<span class="font-data-mono-sm text-data-mono-sm text-outline">density</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant pt-2 mt-auto">
+<span>14.8M of 14.81M records</span>
+<span class="font-data-mono-sm text-[11px] text-on-surface font-medium">6,120 nulls</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mt-3">
+<div class="h-full bg-primary rounded-full" style="width: 99.96%"></div>
+</div>
+</div>
+<!-- Card 3: Schema & Type Conformance -->
+<div class="relative flex flex-col justify-between p-5 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all group overflow-hidden shadow-sm">
+<div class="flex items-start justify-between gap-3 mb-4">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">account_tree</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-medium leading-snug">Schema Conformance</div>
+<div class="font-data-mono-sm text-[10px] text-outline uppercase tracking-wider">0 Type Violations</div>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-data-mono-sm text-[10px] font-semibold">
+            Zero Drift
+          </span>
+</div>
+<div class="flex items-baseline gap-2 mb-1.5">
+<span class="font-metric-display text-metric-display text-on-surface tracking-tight font-bold">100%</span>
+<span class="font-data-mono-sm text-data-mono-sm text-tertiary">stable</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant pt-2 mt-auto">
+<span>28 Tables Monitored</span>
+<span class="font-data-mono-sm text-[11px] text-on-surface font-medium">412 Features</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mt-3">
+<div class="h-full bg-primary rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- Card 4: Anomaly & Outlier Rate -->
+<div class="relative flex flex-col justify-between p-5 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all group overflow-hidden shadow-sm">
+<div class="flex items-start justify-between gap-3 mb-4">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-tertiary-fixed group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-medium leading-snug">Anomaly Rate</div>
+<div class="font-data-mono-sm text-[10px] text-outline uppercase tracking-wider">Statistical Outliers</div>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-data-mono-sm text-[10px] font-bold">
+            1 Action Req.
+          </span>
+</div>
+<div class="flex items-baseline gap-2 mb-1.5">
+<span class="font-metric-display text-metric-display text-on-surface tracking-tight font-bold">0.12%</span>
+<span class="font-data-mono-sm text-data-mono-sm text-error">18 flagged</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant pt-2 mt-auto">
+<span class="truncate">1 Critical Price Spike</span>
+<span class="font-data-mono-sm text-[11px] text-error font-medium">Quarantined</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mt-3">
+<div class="h-full bg-error-container rounded-full" style="width: 12%"></div>
+</div>
+</div>
+</div>
+<!-- 3. Dual Diagnostic Section: Ingestion Volume & Real-time Stream Telemetry -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-8">
+<!-- Left Panel (7 cols / ~58-60%): Interactive Throughput & Latency Timeline -->
+<div class="lg:col-span-7 flex flex-col p-6 rounded-2xl bg-surface-container-low shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+<div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">Ingestion Throughput &amp; Latency</h2>
+</div>
+<p class="font-body-sm text-body-sm text-outline mt-0.5">24-hour continuous stream telemetry • Hourly event volume vs P95 processing lag</p>
+</div>
+<!-- Legend -->
+<div class="flex flex-wrap items-center gap-3 font-data-mono-sm text-[11px]">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="w-3 h-2 rounded-sm bg-primary/40"></span>
+<span>Events/Hour</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="w-3 h-0.5 bg-primary"></span>
+<span>P95 Latency</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="w-3 h-0.5 bg-error/70"></span>
+<span>SLA Target (15s)</span>
+</div>
+</div>
+</div>
+<!-- Chart Graphic Container -->
+<div class="relative w-full h-72 flex flex-col justify-end pt-4 pb-2">
+<!-- SLA Upper Threshold Line at 15s -->
+<div class="absolute top-12 left-0 right-0 flex items-center z-10 pointer-events-none">
+<div class="w-full border-t border-dashed border-error/50"></div>
+<span class="font-data-mono-sm text-[10px] text-error bg-surface-container-low px-1.5 ml-2 shrink-0">15.0s SLA CAP</span>
+</div>
+<!-- SVG Visualizer (Composite Bars + Latency Curve) -->
+<svg class="w-full h-56 overflow-visible" preserveaspectratio="none" viewbox="0 0 720 220">
+<defs>
+<lineargradient id="barGlow" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#4edea3" stop-opacity="0.75"></stop>
+<stop offset="100%" stop-color="#10b981" stop-opacity="0.08"></stop>
+</lineargradient>
+<lineargradient id="latencyGlow" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#98da27"></stop>
+<stop offset="50%" stop-color="#4edea3"></stop>
+<stop offset="100%" stop-color="#98da27"></stop>
+</lineargradient>
+</defs>
+<!-- Background Grid Lines -->
+<line stroke="#1f2d28" stroke-width="1" x1="0" x2="720" y1="40" y2="40"></line>
+<line stroke="#1f2d28" stroke-width="1" x1="0" x2="720" y1="90" y2="90"></line>
+<line stroke="#1f2d28" stroke-width="1" x1="0" x2="720" y1="140" y2="140"></line>
+<line stroke="#1f2d28" stroke-width="1" x1="0" x2="720" y1="190" y2="190"></line>
+<!-- Volume Bars (24 Hours Sampled) -->
+<!-- 00:00 to 06:00 (Low overnight) -->
+<rect fill="url(#barGlow)" height="50" rx="3" width="16" x="15" y="150"></rect>
+<rect fill="url(#barGlow)" height="35" rx="3" width="16" x="45" y="165"></rect>
+<rect fill="url(#barGlow)" height="25" rx="3" width="16" x="75" y="175"></rect>
+<rect fill="url(#barGlow)" height="30" rx="3" width="16" x="105" y="170"></rect>
+<rect fill="url(#barGlow)" height="40" rx="3" width="16" x="135" y="160"></rect>
+<rect fill="url(#barGlow)" height="55" rx="3" width="16" x="165" y="145"></rect>
+<!-- 06:00 to 12:00 (Morning climb) -->
+<rect fill="url(#barGlow)" height="80" rx="3" width="16" x="195" y="120"></rect>
+<rect fill="url(#barGlow)" height="105" rx="3" width="16" x="225" y="95"></rect>
+<rect fill="url(#barGlow)" height="130" rx="3" width="16" x="255" y="70"></rect>
+<rect fill="url(#barGlow)" height="140" rx="3" width="16" x="285" y="60"></rect>
+<rect fill="url(#barGlow)" height="145" rx="3" width="16" x="315" y="55"></rect>
+<rect fill="url(#barGlow)" height="155" rx="3" width="16" x="345" y="45"></rect>
+<!-- 12:00 to 18:00 (Afternoon peak - surge at 14:00) -->
+<rect fill="url(#barGlow)" height="162" rx="3" width="16" x="375" y="38"></rect>
+<rect class="filter drop-shadow-[0_0_8px_rgba(78,222,163,0.5)]" fill="#4edea3" height="176" rx="4" width="18" x="405" y="24"></rect>
+<rect fill="url(#barGlow)" height="158" rx="3" width="16" x="435" y="42"></rect>
+<rect fill="url(#barGlow)" height="150" rx="3" width="16" x="465" y="50"></rect>
+<rect fill="url(#barGlow)" height="152" rx="3" width="16" x="495" y="48"></rect>
+<rect fill="url(#barGlow)" height="145" rx="3" width="16" x="525" y="55"></rect>
+<!-- 18:00 to 24:00 (Evening rush & taper) -->
+<rect fill="url(#barGlow)" height="138" rx="3" width="16" x="555" y="62"></rect>
+<rect fill="url(#barGlow)" height="125" rx="3" width="16" x="585" y="75"></rect>
+<rect fill="url(#barGlow)" height="110" rx="3" width="16" x="615" y="90"></rect>
+<rect fill="url(#barGlow)" height="85" rx="3" width="16" x="645" y="115"></rect>
+<rect fill="url(#barGlow)" height="70" rx="3" width="16" x="675" y="130"></rect>
+<rect fill="url(#barGlow)" height="58" rx="3" width="14" x="700" y="142"></rect>
+<!-- P95 Latency Polyline (Smooth flat line around 4.1s) -->
+<polyline fill="none" points="15,168 75,166 135,167 195,165 255,163 315,161 375,160 414,156 465,159 525,162 585,164 645,167 714,168" stroke="url(#latencyGlow)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
+</polyline>
+<!-- Data Point Node at Peak (14:00) -->
+<circle cx="414" cy="156" fill="#4edea3" r="5" stroke="#081612" stroke-width="2"></circle>
+<circle cx="414" cy="24" fill="#6ffbbe" r="4"></circle>
+</svg>
+<!-- Interactive Callout / Peak Annotation Pin at 14:00 -->
+<div class="absolute top-2 left-[52%] -translate-x-1/2 flex flex-col items-center pointer-events-auto group">
+<div class="px-3 py-1.5 rounded-lg bg-surface-container-highest text-on-surface shadow-md flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<div class="flex flex-col text-left">
+<span class="font-data-mono-sm text-[10px] text-on-surface font-semibold">14:00 POS Sync Surge: 642,100 events</span>
+<span class="font-data-mono-sm text-[9px] text-tertiary">P95 Latency: 4.1s (Well below SLA)</span>
+</div>
+</div>
+<div class="w-0.5 h-3 bg-primary/60"></div>
+</div>
+</div>
+<!-- Bottom Timeline Axis -->
+<div class="flex justify-between items-center text-outline font-data-mono-sm text-[11px] pt-3">
+<span>00:00</span>
+<span>04:00</span>
+<span>08:00</span>
+<span>12:00</span>
+<span class="text-primary font-semibold">14:00 (Peak)</span>
+<span>16:00</span>
+<span>20:00</span>
+<span>Now (23:59)</span>
+</div>
+</div>
+<!-- Right Panel (5 cols / ~40-42%): Data Source Ingestion Pipelines Breakdown -->
+<div class="lg:col-span-5 flex flex-col p-6 rounded-2xl bg-surface-container-low shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">share</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">Data Source Health</h2>
+</div>
+<span class="font-data-mono-sm text-[11px] text-tertiary bg-surface-container px-2 py-0.5 rounded">5/5 Connected</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline mb-4">Telemetry across ERP core, distributed retail registers, and partner webhooks.</p>
+<!-- Pipeline Rows List -->
+<div class="flex flex-col gap-2.5 overflow-y-auto">
+<!-- 1. DTC Shopify -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md text-on-surface font-medium truncate">DTC Shopify / E-Commerce</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<span class="font-data-mono-sm text-[10px] text-outline">Kafka Event Stream • Real-time • Lag: 12s</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 ml-2">
+<span class="font-data-mono-sm text-[12px] text-primary font-bold">100%</span>
+<span class="font-body-sm text-[11px] text-primary">Normal</span>
+</div>
+</div>
+<!-- 2. SAP S/4HANA ERP -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">account_balance</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md text-on-surface font-medium truncate">SAP S/4HANA ERP</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<span class="font-data-mono-sm text-[10px] text-outline">Batch Airflow • Every 30m • Synced 6m ago</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 ml-2">
+<span class="font-data-mono-sm text-[12px] text-primary font-bold">99.9%</span>
+<span class="font-body-sm text-[11px] text-primary">Normal</span>
+</div>
+</div>
+<!-- 3. Omnichannel POS Terminals (Minor Lag) -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center text-tertiary-fixed shrink-0">
+<span class="material-symbols-outlined text-[18px]">point_of_sale</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md text-on-surface font-medium truncate">Omnichannel POS Terminals</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-pulse"></span>
+</div>
+<span class="font-data-mono-sm text-[10px] text-outline">Batch Hourly • Freshness: 18m ago</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 ml-2">
+<span class="font-data-mono-sm text-[12px] text-tertiary-fixed font-bold">98.4%</span>
+<span class="font-body-sm text-[11px] text-tertiary-fixed">Minor Lag</span>
+</div>
+</div>
+<!-- 4. WMS & 3PL Logistics -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">local_shipping</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md text-on-surface font-medium truncate">WMS &amp; 3PL Logistics</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<span class="font-data-mono-sm text-[10px] text-outline">Webhook Stream • Real-time • Lag: 45s</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 ml-2">
+<span class="font-data-mono-sm text-[12px] text-primary font-bold">100%</span>
+<span class="font-body-sm text-[11px] text-primary">Normal</span>
+</div>
+</div>
+<!-- 5. Competitor Price Scraper -->
+<div class="flex items-center justify-between p-3 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[18px]">travel_explore</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-body-md text-on-surface font-medium truncate">Competitor Price Scraper</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<span class="font-data-mono-sm text-[10px] text-outline">Cron Batch • Every 6h • Synced 2.4h ago</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 ml-2">
+<span class="font-data-mono-sm text-[12px] text-primary font-bold">99.1%</span>
+<span class="font-body-sm text-[11px] text-primary">Normal</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Core Data Integrity & Anomaly Audit Table -->
+<div class="flex flex-col p-6 rounded-2xl bg-surface-container-low shadow-sm pb-8 mb-8">
+<!-- Section Title & Filter Controls -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">policy</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">Recent Data Quality Checks &amp; Anomaly Detections</h2>
+</div>
+<p class="font-body-sm text-body-sm text-outline mt-0.5">Automated Great Expectations and dbt validation rules executed on active data frames.</p>
+</div>
+<!-- Table Utility Bar -->
+<div class="flex flex-wrap items-center gap-3">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[18px]">search</span>
+<input class="w-full h-9 pl-9 pr-3 rounded-lg bg-surface-container font-body-sm text-body-sm text-on-surface placeholder:text-outline/70 focus:outline-none focus:ring-1 focus:ring-primary transition-all" id="tableSearchInput" placeholder="Search table or check rule..." type="text"/>
+</div>
+<div class="flex items-center gap-1">
+<button class="table-quick-filter active px-2.5 py-1.5 rounded-md font-data-mono-sm text-[11px] bg-surface-container-high text-on-surface font-medium hover:bg-surface-variant transition-colors" data-type="all" type="button">All Rules</button>
+<button class="table-quick-filter px-2.5 py-1.5 rounded-md font-data-mono-sm text-[11px] bg-surface-container text-outline hover:text-on-surface transition-colors" data-type="failed" type="button">Failed Checks</button>
+<button class="table-quick-filter px-2.5 py-1.5 rounded-md font-data-mono-sm text-[11px] bg-surface-container text-outline hover:text-on-surface transition-colors" data-type="auto" type="button">Auto-Healed</button>
+</div>
+</div>
+</div>
+<!-- High-Fidelity Data Quality Table -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container/60 font-data-mono-sm text-[11px] uppercase tracking-wider text-outline">
+<th class="py-3 px-4 rounded-l-lg font-semibold">Table / Stream Entity</th>
+<th class="py-3 px-4 font-semibold">Quality Rule / Assertion</th>
+<th class="py-3 px-4 font-semibold">Severity</th>
+<th class="py-3 px-4 font-semibold text-right">Records Evaluated</th>
+<th class="py-3 px-4 font-semibold text-right">Pass Rate</th>
+<th class="py-3 px-4 font-semibold">Last Incident</th>
+<th class="py-3 px-4 rounded-r-lg text-right font-semibold">Action &amp; Status</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface" id="qualityTableBody">
+<!-- Row 1: Critical Price Outlier -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="py-4 px-4 font-data-mono-sm text-data-mono-sm text-on-surface">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span class="font-bold text-on-surface">transactions_pos_raw</span>
+</div>
+<span class="text-[10px] text-outline ml-3.5">Store Cluster EMEA-South</span>
+</td>
+<td class="py-4 px-4 font-data-mono-sm text-[12px] text-on-surface-variant">
+<code class="px-2 py-0.5 rounded bg-surface-container text-primary font-mono text-[11px]">unit_price &gt;= 0.01</code>
+<div class="font-body-sm text-[11px] text-outline mt-0.5">Non-zero transactional price check</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-error-container text-on-error-container font-data-mono-sm text-[10px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  Critical
+                </span>
+</td>
+<td class="py-4 px-4 text-right font-data-mono-sm text-data-mono-sm text-on-surface">
+                1,842,910
+              </td>
+<td class="py-4 px-4 text-right font-data-mono-sm text-data-mono-sm">
+<span class="text-error font-bold">99.99%</span>
+<div class="font-data-mono-sm text-[10px] text-outline">1 outlier ($0.00)</div>
+</td>
+<td class="py-4 px-4 font-data-mono-sm text-[11px] text-outline">
+                14m ago
+              </td>
+<td class="py-4 px-4 text-right">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-variant text-error font-headline-sm text-[12px] font-medium transition-colors" type="button">
+                  Review &amp; Quarantined
+                </button>
+</td>
+</tr>
+<!-- Row 2: Warning Negative Stock Level -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="py-4 px-4 font-data-mono-sm text-data-mono-sm text-on-surface">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span>
+<span class="font-bold text-on-surface">inventory_snapshots</span>
+</div>
+<span class="text-[10px] text-outline ml-3.5">Fulfillment Centers Global</span>
+</td>
+<td class="py-4 px-4 font-data-mono-sm text-[12px] text-on-surface-variant">
+<code class="px-2 py-0.5 rounded bg-surface-container text-primary font-mono text-[11px]">stock_on_hand &gt;= 0</code>
+<div class="font-body-sm text-[11px] text-outline mt-0.5">Physical non-negative inventory floor</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-tertiary-container text-on-tertiary font-data-mono-sm text-[10px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span>
+                  Warning
+                </span>
+</td>
+<td class="py-4 px-4 text-right font-data-mono-sm text-data-mono-sm text-on-surface">
+                3,927 SKUs
+              </td>
+<td class="py-4 px-4 text-right font-data-mono-sm text-data-mono-sm">
+<span class="text-tertiary font-bold">99.95%</span>
+<div class="font-data-mono-sm text-[10px] text-outline">2 negative rows</div>
+</td>
+<td class="py-4 px-4 font-data-mono-sm text-[11px] text-outline">
+                42m ago
+              </td>
+<td class="py-4 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container text-tertiary font-headline-sm text-[12px] font-medium">
+<span class="material-symbols-outlined text-[15px]">autorenew</span>
+                  Auto-Reconciled
+                </span>
+</td>
+</tr>
+<!-- Row 3: SKU Foreign Key Integrity (Info/Pass) -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="py-4 px-4 font-data-mono-sm text-data-mono-sm text-on-surface">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-bold text-on-surface">catalog_skus</span>
+</div>
+<span class="text-[10px] text-outline ml-3.5">Master Merchandising Feed</span>
+</td>
+<td class="py-4 px-4 font-data-mono-sm text-[12px] text-on-surface-variant">
+<code class="px-2 py-0.5 rounded bg-surface-container text-primary font-mono text-[11px]">category_id foreign_key</code>
+<div class="font-body-sm text-[11px] text-outline mt-0.5">Taxonomy referential integrity</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-data-mono-sm text-[10px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                  Info
+                </span>
+</td>
+<td class="py-4 px-4 text-right font-data-mono-sm text-data-mono-sm text-on-surface">
+                3,927 SKUs
+              </td>
+<td class="py-4 px-4 text-right font-data-mono-sm text-data-mono-sm">
+<span class="text-primary font-bold">100.0%</span>
+<div class="font-data-mono-sm text-[10px] text-outline">0 orphans</div>
+</td>
+<td class="py-4 px-4 font-data-mono-sm text-[11px] text-outline">
+                1h ago
+              </td>
+<td class="py-4 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container text-primary font-headline-sm text-[12px] font-medium">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+                  Passed
+                </span>
+</td>
+</tr>
+<!-- Row 4: Customer Orders DTC (Critical Flagged) -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="py-4 px-4 font-data-mono-sm text-data-mono-sm text-on-surface">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span>
+<span class="font-bold text-on-surface">customer_orders_dtc</span>
+</div>
+<span class="text-[10px] text-outline ml-3.5">Shopify Realtime Stream</span>
+</td>
+<td class="py-4 px-4 font-data-mono-sm text-[12px] text-on-surface-variant">
+<code class="px-2 py-0.5 rounded bg-surface-container text-primary font-mono text-[11px]">discount_pct &lt;= 0.90</code>
+<div class="font-body-sm text-[11px] text-outline mt-0.5">Maximum promotion abuse threshold</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-error-container text-on-error-container font-data-mono-sm text-[10px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  Critical
+                </span>
+</td>
+<td class="py-4 px-4 text-right font-data-mono-sm text-data-mono-sm text-on-surface">
+                482,104
+              </td>
+<td class="py-4 px-4 text-right font-data-mono-sm text-data-mono-sm">
+<span class="text-tertiary-fixed font-bold">99.98%</span>
+<div class="font-data-mono-sm text-[10px] text-outline">3 excessive discounts</div>
+</td>
+<td class="py-4 px-4 font-data-mono-sm text-[11px] text-outline">
+                2h ago
+              </td>
+<td class="py-4 px-4 text-right">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-variant text-tertiary font-headline-sm text-[12px] font-medium transition-colors" type="button">
+                  Flagged &amp; Paused
+                </button>
+</td>
+</tr>
+<!-- Row 5: Warehouse Shipments Monotonicity (Info/Pass) -->
+<tr class="hover:bg-surface-container/50 transition-colors group">
+<td class="py-4 px-4 font-data-mono-sm text-data-mono-sm text-on-surface">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-bold text-on-surface">warehouse_shipments</span>
+</div>
+<span class="text-[10px] text-outline ml-3.5">3PL Logistics Hub</span>
+</td>
+<td class="py-4 px-4 font-data-mono-sm text-[12px] text-on-surface-variant">
+<code class="px-2 py-0.5 rounded bg-surface-container text-primary font-mono text-[11px]">delivered_at &gt;= shipped_at</code>
+<div class="font-body-sm text-[11px] text-outline mt-0.5">Chronological monotonicity check</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-data-mono-sm text-[10px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                  Info
+                </span>
+</td>
+<td class="py-4 px-4 text-right font-data-mono-sm text-data-mono-sm text-on-surface">
+                128,490
+              </td>
+<td class="py-4 px-4 text-right font-data-mono-sm text-data-mono-sm">
+<span class="text-primary font-bold">100.0%</span>
+<div class="font-data-mono-sm text-[10px] text-outline">0 timing drift</div>
+</td>
+<td class="py-4 px-4 font-data-mono-sm text-[11px] text-outline">
+                3h ago
+              </td>
+<td class="py-4 px-4 text-right">
+<span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container text-primary font-headline-sm text-[12px] font-medium">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+                  Passed
+                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination Strip -->
+<div class="flex items-center justify-between pt-4 mt-2 font-data-mono-sm text-[11px] text-outline">
+<span>Showing 5 of 142 Active Telemetry Rules</span>
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container text-outline hover:text-on-surface transition-colors cursor-not-allowed" disabled="" type="button">Prev</button>
+<span class="text-primary font-semibold">1</span>
+<button class="px-2.5 py-1 rounded bg-surface-container text-outline hover:text-on-surface transition-colors" type="button">2</button>
+<button class="px-2.5 py-1 rounded bg-surface-container text-outline hover:text-on-surface transition-colors" type="button">3</button>
+<button class="px-2.5 py-1 rounded bg-surface-container text-outline hover:text-on-surface transition-colors" type="button">Next</button>
+</div>
+</div>
+</div>
+<!-- 5. Bottom Strategic Governance & Observability Dock (3 Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6">
+<!-- Dock Card 1: Automated Quarantine & Circuit Breaker -->
+<div class="flex flex-col justify-between p-5 rounded-2xl bg-surface-container-low shadow-sm">
+<div class="flex items-start gap-3.5 mb-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[22px]">gavel</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Automated Quarantine</h3>
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse"></span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-tertiary-fixed font-medium">Circuit Breaker Arm Level 2</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
+          1 SKU quarantined from replenishment ingestion feed (<code class="text-primary font-mono text-[12px]">NC-80</code> unit price zero detected). Exactly 0 downstream forecast models impacted.
+        </p>
+<div class="pt-3 flex items-center justify-between">
+<span class="font-data-mono-sm text-[11px] text-outline">Isolation duration: 18m</span>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-variant text-on-surface font-headline-sm text-[12px] font-semibold transition-colors" type="button">
+<span>Inspect Quarantine (1 item)</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Dock Card 2: Schema Evolution & Drift Monitor -->
+<div class="flex flex-col justify-between p-5 rounded-2xl bg-surface-container-low shadow-sm">
+<div class="flex items-start gap-3.5 mb-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[22px]">schema</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Schema Evolution</h3>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-primary font-medium">Version 2.14 Verified</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
+          Migration applied yesterday (<code class="text-primary font-mono text-[12px]">promotional_tag_id</code> added). 100% backward compatibility maintained with 0 breaking changes across dbt runs.
+        </p>
+<div class="pt-3 flex items-center justify-between">
+<span class="font-data-mono-sm text-[11px] text-outline">DBT Tests: 142/142 Pass</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-primary font-data-mono-sm text-[10px] font-bold">100% Compatible</span>
+</div>
+</div>
+<!-- Dock Card 3: Model Feeding Readiness -->
+<div class="flex flex-col justify-between p-5 rounded-2xl bg-surface-container-low shadow-sm">
+<div class="flex items-start gap-3.5 mb-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[22px]">smart_toy</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Model Feeding Status</h3>
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+</div>
+<span class="font-data-mono-sm text-[11px] text-primary font-medium">Ensemble v4.81 Cleared</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 mb-4">
+<div class="flex items-center justify-between text-body-sm text-[12px]">
+<span class="text-on-surface-variant">Sales Velocity Signal</span>
+<span class="font-data-mono-sm text-primary font-bold">100% Cleared</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-[12px]">
+<span class="text-on-surface-variant">Inventory Depth Signal</span>
+<span class="font-data-mono-sm text-primary font-bold">99.8% Cleared</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-[12px]">
+<span class="text-on-surface-variant">Price Elasticity Matrix</span>
+<span class="font-data-mono-sm text-primary font-bold">100% Cleared</span>
+</div>
+</div>
+<div class="pt-3 flex items-center justify-between">
+<span class="font-data-mono-sm text-[11px] text-outline">Next fold training in 4h 12m</span>
+<span class="inline-flex items-center gap-1 font-data-mono-sm text-[11px] text-primary font-semibold">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+            Locked &amp; Stable
+          </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Interactive UI Script for Data Quality & Pipeline Health
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Severity Filter Pills Behavior
+    const filterPills = document.querySelectorAll('.quality-filter-pill');
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => {
+          p.classList.remove('bg-primary', 'text-on-primary', 'font-medium', 'bg-error', 'text-surface');
+          p.classList.add('text-on-surface-variant');
+        });
+        pill.classList.remove('text-on-surface-variant');
+        if (pill.dataset.filter === 'failures') {
+          pill.classList.add('bg-error', 'text-on-error', 'font-medium');
+        } else {
+          pill.classList.add('bg-primary', 'text-on-primary', 'font-medium');
+        }
+      });
+    });
+
+    // 2. Table Search Filtering
+    const searchInput = document.getElementById('tableSearchInput');
+    const tableBody = document.getElementById('qualityTableBody');
+    if (searchInput && tableBody) {
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const rows = tableBody.querySelectorAll('tr');
+        rows.forEach(row => {
+          const text = row.innerText.toLowerCase();
+          row.style.display = text.includes(query) ? '' : 'none';
+        });
+      });
+    }
+
+    // 3. Quick Table Filter Tabs
+    const tableFilters = document.querySelectorAll('.table-quick-filter');
+    tableFilters.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tableFilters.forEach(t => {
+          t.classList.remove('bg-surface-container-high', 'text-on-surface', 'font-medium');
+          t.classList.add('bg-surface-container', 'text-outline');
+        });
+        tab.classList.remove('bg-surface-container', 'text-outline');
+        tab.classList.add('bg-surface-container-high', 'text-on-surface', 'font-medium');
+
+        const filterType = tab.dataset.type;
+        const rows = tableBody.querySelectorAll('tr');
+        rows.forEach(row => {
+          if (filterType === 'all') {
+            row.style.display = '';
+          } else if (filterType === 'failed') {
+            const hasError = row.innerHTML.includes('Critical') || row.innerHTML.includes('Warning');
+            row.style.display = hasError ? '' : 'none';
+          } else if (filterType === 'auto') {
+            const hasAuto = row.innerHTML.includes('Auto-Reconciled') || row.innerHTML.includes('Quarantined');
+            row.style.display = hasAuto ? '' : 'none';
+          }
+        });
+      });
+    });
+
+    // 4. Interactive Feedback on CTAs
+    const syncBtn = document.getElementById('syncAllBtn');
+    if (syncBtn) {
+      syncBtn.addEventListener('click', () => {
+        const originalHtml = syncBtn.innerHTML;
+        syncBtn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">refresh</span><span>Triggering Dag...</span>';
+        syncBtn.disabled = true;
+        setTimeout(() => {
+          syncBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check</span><span>Sync Initiated!</span>';
+          setTimeout(() => {
+            syncBtn.innerHTML = originalHtml;
+            syncBtn.disabled = false;
+          }, 1800);
+        }, 1200);
+      });
+    }
+
+    const auditBtn = document.getElementById('runAuditBtn');
+    if (auditBtn) {
+      auditBtn.addEventListener('click', () => {
+        const icon = auditBtn.querySelector('.material-symbols-outlined');
+        if (icon) icon.classList.add('animate-spin');
+        setTimeout(() => {
+          if (icon) icon.classList.remove('animate-spin');
+        }, 1500);
+      });
+    }
+  });
+</script></main>
+</div>
+</body></html>
