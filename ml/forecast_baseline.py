@@ -166,3 +166,96 @@ def moving_average_forecast(
         )
 
     return float(sales["UnitsSold"].tail(window).mean())
+
+
+def moving_average_forecast_horizon(
+    product_sales: pd.DataFrame,
+    horizon: int = 3,
+    window: int = 3
+) -> list[float]:
+    """Forecast multiple weeks by recursively feeding predictions forward."""
+    if horizon < 1:
+        raise ValueError("Forecast horizon must be at least 1 week.")
+
+    sales = product_sales.sort_values("InvoiceDate")
+
+    if len(sales) < window:
+        raise ValueError(
+            f"At least {window} weeks of sales are required."
+        )
+
+    values = sales["UnitsSold"].astype(float).tolist()
+    predictions = []
+
+    for _ in range(horizon):
+        prediction = float(sum(values[-window:]) / window)
+        predictions.append(prediction)
+        values.append(prediction)
+
+    return predictions
+
+
+def evaluate_forecast_horizons(
+    product_sales: pd.DataFrame,
+    max_horizon: int = 3,
+    train_ratio: float = 0.8,
+    window: int = 3
+) -> list[dict]:
+    """Compare naive and recursive moving-average forecasts by lead week."""
+    if not 1 <= max_horizon <= 3:
+        raise ValueError("Forecast horizon must be between 1 and 3 weeks.")
+
+    if not 0 < train_ratio < 1:
+        raise ValueError("train_ratio must be between 0 and 1.")
+
+    sales = product_sales.sort_values("InvoiceDate")
+    values = sales["UnitsSold"].astype(float).tolist()
+    split_index = int(len(values) * train_ratio)
+    first_origin = max(split_index - 1, window - 1)
+    metrics = []
+
+    for horizon in range(1, max_horizon + 1):
+        naive_errors = []
+        moving_average_errors = []
+
+        for origin in range(first_origin, len(values) - horizon):
+            history = sales.iloc[: origin + 1]
+            actual = values[origin + horizon]
+
+            naive_prediction = float(values[origin])
+            moving_predictions = moving_average_forecast_horizon(
+                history,
+                horizon=horizon,
+                window=window
+            )
+
+            naive_errors.append(naive_prediction - actual)
+            moving_average_errors.append(
+                moving_predictions[-1] - actual
+            )
+
+        def summarize(errors: list[float]) -> tuple[float | None, float | None]:
+            if not errors:
+                return None, None
+
+            mae = sum(abs(error) for error in errors) / len(errors)
+            rmse = (
+                sum(error * error for error in errors) / len(errors)
+            ) ** 0.5
+            return mae, rmse
+
+        naive_mae, naive_rmse = summarize(naive_errors)
+        moving_average_mae, moving_average_rmse = summarize(
+            moving_average_errors
+        )
+
+        metrics.append({
+            "horizon_weeks": horizon,
+            "evaluation_origins": len(naive_errors),
+            "naive_mae": naive_mae,
+            "naive_rmse": naive_rmse,
+            "moving_average_mae": moving_average_mae,
+            "moving_average_rmse": moving_average_rmse
+        })
+
+    return metrics

@@ -2,7 +2,17 @@
 import pandas as pd
 import pytest
 
-from ml.forecast_baseline import naive_forecast, calculate_mae, create_naive_predictions, chronological_split, create_moving_average_predictions, evaluate_product_baselines, moving_average_forecast
+from ml.forecast_baseline import (
+    calculate_mae,
+    chronological_split,
+    create_moving_average_predictions,
+    create_naive_predictions,
+    evaluate_forecast_horizons,
+    evaluate_product_baselines,
+    moving_average_forecast,
+    moving_average_forecast_horizon,
+    naive_forecast,
+)
 
 
 def test_naive_forecast():
@@ -175,3 +185,48 @@ def test_moving_average_insufficient_history():
         match="At least 3 weeks of sales are required"
     ):
         moving_average_forecast(sales, window=3)
+
+
+def test_moving_average_forecast_horizon_is_recursive():
+    sales = pd.DataFrame({
+        "InvoiceDate": pd.date_range(
+            start="2026-01-04",
+            periods=3,
+            freq="W-SUN"
+        ),
+        "UnitsSold": [10, 20, 30]
+    })
+
+    predictions = moving_average_forecast_horizon(
+        sales,
+        horizon=3,
+        window=3
+    )
+
+    assert predictions == pytest.approx([
+        20.0,
+        70 / 3,
+        220 / 9
+    ])
+
+
+def test_evaluate_forecast_horizons_reports_each_lead():
+    sales = pd.DataFrame({
+        "InvoiceDate": pd.date_range(
+            start="2026-01-04",
+            periods=20,
+            freq="W-SUN"
+        ),
+        "UnitsSold": [10] * 20
+    })
+
+    metrics = evaluate_forecast_horizons(
+        sales,
+        max_horizon=3,
+        train_ratio=0.8
+    )
+
+    assert [metric["horizon_weeks"] for metric in metrics] == [1, 2, 3]
+    assert [metric["evaluation_origins"] for metric in metrics] == [4, 3, 2]
+    assert all(metric["naive_mae"] == 0 for metric in metrics)
+    assert all(metric["moving_average_rmse"] == 0 for metric in metrics)

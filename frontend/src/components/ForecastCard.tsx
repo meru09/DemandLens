@@ -1,124 +1,122 @@
-
-import type { ForecastResponse } from "@/types/api";
+import type { ForecastHorizonResponse } from "@/types/api";
 
 type ForecastCardProps = {
-  forecast: ForecastResponse;
+  forecast: ForecastHorizonResponse;
 };
+
+function formatDate(value: string) {
+  return new Date(`${value}T00:00:00Z`).toLocaleDateString(
+    "en-US",
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "UTC",
+    }
+  );
+}
+
+function formatUnits(value: number) {
+  return value.toLocaleString("en-US", {
+    maximumFractionDigits: 1,
+  });
+}
+
+function modelLabel(model: string) {
+  if (model === "moving_average_3_recursive") {
+    return "Recursive 3-week moving average";
+  }
+  return model;
+}
 
 export default function ForecastCard({
   forecast,
 }: ForecastCardProps) {
-  // Format the forecast date
-  const formattedDate = new Date(
-    `${forecast.forecast_date}T00:00:00Z`
-  ).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "UTC",
-  });
-
-  // Display a user-friendly forecasting model name
-  const modelName =
-    forecast.model === "moving_average_3"
-      ? "3-week moving average"
-      : forecast.model;
+  const totalPredictedUnits = forecast.forecasts.reduce(
+    (total, point) => total + point.predicted_units,
+    0
+  );
 
   return (
     <section
-      aria-labelledby="forecast-title"
-      className="mt-6 min-w-0 overflow-hidden rounded-xl border border-violet-700/40 bg-[#10101F]"
+      aria-labelledby="forecast-summary-title"
+      className="overflow-hidden rounded-2xl border border-border/70 bg-surface-card"
     >
-      {/* Violet accent line */}
-      <div className="h-1 bg-gradient-to-r from-violet-600 via-violet-400 to-transparent" />
-
-      <div className="p-5 sm:p-6">
-        {/* Forecast header */}
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            <div className="mb-3 flex flex-wrap items-center gap-3">
-              <p className="text-xs font-medium uppercase tracking-widest text-violet-400">
-                Demand Prediction
-              </p>
-
-              <span className="rounded-full border border-violet-700/40 bg-violet-500/10 px-3 py-1 text-[10px] font-medium text-violet-200">
-                Historical Data Demo
-              </span>
-            </div>
-
-            <h3
-              id="forecast-title"
-              className="text-lg font-semibold text-white"
-            >
-              Next Week Forecast
-            </h3>
-          </div>
-
-          {/* Decorative icon */}
-          <div
-            aria-hidden="true"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-violet-700/30 bg-violet-500/10 text-xl text-violet-300"
-          >
-            ✦
-          </div>
-        </div>
-
-        {/* Main prediction */}
-        <div className="mt-7 rounded-xl border border-violet-700/20 bg-violet-500/5 p-5 sm:p-6">
-          <p className="text-sm text-slate-400">
-            Expected demand
-          </p>
-
-          <div className="mt-3 flex flex-wrap items-baseline gap-3">
-            <p className="break-words text-5xl font-bold tracking-tight text-white sm:text-6xl">
-              {forecast.predicted_units.toLocaleString()}
+      <div className="h-1 bg-gradient-to-r from-forecast via-primary to-transparent" />
+      <div className="p-5">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-forecast">
+              Product outlook
             </p>
-
-            <span className="text-sm font-medium text-violet-300">
-              units
-            </span>
+            <h2
+              id="forecast-summary-title"
+              className="mt-2 font-display text-lg font-semibold text-foreground"
+            >
+              Next three weeks
+            </h2>
           </div>
+          <span className="rounded-full border border-border px-2.5 py-1 text-[10px] text-text-muted">
+            Historical data
+          </span>
+        </div>
 
-          <p className="mt-4 text-xs text-slate-500">
-            Predicted quantity for the next forecast week
+        <div className="mt-5 rounded-xl bg-surface-raised p-4">
+          <p className="text-xs text-text-muted">
+            Predicted units across the three weeks
+          </p>
+          <p className="mt-2 font-display text-3xl font-semibold text-foreground">
+            {formatUnits(totalPredictedUnits)}
           </p>
         </div>
 
-        {/* Forecast details */}
-        <div className="mt-6 space-y-4">
-          {/* Forecast date */}
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-sm text-slate-400">
-              Forecast week
-            </span>
-
-            <span className="text-sm font-medium text-white">
-              {formattedDate}
-            </span>
+        <div className="mt-5 overflow-hidden rounded-xl border border-border/70">
+          <div className="grid grid-cols-[0.6fr_1.4fr_0.8fr] gap-2 bg-surface-elevated px-3 py-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-text-muted">
+            <span>Week</span>
+            <span>Forecast date</span>
+            <span className="text-right">Units</span>
           </div>
-
-          <div className="border-t border-violet-900/30" />
-
-          {/* Forecasting model */}
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="text-sm text-slate-400">
-              Forecasting model
-            </span>
-
-            <span className="rounded-md border border-violet-700/30 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-300">
-              {modelName}
-            </span>
-          </div>
+          <ol className="divide-y divide-border/70">
+            {forecast.forecasts.map((point, index) => (
+              <li
+                key={point.forecast_date}
+                className="grid grid-cols-[0.6fr_1.4fr_0.8fr] items-center gap-2 px-3 py-3 text-xs"
+              >
+                <span className="font-mono text-forecast">
+                  W+{index + 1}
+                </span>
+                <time
+                  dateTime={point.forecast_date}
+                  className="text-text-secondary"
+                >
+                  {formatDate(point.forecast_date)}
+                </time>
+                <span className="text-right font-mono text-foreground">
+                  {formatUnits(point.predicted_units)}
+                </span>
+              </li>
+            ))}
+          </ol>
         </div>
 
-        {/* Historical data explanation */}
-        <p className="mt-6 border-t border-violet-900/30 pt-4 text-xs leading-relaxed text-slate-500">
-          This forecast estimates demand for the week
-          following the product&apos;s last available
-          historical sales observation. It is generated
-          from a historical retail dataset for
-          demonstration and evaluation purposes, not as
-          a live prediction of current demand.
+        <dl className="mt-5 space-y-3 text-xs">
+          <div className="flex items-start justify-between gap-3">
+            <dt className="text-text-muted">Forecast origin</dt>
+            <dd className="text-right text-text-secondary">
+              {formatDate(forecast.forecast_origin)}
+            </dd>
+          </div>
+          <div className="flex items-start justify-between gap-3">
+            <dt className="text-text-muted">Model</dt>
+            <dd className="max-w-[65%] text-right text-text-secondary">
+              {modelLabel(forecast.model)}
+            </dd>
+          </div>
+        </dl>
+
+        <p className="mt-5 border-t border-border/70 pt-4 text-xs leading-relaxed text-text-muted">
+          Forecast dates follow the latest available weekly observation in the
+          historical dataset; they are not current-date demand guarantees.
         </p>
       </div>
     </section>

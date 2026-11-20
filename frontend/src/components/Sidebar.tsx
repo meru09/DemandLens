@@ -86,14 +86,14 @@ export default function Sidebar() {
     <>
       {/* Branding */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold text-white">
+        <h2 className="font-display text-2xl font-bold text-foreground">
           Demand
-          <span className="text-violet-400">
+          <span className="text-primary">
             Lens
           </span>
         </h2>
 
-        <p className="mt-1 text-xs text-slate-500">
+        <p className="mt-1 text-xs text-text-muted">
           Sales Intelligence
         </p>
       </div>
@@ -107,15 +107,15 @@ export default function Sidebar() {
           href="/"
           aria-current="page"
           onClick={() => setIsOpen(false)}
-          className="block rounded-lg bg-violet-600/20 px-4 py-3 text-sm font-medium text-violet-300"
+          className="block rounded-lg border border-primary/30 bg-surface-active px-4 py-3 text-sm font-medium text-primary"
         >
           Dashboard
         </Link>
       </nav>
 
       {/* Version */}
-      <div className="mt-12 border-t border-violet-900/30 pt-6">
-        <p className="text-xs text-slate-500">
+      <div className="mt-12 border-t border-border pt-6">
+        <p className="text-xs text-text-muted">
           DemandLens v0.1
         </p>
       </div>
@@ -125,18 +125,18 @@ export default function Sidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden w-64 shrink-0 border-r border-violet-900/30 bg-[#10101F] p-6 md:block">
+      <aside className="hidden w-64 shrink-0 border-r border-border bg-surface-sidebar p-6 md:block">
         {navigation}
       </aside>
 
       {/* Mobile header */}
-      <header className="fixed inset-x-0 top-0 z-30 flex h-16 items-center justify-between border-b border-violet-900/30 bg-[#10101F] px-5 md:hidden">
+      <header className="fixed inset-x-0 top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-surface-sidebar px-5 md:hidden">
         <Link
           href="/"
-          className="text-xl font-bold text-white"
+          className="font-display text-xl font-bold text-foreground"
         >
           Demand
-          <span className="text-violet-400">
+          <span className="text-primary">
             Lens
           </span>
         </Link>
@@ -148,7 +148,7 @@ export default function Sidebar() {
           aria-expanded={isOpen}
           aria-controls="mobile-navigation"
           onClick={() => setIsOpen(true)}
-          className="rounded-lg border border-violet-800/50 p-2 text-violet-300 transition hover:bg-violet-600/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
+          className="rounded-lg border border-border p-2 text-primary transition hover:bg-surface-active focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           <svg
             width="24"
@@ -185,7 +185,7 @@ export default function Sidebar() {
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation"
-            className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto border-r border-violet-900/40 bg-[#10101F] p-6 shadow-2xl"
+            className="absolute inset-y-0 left-0 w-72 max-w-[85vw] overflow-y-auto border-r border-border bg-surface-sidebar p-6 shadow-2xl"
           >
             <div className="mb-8 flex justify-end">
               <button
@@ -193,7 +193,7 @@ export default function Sidebar() {
                 type="button"
                 aria-label="Close navigation menu"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-2 text-slate-300 transition hover:bg-violet-600/20 focus-visible:outline-2 focus-visible:outline-violet-400"
+                className="rounded-lg p-2 text-text-secondary transition hover:bg-surface-active focus-visible:outline-2 focus-visible:outline-primary"
               >
                 <svg
                   width="22"

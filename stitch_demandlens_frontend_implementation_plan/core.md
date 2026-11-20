@@ -1,170 +1,212 @@
-# DemandLens Frontend Design Analysis & Main Dashboard Implementation Plan
+# DemandLens Dashboard Design Specification
 
-![Main Dashboard Target Design](C:/Users/moham/.gemini/antigravity/brain/0a3dd08a-ad01-4ead-a804-a511e1f56747/dashboard_design.png)
+**Status:** Approved and implemented. The user authorized implementation after
+review; this document records the delivered dashboard scope and data decisions.
 
----
+## Decisions captured
 
-## 1. Overview of the Uploaded Stitch Design Package
+- Use real DemandLens data and backend results; do not present screenshot or
+  placeholder values as live metrics.
+- The primary product forecast is for the next **three weeks**.
+- Extend the backend additively. Keep the existing API response contracts
+  working for current callers.
+- Scope this design to the existing main dashboard (`/`). The other Stitch
+  screen designs are future work, not part of this implementation.
 
-The uploaded folder ([stitch_demandlens_frontend_implementation_plan](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/stitch_demandlens_frontend_implementation_plan/stitch_demandlens_frontend_implementation_plan)) contains **1 design system specification** and **7 screen modules** (each with a reference `code.html` and `screen.png`):
+## 1. Current application and data
 
-| Module Folder | Role in Platform |
-| :--- | :--- |
-| [emerald_intelligence/DESIGN.md](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/stitch_demandlens_frontend_implementation_plan/stitch_demandlens_frontend_implementation_plan/emerald_intelligence/DESIGN.md) | Master design tokens: color palette, 3-font typography scale, spacing, elevation, and component guidelines. |
-| [demandlens_trend_forecast_insight_cards_phase_7](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/stitch_demandlens_frontend_implementation_plan/stitch_demandlens_frontend_implementation_plan/demandlens_trend_forecast_insight_cards_phase_7/code.html) | **Main Dashboard (`/` — Focus of this plan)**: Executive KPI row, 8:4 split workspace with Demand Forecast chart, 3 bottom insight cards, Product Selection, and Forecast Summary table. |
-| [demandlens_product_explorer](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/stitch_demandlens_frontend_implementation_plan/stitch_demandlens_frontend_implementation_plan/demandlens_product_explorer/code.html) | **Product Explorer**: Catalog SKU inventory table, stockout risk alerts, and category velocity leaders. |
-| [demandlens_sales_analytics](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/stitch_demandlens_frontend_implementation_plan/stitch_demandlens_frontend_implementation_plan/demandlens_sales_analytics/code.html) | **Sales Analytics**: Gross revenue vs. target trajectory, category margins, top SKUs, and regional momentum. |
-| [demandlens_demand_forecasting](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/stitch_demandlens_frontend_implementation_plan/stitch_demandlens_frontend_implementation_plan/demandlens_demand_forecasting/code.html) | **Demand Forecasting**: Multi-horizon P10/P50/P90 confidence cones, price/promo scenario sandbox, and replenishment schedule. |
-| [demandlens_model_evaluation](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/stitch_demandlens_frontend_implementation_plan/stitch_demandlens_frontend_implementation_plan/demandlens_model_evaluation/code.html) | **Model Evaluation**: Backtest accuracy (`MAE`, `RMSE`, `MAPE`), ensemble weights, category volatility table, and SHAP importance. |
-| [demandlens_data_quality](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/stitch_demandlens_frontend_implementation_plan/stitch_demandlens_frontend_implementation_plan/demandlens_data_quality/code.html) | **Data Quality**: Ingestion throughput/latency bar chart, schema conformance, and anomaly quarantine rules. |
-| [demandlens_settings_platform_configuration](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/stitch_demandlens_frontend_implementation_plan/stitch_demandlens_frontend_implementation_plan/demandlens_settings_platform_configuration/code.html) | **Settings**: Data pipeline sync parameters, retraining cadence, connectors, API keys, and alert thresholds. |
+The current frontend is a Next.js app with one dashboard route. The existing
+`[page.tsx](../frontend/src/app/page.tsx)` loads the product list, and
+`[ProductSelector.tsx](../frontend/src/components/ProductSelector.tsx)` loads
+the selected product's weekly history and forecast. The page currently contains
+a hard-coded total-units value; replace it with an API-sourced value before
+showing it as a metric.
 
----
+The current backend contracts are:
 
-## 2. Core "Emerald Intelligence" Design System
+| Endpoint | Current behavior |
+| --- | --- |
+| `GET /products` | Returns the product count and the first 10 product codes. |
+| `GET /products/{stock_code}/history` | Returns weekly historical units for one product. |
+| `GET /products/{stock_code}/forecast` | Returns one forecast week, its date, predicted units, and model name. |
 
-Currently, the Next.js app in [frontend/src/](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src) uses a **dark violet (`#0B0B16` / `#171728` / `violet-*`)** theme with `Geist` fonts. The Stitch design transitions the application to the **Emerald Intelligence** design language:
+These are implemented in `[backend/main.py](../backend/main.py)`;
+`[ForecastResponse](../backend/schemas.py)` describes the existing one-week
+response. The current model in `[forecast_service.py](../backend/forecast_service.py)`
+uses the previous three observed weeks to predict **one** week. Therefore,
+`moving_average_3` describes a three-week look-back window, not a three-week
+forecast horizon.
 
-### A. Layered Chromatic Dark Surfaces & Semantic Accents
-- **Surface Hierarchy**:
-  - `surface` / `background`: `#081612` (Main app canvas)
-  - `surface-container-lowest`: `#04110d` (Fixed sidebar background & recessed pill tracks)
-  - `surface-container-low`: `#101e1a` (Primary card containers)
-  - `surface-container`: `#14221e` (Nested sub-cards, inputs, hover rows)
-  - `surface-container-high`: `#1f2d28` (Icon badges, dropdown flyouts, floating tooltips)
-  - `surface-variant`: `#293833` (Active sidebar route fill & dropdown item hover)
-- **Time-Domain & Semantic Accents**:
-  - **Primary / Historical Actuals (`#4edea3` & `#10b981`)**: Bioluminescent emerald/mint used for historical sales curves, active states, and primary action buttons.
-  - **Tertiary / Forecast Projections (`#98da27` & `#b2f746`)**: Kinetic lime exclusively reserved for predicted demand curves, forecast horizon shading, positive KPI delta badges, and AI recommendations.
-  - **Error / Negative Delta (`#ffb4ab` / `#93000a`)**: Soft coral on dark red container for downward shifts (e.g., `-2.0%` in W12).
-- **Borders & Text**:
-  - `on-surface`: `#d6e6df` (Primary text)
-  - `on-surface-variant`: `#bbcabf` (Secondary labels)
-  - `outline`: `#86948a` (Muted metadata, units, axes)
-  - `outline-variant`: `#3c4a42` (Subtle `1px` card borders, typically at `40%–60%` opacity, elevating to `primary/40` on hover)
+Available data includes:
 
-### B. Tri-Font Typography System & Iconography
-1. **`Space Grotesk`** (`headline-xl`, `headline-lg`, `headline-md`, `headline-sm`, `metric-display`): Used for brand headers, section titles, and large KPI numbers (`28px` bold, `-0.03em` tracking).
-2. **`Inter`** (`body-lg`, `body-md`, `body-sm`, `label-caps`): Used for UI chrome, descriptions, navigation links, and uppercase pill badges.
-3. **`JetBrains Mono`** (`data-mono-lg`, `data-mono-sm`): Used for SKUs, axis ticks, horizon week labels (`W1`–`W12`), `⌘ K` keycaps, and model error metrics (`MAE`, `RMSE`).
-4. **Google Material Symbols Outlined**: Used consistently across sidebar navigation, KPI card badges, trend arrows (`trending_up`, `trending_down`), and action buttons.
+- `[weekly_sales.csv](../data/processed/weekly_sales.csv)`: `InvoiceDate`,
+  `StockCode`, and `UnitsSold`.
+- `[baseline_evaluation.csv](../data/processed/baseline_evaluation.csv)`:
+  per-product naive and moving-average MAE plus test-week counts. These metrics
+  are not three-week-horizon metrics and the file does not currently include
+  RMSE.
+- `[cleaned_sales.csv](../data/processed/cleaned_sales.csv)`: cleaned invoice,
+  product, quantity, date, and price fields. The cleaning pipeline excludes
+  cancellation invoices and records with nonpositive quantity or price.
 
----
+The Emerald palette and three fonts are already defined in
+`[globals.css](../frontend/src/app/globals.css)` and
+`[layout.tsx](../frontend/src/app/layout.tsx)`. Several components still use
+hard-coded violet styles, so the visual system is only partially applied.
+`[Sidebar.tsx](../frontend/src/components/Sidebar.tsx)` currently has only the
+Dashboard route; do not add active links to screens that do not exist.
 
-## 3. Structural Breakdown of the Main Dashboard
+## 2. Design direction
 
-Based on [demandlens_trend_forecast_insight_cards_phase_7/code.html](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/stitch_demandlens_frontend_implementation_plan/stitch_demandlens_frontend_implementation_plan/demandlens_trend_forecast_insight_cards_phase_7/code.html), the Main Dashboard is organized into **4 structural zones**:
+Use the existing Emerald Intelligence tokens consistently:
 
-```mermaid
-flowchart TD
-    Shell["App Shell (bg-surface #081612)"] --> Sidebar["1. Fixed Left Sidebar (284px)"]
-    Shell --> Workspace["Main Content Area (pl-[284px])"]
-    Workspace --> Header["2. Fixed Top Header Bar (h-24)"]
-    Workspace --> Main["Main Dashboard Grid (pt-24)"]
-    Main --> KPIRow["3. Top KPI Grid (4 Columns: Sales, Products, Transactions, Avg Weekly Demand)"]
-    Main --> SplitGrid["4. Primary Analytics Split (12-Column Grid)"]
-    SplitGrid --> LeftCol["Left Column (8 Cols / 66%)"]
-    SplitGrid --> RightCol["Right Column (4 Cols / 33%)"]
-    LeftCol --> ChartCard["Demand Forecast Visualizer (4W/12W/26W/1Y + Dual-Curve Chart)"]
-    LeftCol --> BottomCards["3 Bottom Insight Cards (Model Performance | Demand Trend | Recommendation)"]
-    RightCol --> ProductCard["Product Selection Card (Search Input + Dropdown + Active SKU Card)"]
-    RightCol --> SummaryCard["Forecast Summary Card (Next 4W Horizon Table + Confidence + Export CSV)"]
+- Canvas: `#081612`; sidebar: `#04110d`.
+- Cards: `#101e1a`; nested surfaces: `#14221e` and `#1f2d28`.
+- Historical actuals and primary actions: emerald `#4edea3`.
+- Forecast line and forecast-only highlights: lime `#98da27`.
+- Negative values: coral `#ffb4ab`.
+- Main, secondary, and muted text: `#d6e6df`, `#bbcabf`, `#86948a`.
+
+Use the already loaded Inter, Space Grotesk, and JetBrains Mono fonts. Replace
+component-level violet and raw surface colors with the existing CSS/Tailwind
+tokens. Preserve keyboard focus visibility, the accessible mobile sidebar
+drawer, and the product selector's keyboard-operable combobox.
+
+## 3. Main dashboard layout
+
+Keep the dashboard as the only in-scope page:
+
+1. **Responsive app shell:** Emerald sidebar and a top header with the page
+   title and brief historical-data context. Do not present unimplemented
+   navigation routes as working pages.
+2. **KPI row:** Show only metrics backed by an API response:
+   - Total units sold across the available weekly dataset.
+   - Product count.
+   - Transaction count, based on distinct invoice IDs in cleaned sales data.
+   - Average units per week, calculated as total units divided by distinct
+     observed weeks in the weekly dataset.
+   - No KPI period deltas; the dashboard lacks a matched reporting-period
+     definition. The separate demand trend compares the latest 12 observed
+     weeks with the preceding 12.
+3. **Analytics workspace:** Responsive 8:4 layout:
+   - Left: selected-product history and a three-week forecast chart, followed
+     by model-evaluation and trend details when their data is available.
+   - Right: searchable product selection and a three-row forecast summary for
+     weeks 1–3 ahead.
+4. **States:** Update loading, empty, API-error, and forecast-unavailable
+   displays to use the Emerald theme. If history loads but the forecast fails,
+   keep history visible and explain that the forecast is unavailable.
+
+The historical chart-range selector, if retained (`4W`, `12W`, `26W`, `1Y`),
+controls **how much past history is displayed**. It does not change the fixed
+three-week forecast horizon.
+
+### Three-week forecast visualization
+
+- Historical actuals use a solid emerald line.
+- Predictions use a dashed lime line beginning after the last observed week,
+  with a visible actual/forecast boundary.
+- Show exactly three future weekly dates and their predicted units.
+- Identify the model and forecast origin so the user can see that this is a
+  forecast relative to the dataset's latest observation, not a live prediction
+  for today's date.
+- Keep the API's raw numeric predictions; format them consistently in the UI.
+  Do not invent confidence percentages or confidence bands.
+
+## 4. Backward-compatible API additions
+
+Do not change or remove the current `/products`, `/history`, or one-week
+`/forecast` response shapes. Keep their existing tests passing. Add separately
+typed API responses and new routes for the new dashboard needs.
+
+### A. Three-week forecast
+
+Add a route such as:
+
+```text
+GET /products/{stock_code}/forecasts?horizon=3
 ```
 
-### Zone 1: Fixed Left Sidebar (`284px`)
-- **Brand Block**: `54×54px` emerald-glowing `bar_chart` badge + `DemandLens` (`Space Grotesk`) + `Retail Intelligence Platform` subtitle.
-- **Background Graphic**: Subtle `10%` opacity triple-wave SVG at the bottom of the sidebar.
-- **Primary Navigation (6 Routes)**:
-  1. `Dashboard` (`home` icon — active state with `bg-surface-variant text-primary border-primary/30` and emerald glow)
-  2. `Product Explorer` (`inventory_2`)
-  3. `Sales Analytics` (`analytics`)
-  4. `Demand Forecasting` (`trending_up`)
-  5. `Model Evaluation` (`military_tech`)
-  6. `Data Quality` (`database`)
-- **Bottom Utility Navigation (2 Routes)**: `Settings` (`settings`) and `Help & Docs` (`help`) separated by a top border.
+Return the product code, model, latest observed date, horizon, and three
+`{forecast_date, predicted_units}` points. Generate dates one week apart after
+the latest actual observation. The initial candidate is recursive MA(3): use
+the last three actual values for week 1, then append each prediction to the
+series before calculating the next step. Name and document this method explicitly, and show its per-product
+three-week-horizon backtest beside the forecast. Keep the existing one-week
+route's output unchanged. The new route accepts horizons 1–3; the dashboard
+requests 3.
 
-### Zone 2: Fixed Top Header (`h-24`)
-- **Left Greeting**: `Welcome to DemandLens 👋` (`headline-xl`) + subtitle `Explore sales, analyze demand, and forecast future product demand.`
-- **Right Controls**:
-  - Global search input (`w-[480px]` on `xl`) with `search` icon and `⌘ K` monospace badge.
-  - Notification bell button with glowing primary unread dot.
-  - User profile pill (`SA` avatar badge + chevron).
+Validate the horizon and product, and preserve the current 404/422 error
+behavior patterns. The exact allowed horizon range should be fixed in the API
+contract before implementation; the dashboard itself requests three weeks.
 
-### Zone 3: Top KPI Metric Row (4 Cards, `xl:grid-cols-4`)
-Each card sits on `bg-surface-container-low` (`#101e1a`), features a `48×48px` icon container on the top-left, a lime delta pill (`+X.X%` with `trending_up`) on the top-right, the metric label, and the large value + unit label:
-1. **Total Sales**: `database` icon | `+12.4%` | Value (`units`)
-2. **Total Products**: `inventory_2` icon | `+4.8%` | Value (`unique items`)
-3. **Total Transactions**: `shopping_cart` icon | `+9.1%` | Value (`orders`)
-4. **Avg. Weekly Demand**: `trending_up` icon | `+11.2%` | Value (`units per product`)
+### B. Forecast evaluation
 
-### Zone 4: Primary 12-Column Analytics Split (`lg:grid-cols-12`)
+Extend the offline evaluation pipeline to backtest at forecast leads 1, 2, and
+3. Report MAE and RMSE per horizon, with the number of evaluation origins and
+the evaluation method. Do not reuse the existing one-step MAE as evidence for
+three-week accuracy. Expose the resulting metrics through a new product
+evaluation endpoint or a clearly defined additive dashboard API.
 
-#### **Left Column (`lg:col-span-8`)**
-1. **Demand Forecast Card (Main Time-Series Visualizer)**:
-   - **Header**: `bar_chart` badge, title `Demand Forecast`, subtitle `Historical sales vs. predicted demand for the selected product.`, and **Segmented Range Selector** (`4W`, `12W`, `26W`, `1Y`).
-   - **Chart Canvas**:
-     - Rotated Y-axis title `Demand (Units)`, dashed horizontal gridlines, monospace Y-axis and X-axis (`W1`–`W12`) labels.
-     - **Historical Series (`W1`–`W8`)**: Solid `#4edea3` stroke (`2.5px`), circular nodes, and emerald vertical area gradient (`#demandHistoryGrad`).
-     - **Forecast Boundary & Series (`W8`–`W12`)**: Vertical dashed `#98da27` divider line, shaded forecast period box (`fill="#98da27" fill-opacity="0.05"`), dashed `#98da27` curve, lime area gradient (`#demandForecastGrad`), and floating callout badge (`W10 (Forecast) / 2,380 units`).
-   - **Legend Footer**: `Historical Demand` (emerald dot), `Predicted Demand` (lime dashed line), `Forecast Period` (lime shaded box).
-2. **Bottom 3 Insight Cards (`md:grid-cols-3`)**:
-   - **Panel 1 — `Model Performance`**: `verified` icon + info tooltip, subtitle, and 2 side-by-side metric boxes (`MAE ERROR` with delta vs. baseline, `RMSE SPREAD` with `Optimal zone` label).
-   - **Panel 2 — `Demand Trend`**: `trending_up` icon, `+13.6%` pill badge, headline `+13.6% vs. previous 12 weeks`, and a bottom sparkline area.
-   - **Panel 3 — `Recommendation`**: `lightbulb` icon, `#REC-4091` tag, callout box (`Increase inventory by ~12% to meet the expected demand...`), and footer with `RECOMMENDED ALLOCATION` + `Apply →` action button.
+Only display RMSE after it has been calculated from the actual backtest
+predictions. The current evaluation CSV contains MAE but not RMSE.
 
-#### **Right Column (`lg:col-span-4`)**
-1. **Product Selection Card**:
-   - **Header**: `inventory_2` icon + `Product Selection` title + subtitle.
-   - **Search Combobox**: Search icon, input field, clear (`close`) button, and floating dropdown menu showing matching products with thumbnail/icon, product name, `SKU: ...` monospace subtitle, and `Active` / `Select` status.
-   - **Selected Product Highlight Card**: Displays the currently active product's thumbnail/icon, title, SKU metadata, and solid emerald `✓ Active` badge.
-2. **Forecast Summary Card**:
-   - **Header**: `track_changes` icon + `Forecast Summary` (`Predicted target units (Next 4W)`) + `Auto-refresh` badge.
-   - **Horizon Table (4 Rows: `W9`–`W12`)**: Each row displays the week code (`W9`–`W12`), date range, predicted units, and percentage change badge (`+8.1%`, `+11.2%` highlighted as peak row, `+3.4%`, `-2.0%` in coral error style).
-   - **Footer**: `Confidence: 94.2%` indicator dot on the left and `Export CSV ↓` action button on the right.
+### C. Dashboard summary and product search
 
----
+Add a dashboard summary response for real aggregate KPIs. Define each metric
+before showing it:
 
-## 4. Proposed Implementation Plan (Files to Create / Update)
+- Units sold: sum `UnitsSold` over the reported period.
+- Product count: distinct valid product codes in the dataset.
+- Transactions: distinct invoice IDs from cleaned sales data.
+- Average weekly demand: total units divided by distinct observed weeks.
+- Period deltas: omitted until a reporting period is defined.
 
-> [!IMPORTANT]
-> Per your instructions, **no code changes have been made yet**. Below is the exact file-by-file plan for transforming the current frontend into the Stitch Main Dashboard design once you approve.
+Do not label `Quantity * Price` as currency revenue until the dataset's
+currency and aggregation rules are confirmed. If shown later, define treatment
+of returns and cancellations.
 
-### Phase 1: Design Tokens, Fonts & Icons Setup
-- **[Modify] [layout.tsx](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src/app/layout.tsx)**:
-  - Load `Space_Grotesk`, `Inter`, and `JetBrains_Mono` from `next/font/google` and bind CSS variables (`--font-space-grotesk`, `--font-inter`, `--font-jetbrains-mono`).
-  - Include the Google `Material Symbols Outlined` stylesheet in `<head>` and update page metadata (`DemandLens — Retail Intelligence Platform`).
-- **[Modify] [globals.css](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src/app/globals.css)**:
-  - Register all **Emerald Intelligence** color tokens (`surface`, `surface-container-lowest`, `surface-container-low`, `surface-container`, `surface-container-high`, `surface-variant`, `primary`, `primary-container`, `secondary`, `tertiary`, `error`, `error-container`, `on-surface`, `on-surface-variant`, `outline`, `outline-variant`), font families, and custom typography utilities in Tailwind v4 `@theme`.
+The existing `/products` endpoint returns only the first 10 codes. Add an
+optional search/pagination contract or a separate product-search endpoint so
+the selector can search the full catalog. Preserve the existing no-query
+behavior and response for current consumers.
 
-### Phase 2: App Shell (Sidebar & Top Header)
-- **[Modify] [Sidebar.tsx](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src/components/Sidebar.tsx)**:
-  - Upgrade to the `284px` `Emerald Intelligence` sidebar with the glowing `bar_chart` logo block, bottom layered wave SVG, 6 primary navigation items (`Dashboard`, `Product Explorer`, `Sales Analytics`, `Demand Forecasting`, `Model Evaluation`, `Data Quality`), 2 bottom utility links (`Settings`, `Help & Docs`), and accessible mobile drawer support.
-- **[Create] `frontend/src/components/Header.tsx`**:
-  - Implement the fixed `h-24` top bar with `Welcome to DemandLens 👋`, global product search input (`⌘ K` shortcut wired to focus/filter product search), notification bell button, and `SA` profile pill.
+## 5. Unsupported or deferred claims
 
-### Phase 3: KPI Grid & Main 8:4 Dashboard Workspace
-- **[Modify] [StatCard.tsx](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src/components/StatCard.tsx)**:
-  - Redesign into the Emerald KPI card with a `48×48px` Material Symbol icon badge, top-right trend delta pill (`+X.X%`), title, `Space Grotesk` metric display value, and unit label.
-- **[Modify] [SalesChart.tsx](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src/components/SalesChart.tsx)**:
-  - Upgrade into the **`Demand Forecast` Visualizer** card featuring:
-    - Segmented horizon range switcher (`4W`, `12W`, `26W`, `1Y`) that dynamically slices the displayed historical window.
-    - Dual-series chart rendering **Historical Demand** (solid `#4edea3` line + emerald area gradient) and **Predicted Demand** (dashed `#98da27` line + shaded forecast period + lime area gradient + peak forecast callout tooltip).
-    - Bottom 3-item legend (`Historical Demand`, `Predicted Demand`, `Forecast Period`).
-- **[Create] `frontend/src/components/InsightCards.tsx`**:
-  - Implement the 3-column bottom insight row inside the left 8-column stack:
-    1. **Model Performance Card** (`MAE ERROR` & `RMSE SPREAD` computed from the selected product's baseline evaluation or dataset backtest).
-    2. **Demand Trend Card** (percentage trend vs. previous window + mini sparkline).
-    3. **Recommendation Card** (automated inventory allocation recommendation based on predicted demand + interactive `Apply` button).
-- **[Modify] [ProductSelector.tsx](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src/components/ProductSelector.tsx) & [ForecastCard.tsx](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src/components/ForecastCard.tsx)**:
-  - Restructure into the right 4-column stack (`Product Selection` card with search input, clear button, rich dropdown, and `Active` selected product card; plus the `Forecast Summary` card with the 4-week horizon rows, confidence indicator, and working `Export CSV` download button) while coordinating state with the left 8-column chart and insight cards.
-- **[Modify] [page.tsx](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src/app/page.tsx), [loading.tsx](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src/app/loading.tsx), & [error.tsx](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/frontend/src/app/error.tsx)**:
-  - Assemble the full 12-column Emerald Intelligence dashboard layout and update loading skeletons and error states to match the `#081612` emerald theme.
+- The current source does not contain inventory-on-hand or lead-time data.
+  Defer the “increase inventory” recommendation until those inputs and a
+  recommendation rule exist.
+- The current forecast and evaluation data do not provide calibrated
+  prediction intervals. Do not display a confidence percentage or shaded
+  confidence band until the interval method is calibrated and tested at the
+  three forecast leads.
+- Avoid unsupported sales-growth percentages, model-performance values, and
+  transaction or revenue figures. Loading, unavailable, or omitted states are
+  preferable to sample values presented as real.
 
----
+## 6. Implementation and verification
 
-## 5. Key Alignment Questions Before Implementation
+- The existing `/products`, `/history`, and one-week `/forecast` contracts
+  remain available. Additive APIs provide full-catalog product search, the
+  dashboard summary, forecasts for horizons 1–3, and per-horizon evaluation.
+- The dashboard uses real weekly history and recursively forecasts the next
+  three weeks with MA(3). Evaluation reports rolling-origin MAE/RMSE by lead;
+  the UI displays three-week metrics and compares MAE with a last-value
+  baseline. The forecast remains an initial model, not a guarantee of
+  superiority for every product.
+- The dashboard reports all-time dataset aggregates; it does not display
+  currency revenue, confidence intervals, or inventory recommendations.
+- Backend tests, frontend lint, and production build pass. Runtime checks
+  confirmed the dashboard summary and new APIs return successfully. Browser
+  validation confirmed product selection renders history, exactly three future
+  forecast rows, and evaluation metrics at mobile and desktop widths.
 
-1. **Data Mode (Live Backend API vs. Stitch Mockup Data)**:
-   - Should the dashboard drive all cards, charts, and tables from your **live FastAPI backend** (`weekly_sales.csv` & `baseline_evaluation.csv`), or would you like a hybrid approach (live backend data for product history/forecast + curated product names/metrics matching the Stitch screenshot when a demo SKU is selected)?
-2. **Backend API Expansion (Optional)**:
-   - Currently, [`GET /products`](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/backend/main.py#L53-L62) returns `products[:10]` and [`GET /products/{stock_code}/forecast`](file:///c:/Users/moham/OneDrive/Bureau/meriem's%20project/DemandLens/backend/main.py#L91-L118) returns a single week's forecast. Would you like to keep the backend untouched (so all existing `tests/test_api.py` tests remain 100% unchanged) and compute the 4-week horizon/metrics on the frontend, or add optional fields/endpoints to FastAPI while preserving backward compatibility with `tests/test_api.py`?
+## 7. Decisions and deferred items
+
+- Dashboard-only scope; other screen designs remain future work.
+- The forecast horizon is fixed at three weeks in the dashboard.
+- Transactions are distinct cleaned invoice IDs. Currency revenue is omitted
+  until currency and aggregation rules are confirmed.
+- Period-change cards remain omitted until reporting windows are defined.
+- Confidence UI and inventory recommendations remain deferred until backed by
+  calibrated forecast intervals and inventory/lead-time data, respectively.

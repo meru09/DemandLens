@@ -1,4 +1,3 @@
-
 "use client";
 
 import {
@@ -10,156 +9,213 @@ import {
 
 import type { KeyboardEvent } from "react";
 
-import SalesChart from "@/components/SalesChart";
 import ForecastCard from "@/components/ForecastCard";
+import InsightCards from "@/components/InsightCards";
+import SalesChart from "@/components/SalesChart";
+import { fetchApiJson } from "@/lib/api";
 
 import type {
+  ForecastHorizonResponse,
+  ProductForecastEvaluationResponse,
   ProductHistoryResponse,
-  ForecastResponse,
+  ProductSearchResponse,
 } from "@/types/api";
 
 type ProductSelectorProps = {
   products: string[];
+  totalProducts: number;
 };
 
 const MAX_RESULTS = 10;
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function isValidDate(value: unknown): value is string {
+  return (
+    typeof value === "string" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(value) &&
+    !Number.isNaN(Date.parse(`${value}T00:00:00Z`))
+  );
+}
+
+function isHistoryResponse(
+  value: unknown,
+  stockCode: string
+): value is ProductHistoryResponse {
+  if (!isRecord(value) || !Array.isArray(value.history)) {
+    return false;
+  }
+
+  return (
+    value.stock_code === stockCode &&
+    typeof value.total_weeks === "number" &&
+    Number.isFinite(value.total_weeks) &&
+    value.total_weeks === value.history.length &&
+    value.history.every(
+      (week) =>
+        isRecord(week) &&
+        isValidDate(week.InvoiceDate) &&
+        typeof week.UnitsSold === "number" &&
+        Number.isFinite(week.UnitsSold)
+    )
+  );
+}
+
+function isForecastResponse(
+  value: unknown,
+  stockCode: string,
+  forecastOrigin: string
+): value is ForecastHorizonResponse {
+  if (!isRecord(value) || !Array.isArray(value.forecasts)) {
+    return false;
+  }
+
+  if (
+    value.stock_code !== stockCode ||
+    value.forecast_origin !== forecastOrigin ||
+    value.horizon_weeks !== 3 ||
+    typeof value.model !== "string" ||
+    value.forecasts.length !== 3
+  ) {
+    return false;
+  }
+
+  const expectedDate = new Date(`${forecastOrigin}T00:00:00Z`);
+  return value.forecasts.every((point) => {
+    expectedDate.setUTCDate(expectedDate.getUTCDate() + 7);
+    return (
+      isRecord(point) &&
+      isValidDate(point.forecast_date) &&
+      point.forecast_date === expectedDate.toISOString().slice(0, 10) &&
+      typeof point.predicted_units === "number" &&
+      Number.isFinite(point.predicted_units) &&
+      point.predicted_units >= 0
+    );
+  });
+}
+
+function isEvaluationResponse(
+  value: unknown,
+  stockCode: string
+): value is ProductForecastEvaluationResponse {
+  if (!isRecord(value) || !Array.isArray(value.metrics)) {
+    return false;
+  }
+
+  return (
+    value.stock_code === stockCode &&
+    typeof value.evaluation_method === "string" &&
+    value.metrics.every(
+      (metric) =>
+        isRecord(metric) &&
+        typeof metric.horizon_weeks === "number" &&
+        typeof metric.evaluation_origins === "number"
+    )
+  );
+}
+
+function errorMessage(error: unknown, fallback: string) {
+  return error instanceof Error ? error.message : fallback;
+}
+
 export default function ProductSelector({
   products,
+  totalProducts,
 }: ProductSelectorProps) {
-  // Search and selection state
   const [selectedProduct, setSelectedProduct] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [searchResult, setSearchResult] =
+    useState<ProductSearchResponse | null>(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState("");
 
-  // Product data
   const [salesHistory, setSalesHistory] =
     useState<ProductHistoryResponse | null>(null);
-
   const [forecast, setForecast] =
-    useState<ForecastResponse | null>(null);
+    useState<ForecastHorizonResponse | null>(null);
+  const [evaluation, setEvaluation] =
+    useState<ProductForecastEvaluationResponse | null>(null);
 
-  // Loading and error states
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [historyError, setHistoryError] = useState("");
   const [forecastError, setForecastError] = useState("");
+  const [evaluationError, setEvaluationError] = useState("");
 
-  // References
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listboxId = useId();
+  const normalizedQuery = searchQuery.trim();
 
-  // Filter the full product list
-  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const visibleProducts = normalizedQuery
+    ? searchResult?.products ?? []
+    : products.slice(0, MAX_RESULTS);
+  const resultCount = normalizedQuery
+    ? searchResult?.total_matches ?? 0
+    : totalProducts;
 
-  const matchingProducts = products.filter((product) =>
-    product.toLowerCase().includes(normalizedQuery)
-  );
-
-  // Only limit the displayed results
-  const visibleProducts = matchingProducts.slice(
-    0,
-    MAX_RESULTS
-  );
-
-  // Select product and close dropdown
-  function handleProductChange(product: string) {
-    setSelectedProduct(product);
-    setSearchQuery(product);
-    setIsSearchOpen(false);
-    setActiveIndex(-1);
-
-    setSalesHistory(null);
-    setForecast(null);
-    setError("");
-    setForecastError("");
-    setLoading(true);
-
-    // Remove focus from search input
-    inputRef.current?.blur();
-  }
-
-  // Update search query
-  function handleSearchChange(value: string) {
-    setSearchQuery(value);
-    setIsSearchOpen(true);
-    setActiveIndex(-1);
-  }
-
-  // Keyboard navigation
-  function handleKeyDown(
-    event: KeyboardEvent<HTMLInputElement>
-  ) {
-    if (event.key === "Escape") {
-      setIsSearchOpen(false);
-      setActiveIndex(-1);
+  useEffect(() => {
+    if (!isSearchOpen || !normalizedQuery) {
       return;
     }
 
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      setIsSearchOpen(true);
+    const controller = new AbortController();
 
-      if (visibleProducts.length > 0) {
-        setActiveIndex((current) =>
-          current >= visibleProducts.length - 1
-            ? 0
-            : current + 1
-        );
+    const timeoutId = window.setTimeout(async () => {
+      if (controller.signal.aborted) {
+        return;
       }
 
-      return;
-    }
-
-    if (event.key === "ArrowUp") {
-      event.preventDefault();
-      setIsSearchOpen(true);
-
-      if (visibleProducts.length > 0) {
-        setActiveIndex((current) =>
-          current <= 0
-            ? visibleProducts.length - 1
-            : current - 1
+      setSearchLoading(true);
+      try {
+        const result = await fetchApiJson<ProductSearchResponse>(
+          `/products/search?q=${encodeURIComponent(normalizedQuery)}&limit=${MAX_RESULTS}`,
+          { signal: controller.signal }
         );
+
+        if (
+          !Array.isArray(result.products) ||
+          typeof result.total_matches !== "number" ||
+          result.query !== normalizedQuery
+        ) {
+          throw new Error("Invalid product search data received.");
+        }
+
+        if (!controller.signal.aborted) {
+          setSearchResult(result);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setSearchError(
+            errorMessage(error, "Unable to search products.")
+          );
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setSearchLoading(false);
+        }
       }
+    }, 200);
 
-      return;
-    }
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [isSearchOpen, normalizedQuery]);
 
-    if (
-      event.key === "Enter" &&
-      isSearchOpen &&
-      visibleProducts.length > 0
-    ) {
-      event.preventDefault();
-
-      const index = activeIndex >= 0 ? activeIndex : 0;
-
-      handleProductChange(visibleProducts[index]);
-    }
-  }
-
-  // Close dropdown on outside interaction
   useEffect(() => {
     function handleOutsideClick(event: PointerEvent) {
       const container = searchContainerRef.current;
-
-      if (
-        container &&
-        !container.contains(event.target as Node)
-      ) {
+      if (container && !container.contains(event.target as Node)) {
         setIsSearchOpen(false);
         setActiveIndex(-1);
       }
     }
 
-    document.addEventListener(
-      "pointerdown",
-      handleOutsideClick,
-      true
-    );
-
+    document.addEventListener("pointerdown", handleOutsideClick, true);
     return () => {
       document.removeEventListener(
         "pointerdown",
@@ -169,7 +225,6 @@ export default function ProductSelector({
     };
   }, []);
 
-  // Fetch history and forecast when product changes
   useEffect(() => {
     if (!selectedProduct) {
       return;
@@ -177,107 +232,95 @@ export default function ProductSelector({
 
     const controller = new AbortController();
 
-    async function fetchProductData() {
+    async function fetchSelectedProduct() {
+      setLoading(true);
+      setHistoryError("");
+      setForecastError("");
+      setEvaluationError("");
+      setSalesHistory(null);
+      setForecast(null);
+      setEvaluation(null);
+
       try {
-        // Historical sales
-        const historyResponse = await fetch(
-          `http://127.0.0.1:8000/products/${encodeURIComponent(
-            selectedProduct
-          )}/history`,
+        const encodedProduct = encodeURIComponent(selectedProduct);
+        const history = await fetchApiJson<unknown>(
+          `/products/${encodedProduct}/history`,
           { signal: controller.signal }
         );
 
-        if (!historyResponse.ok) {
-          throw new Error(
-            "Failed to fetch product history."
-          );
-        }
-
-        const historyData: ProductHistoryResponse =
-          await historyResponse.json();
-
-        // Validate history response
-        if (
-          !historyData ||
-          !Array.isArray(historyData.history) ||
-          typeof historyData.total_weeks !== "number" ||
-          !Number.isFinite(historyData.total_weeks) ||
-          historyData.total_weeks < 0 ||
-          typeof historyData.stock_code !== "string" ||
-          historyData.stock_code !== selectedProduct
-        ) {
-          throw new Error(
-            "Invalid sales history data received."
-          );
+        if (!isHistoryResponse(history, selectedProduct)) {
+          throw new Error("Invalid sales history data received.");
         }
 
         if (controller.signal.aborted) {
           return;
         }
+        setSalesHistory(history);
 
-        setSalesHistory(historyData);
+        const [forecastResult, evaluationResult] =
+          await Promise.allSettled([
+            fetchApiJson<unknown>(
+              `/products/${encodedProduct}/forecasts?horizon=3`,
+              { signal: controller.signal }
+            ),
+            fetchApiJson<unknown>(
+              `/products/${encodedProduct}/evaluation`,
+              { signal: controller.signal }
+            ),
+          ]);
 
-        // Forecast
-        try {
-          const forecastResponse = await fetch(
-            `http://127.0.0.1:8000/products/${encodeURIComponent(
-              selectedProduct
-            )}/forecast`,
-            { signal: controller.signal }
-          );
-
-          if (!forecastResponse.ok) {
-            throw new Error(
-              "Forecast unavailable for this product."
-            );
-          }
-
-          const forecastData: ForecastResponse =
-            await forecastResponse.json();
-
-          // Validate forecast response
-          if (
-            !forecastData ||
-            typeof forecastData.stock_code !== "string" ||
-            forecastData.stock_code !== selectedProduct ||
-            typeof forecastData.predicted_units !== "number" ||
-            !Number.isFinite(forecastData.predicted_units) ||
-            forecastData.predicted_units < 0 ||
-            typeof forecastData.forecast_date !== "string" ||
-            !/^\d{4}-\d{2}-\d{2}$/.test(
-              forecastData.forecast_date
-            ) ||
-            Number.isNaN(
-              Date.parse(
-                `${forecastData.forecast_date}T00:00:00Z`
-              )
-            ) ||
-            typeof forecastData.model !== "string" ||
-            !forecastData.model.trim()
-          ) {
-            throw new Error(
-              "Invalid forecast data received."
-            );
-          }
-
-          if (!controller.signal.aborted) {
-            setForecast(forecastData);
-          }
-        } catch (forecastErr) {
-          if (!controller.signal.aborted) {
-            setForecastError(
-              forecastErr instanceof Error
-                ? forecastErr.message
-                : "Unable to retrieve forecast."
-            );
-          }
+        if (controller.signal.aborted) {
+          return;
         }
-      } catch (err) {
+
+        if (forecastResult.status === "fulfilled") {
+          if (
+            isForecastResponse(
+              forecastResult.value,
+              selectedProduct,
+              history.history.at(-1)?.InvoiceDate ?? ""
+            )
+          ) {
+            setForecast(forecastResult.value);
+          } else {
+            setForecastError(
+              "Invalid three-week forecast data received."
+            );
+          }
+        } else {
+          setForecastError(
+            errorMessage(
+              forecastResult.reason,
+              "Unable to retrieve the three-week forecast."
+            )
+          );
+        }
+
+        if (evaluationResult.status === "fulfilled") {
+          if (
+            isEvaluationResponse(
+              evaluationResult.value,
+              selectedProduct
+            )
+          ) {
+            setEvaluation(evaluationResult.value);
+          } else {
+            setEvaluationError(
+              "Invalid forecast evaluation data received."
+            );
+          }
+        } else {
+          setEvaluationError(
+            errorMessage(
+              evaluationResult.reason,
+              "Unable to retrieve forecast evaluation."
+            )
+          );
+        }
+      } catch (error) {
         if (!controller.signal.aborted) {
-          setError(
-            err instanceof Error
-              ? err.message
-              : "Unable to load product data."
+          setHistoryError(
+            errorMessage(error, "Unable to load product history.")
           );
         }
       } finally {
@@ -287,227 +330,312 @@ export default function ProductSelector({
       }
     }
 
-    fetchProductData();
-
+    void fetchSelectedProduct();
     return () => controller.abort();
   }, [selectedProduct]);
 
+  function handleProductChange(product: string) {
+    setSelectedProduct(product);
+    setSearchQuery(product);
+    setSearchResult(null);
+    setSearchLoading(false);
+    setSearchError("");
+    setIsSearchOpen(false);
+    setActiveIndex(-1);
+    setLoading(true);
+    setSalesHistory(null);
+    setForecast(null);
+    setEvaluation(null);
+    setHistoryError("");
+    setForecastError("");
+    setEvaluationError("");
+    inputRef.current?.blur();
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Escape") {
+      setIsSearchOpen(false);
+      setActiveIndex(-1);
+      return;
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setIsSearchOpen(true);
+      if (visibleProducts.length > 0) {
+        setActiveIndex((current) =>
+          current >= visibleProducts.length - 1 ? 0 : current + 1
+        );
+      }
+      return;
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setIsSearchOpen(true);
+      if (visibleProducts.length > 0) {
+        setActiveIndex((current) =>
+          current <= 0 ? visibleProducts.length - 1 : current - 1
+        );
+      }
+      return;
+    }
+
+    if (
+      event.key === "Enter" &&
+      isSearchOpen &&
+      visibleProducts.length > 0
+    ) {
+      event.preventDefault();
+      handleProductChange(
+        visibleProducts[activeIndex >= 0 ? activeIndex : 0]
+      );
+    }
+  }
+
   return (
-    <div className="min-w-0 rounded-xl border border-violet-900/40 bg-[#171728] p-4 sm:p-6">
-      {/* Searchable product selector */}
-      <div
-        ref={searchContainerRef}
-        className="relative"
+    <div className="grid min-w-0 gap-5 lg:grid-cols-12">
+      <section
+        aria-label="Selected product analytics"
+        className="min-w-0 space-y-5 lg:col-span-8"
       >
-        <label
-          htmlFor="product-search"
-          className="mb-3 block text-sm font-medium text-slate-300"
-        >
-          Select a Product
-        </label>
+        {!selectedProduct && (
+          <div className="flex min-h-56 flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-surface-card px-6 text-center">
+            <p className="font-display text-lg font-semibold text-foreground">
+              Choose a product to explore its demand
+            </p>
+            <p className="mt-2 max-w-md text-sm leading-relaxed text-text-secondary">
+              Search the historical catalog to view observed weekly sales,
+              three-week forecasts, and backtested accuracy.
+            </p>
+          </div>
+        )}
 
-        <div className="relative">
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-violet-400"
+        {loading && (
+          <p
+            role="status"
+            className="rounded-xl border border-border bg-surface-card p-4 text-sm text-primary"
           >
-            ⌕
-          </span>
+            Loading product history and forecast…
+          </p>
+        )}
 
-          <input
-            ref={inputRef}
-            id="product-search"
-            type="text"
-            role="combobox"
-            aria-autocomplete="list"
-            aria-expanded={isSearchOpen}
-            aria-controls={listboxId}
-            aria-activedescendant={
-              isSearchOpen && activeIndex >= 0
-                ? `${listboxId}-option-${activeIndex}`
-                : undefined
-            }
-            value={searchQuery}
-            onChange={(event) =>
-              handleSearchChange(event.target.value)
-            }
-            onFocus={() => setIsSearchOpen(true)}
-            onKeyDown={handleKeyDown}
-            placeholder="Search by product code..."
-            autoComplete="off"
-            className="w-full rounded-lg border border-violet-800/50 bg-[#0B0B16] py-3 pl-11 pr-4 text-white placeholder:text-slate-500 outline-none focus:border-violet-400 focus-visible:ring-2 focus-visible:ring-violet-400"
-          />
-        </div>
+        {historyError && (
+          <div
+            role="alert"
+            className="rounded-xl border border-danger/40 bg-danger/10 p-4"
+          >
+            <p className="font-medium text-danger">
+              Unable to load product history
+            </p>
+            <p className="mt-1 text-sm text-text-secondary">
+              {historyError}
+            </p>
+          </div>
+        )}
 
-        {/* Search results */}
-        {isSearchOpen && (
-          <div className="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border border-violet-800/50 bg-[#10101F] shadow-xl shadow-black/30">
-            <div className="border-b border-violet-900/30 px-4 py-3">
-              <p
-                role="status"
-                className="text-xs text-slate-400"
-              >
-                {matchingProducts.length.toLocaleString()}{" "}
-                {matchingProducts.length === 1
-                  ? "product"
-                  : "products"}{" "}
-                found
-                {matchingProducts.length > MAX_RESULTS &&
-                  ` · Showing first ${MAX_RESULTS}`}
-              </p>
+        {salesHistory && (
+          <>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <article className="rounded-xl border border-border/70 bg-surface-card p-4">
+                <p className="text-xs text-text-muted">Selected product</p>
+                <p className="mt-2 font-mono text-lg font-semibold text-primary">
+                  {salesHistory.stock_code}
+                </p>
+              </article>
+              <article className="rounded-xl border border-border/70 bg-surface-card p-4">
+                <p className="text-xs text-text-muted">
+                  Observed weeks available
+                </p>
+                <p className="mt-2 font-display text-2xl font-semibold text-foreground">
+                  {salesHistory.total_weeks.toLocaleString("en-US")}
+                </p>
+              </article>
             </div>
 
-            {visibleProducts.length > 0 ? (
-              <ul
-                id={listboxId}
-                role="listbox"
-                aria-label="Matching products"
-                className="max-h-64 overflow-y-auto p-2"
-              >
-                {visibleProducts.map((product, index) => (
-                  <li
-                    key={product}
-                    id={`${listboxId}-option-${index}`}
-                    role="option"
-                    aria-selected={
-                      product === selectedProduct
-                    }
-                    className={`cursor-pointer rounded-lg px-4 py-3 text-sm transition-colors ${
-                      index === activeIndex
-                        ? "bg-violet-600/20 text-violet-200"
-                        : "text-slate-200 hover:bg-violet-500/10"
-                    }`}
-                    onMouseDown={(event) =>
-                      event.preventDefault()
-                    }
-                    onClick={() =>
-                      handleProductChange(product)
-                    }
-                    onMouseEnter={() =>
-                      setActiveIndex(index)
-                    }
-                  >
-                    Product {product}
-                  </li>
-                ))}
-              </ul>
+            {salesHistory.history.length > 0 ? (
+              <SalesChart
+                data={salesHistory.history}
+                forecast={forecast}
+              />
             ) : (
               <div
-                id={listboxId}
-                className="px-4 py-5 text-sm text-slate-400"
+                role="status"
+                className="rounded-xl border border-border bg-surface-card p-6 text-center"
               >
-                No matching products. Try another code.
+                <p className="font-medium text-foreground">
+                  No sales history available
+                </p>
+                <p className="mt-2 text-sm text-text-secondary">
+                  This product has no historical weekly sales to chart.
+                </p>
+              </div>
+            )}
+
+            {forecastError && (
+              <div
+                role="alert"
+                className="rounded-xl border border-danger/40 bg-danger/10 p-4"
+              >
+                <p className="font-medium text-danger">
+                  Forecast unavailable
+                </p>
+                <p className="mt-1 text-sm text-text-secondary">
+                  {forecastError}
+                </p>
+                <p className="mt-2 text-xs text-text-muted">
+                  Historical sales remain available above.
+                </p>
+              </div>
+            )}
+
+            <InsightCards
+              history={salesHistory}
+              evaluation={evaluation}
+              evaluationError={evaluationError}
+            />
+          </>
+        )}
+      </section>
+
+      <aside className="min-w-0 space-y-5 lg:col-span-4">
+        <section className="rounded-2xl border border-border/70 bg-surface-card p-5">
+          <div>
+            <h2 className="font-display text-lg font-semibold text-foreground">
+              Product selection
+            </h2>
+            <p className="mt-1 text-xs text-text-muted">
+              Search the full historical catalog.
+            </p>
+          </div>
+
+          <div
+            ref={searchContainerRef}
+            className="relative mt-5"
+          >
+            <label
+              htmlFor="product-search"
+              className="mb-2 block text-xs font-medium text-text-secondary"
+            >
+              Product code
+            </label>
+            <input
+              ref={inputRef}
+              id="product-search"
+              type="text"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-expanded={isSearchOpen}
+              aria-controls={listboxId}
+              aria-activedescendant={
+                isSearchOpen && activeIndex >= 0
+                  ? `${listboxId}-option-${activeIndex}`
+                  : undefined
+              }
+              value={searchQuery}
+              onChange={(event) => {
+                const value = event.target.value;
+                setSearchQuery(value);
+                setSearchResult(null);
+                setSearchLoading(Boolean(value.trim()));
+                setSearchError("");
+                setIsSearchOpen(true);
+                setActiveIndex(-1);
+              }}
+              onFocus={() => {
+                setIsSearchOpen(true);
+                if (normalizedQuery) {
+                  setSearchLoading(true);
+                  setSearchResult(null);
+                  setSearchError("");
+                }
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder="Search by code…"
+              autoComplete="off"
+              className="w-full rounded-xl border border-border bg-surface-raised px-4 py-3 text-sm text-foreground placeholder:text-text-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            />
+
+            {isSearchOpen && (
+              <div
+                id={listboxId}
+                className="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border border-border bg-surface-elevated shadow-2xl"
+              >
+                <div className="border-b border-border px-3 py-2.5 text-xs text-text-muted">
+                  {normalizedQuery
+                    ? searchLoading
+                      ? "Searching catalog…"
+                      : `${resultCount.toLocaleString("en-US")} matching products`
+                    : `Showing ${Math.min(products.length, MAX_RESULTS)} of ${totalProducts.toLocaleString("en-US")} products — type to search`}
+                </div>
+
+                {searchError && (
+                  <p role="alert" className="px-3 py-3 text-xs text-danger">
+                    {searchError}
+                  </p>
+                )}
+
+                {!searchLoading &&
+                  !searchError &&
+                  visibleProducts.length > 0 && (
+                    <ul
+                      role="listbox"
+                      aria-label="Matching products"
+                      className="max-h-64 overflow-y-auto p-2"
+                    >
+                      {visibleProducts.map((product, index) => (
+                        <li
+                          key={product}
+                          id={`${listboxId}-option-${index}`}
+                          role="option"
+                          aria-selected={product === selectedProduct}
+                          className={`cursor-pointer rounded-lg px-3 py-2.5 text-sm transition-colors ${
+                            index === activeIndex
+                              ? "bg-surface-active text-primary"
+                              : "text-text-secondary hover:bg-surface-raised hover:text-foreground"
+                          }`}
+                          onMouseDown={(event) =>
+                            event.preventDefault()
+                          }
+                          onClick={() => handleProductChange(product)}
+                          onMouseEnter={() => setActiveIndex(index)}
+                        >
+                          <span className="font-mono">{product}</span>
+                          {product === selectedProduct && (
+                            <span className="ml-2 text-[10px] text-primary">
+                              Selected
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                {!searchLoading &&
+                  !searchError &&
+                  normalizedQuery &&
+                  searchResult &&
+                  visibleProducts.length === 0 && (
+                    <p className="px-3 py-4 text-sm text-text-muted">
+                      No products match that code.
+                    </p>
+                  )}
               </div>
             )}
           </div>
-        )}
-      </div>
 
-      {/* Selected product indicator */}
-      {selectedProduct && (
-        <p className="mt-4 text-xs text-slate-400">
-          Selected product:{" "}
-          <span className="font-medium text-violet-300">
-            {selectedProduct}
-          </span>
-        </p>
-      )}
-
-      {/* Loading state */}
-      {loading && (
-        <p
-          role="status"
-          className="mt-4 text-sm text-violet-300"
-        >
-          Loading product data...
-        </p>
-      )}
-
-      {/* Sales history error */}
-      {error && (
-        <div
-          role="alert"
-          className="mt-4 rounded-lg border border-red-800/40 bg-red-950/20 p-4"
-        >
-          <p className="font-medium text-red-300">
-            Unable to load sales history
-          </p>
-
-          <p className="mt-2 text-sm text-red-400">
-            {error}
-          </p>
-        </div>
-      )}
-
-      {/* Compact product summary */}
-      {salesHistory && (
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4">
-          <div className="min-w-0 rounded-xl border border-violet-800/30 bg-[#0B0B16] p-3 sm:p-5">
-            <p className="text-xs font-medium text-slate-400 sm:text-sm">
-              Product Code
+          {selectedProduct && (
+            <p className="mt-4 rounded-lg bg-surface-raised px-3 py-2 text-xs text-text-secondary">
+              Selected SKU{" "}
+              <span className="font-mono font-semibold text-primary">
+                {selectedProduct}
+              </span>
             </p>
+          )}
+        </section>
 
-            <p className="mt-3 break-all text-xl font-bold text-violet-300 sm:text-2xl">
-              {salesHistory.stock_code}
-            </p>
-          </div>
-
-          <div className="min-w-0 rounded-xl border border-violet-800/30 bg-[#0B0B16] p-3 sm:p-5">
-            <p className="text-xs font-medium text-slate-400 sm:text-sm">
-              Historical Weeks
-            </p>
-
-            <p className="mt-3 text-xl font-bold text-white sm:text-2xl">
-              {salesHistory.total_weeks.toLocaleString()}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Historical sales chart or empty state */}
-      {salesHistory &&
-        (salesHistory.history.length > 0 ? (
-          <SalesChart data={salesHistory.history} />
-        ) : (
-          <div
-            role="status"
-            className="mt-6 rounded-lg border border-violet-800/30 bg-[#0B0B16] p-6 text-center"
-          >
-            <p className="font-medium text-slate-200">
-              No sales history available
-            </p>
-
-            <p className="mt-2 text-sm text-slate-400">
-              This product does not have historical
-              sales records available for visualization.
-            </p>
-          </div>
-        ))}
-
-      {/* Forecast */}
-      {forecast && (
-        <ForecastCard forecast={forecast} />
-      )}
-
-      {/* Forecast unavailable */}
-      {forecastError && (
-        <div
-          role="alert"
-          className="mt-6 rounded-lg border border-amber-800/40 bg-amber-950/20 p-5"
-        >
-          <p className="font-medium text-amber-300">
-            Forecast unavailable
-          </p>
-
-          <p className="mt-2 text-sm text-slate-400">
-            {forecastError}
-          </p>
-
-          <p className="mt-2 text-xs text-slate-500">
-            Historical sales data is still available above.
-          </p>
-        </div>
-      )}
+        {forecast && <ForecastCard forecast={forecast} />}
+      </aside>
     </div>
   );
 }
