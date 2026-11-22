@@ -160,3 +160,74 @@ def test_me_with_invalid_token_is_rejected(client):
     )
 
     assert response.status_code == 401
+
+
+def test_user_can_access_own_business(client):
+    registration = register_user(client)
+    data = registration.json()
+
+    response = client.get(
+        f"/businesses/{data['business']['id']}",
+        headers={"Authorization": f"Bearer {data['access_token']}"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "business_id": data["business"]["id"],
+        "business_name": "Meru Fashion Store",
+    }
+
+
+def test_user_cannot_access_another_users_business(client):
+    first = register_user(client, email="first@demandlens.com")
+    second = register_user(client, email="second@demandlens.com")
+
+    first_data = first.json()
+    second_data = second.json()
+
+    response = client.get(
+        f"/businesses/{second_data['business']['id']}",
+        headers={"Authorization": f"Bearer {first_data['access_token']}"},
+    )
+
+    assert response.status_code == 404
+
+
+def test_nonexistent_business_returns_404(client):
+    registration = register_user(client)
+    token = registration.json()["access_token"]
+
+    response = client.get(
+        "/businesses/999",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 404
+
+
+def test_business_details_without_token_is_rejected(client):
+    registration = register_user(client)
+    business_id = registration.json()["business"]["id"]
+
+    response = client.get(f"/businesses/{business_id}")
+
+    assert response.status_code == 401
+
+
+def test_business_list_only_returns_current_users_businesses(client):
+    first = register_user(client, email="first@demandlens.com")
+    register_user(client, email="second@demandlens.com")
+
+    token = first.json()["access_token"]
+
+    response = client.get(
+        "/businesses",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+
+    assert response.status_code == 200
+
+    data = response.json()
+    assert len(data) == 1
+    assert data[0]["business_name"] == "Meru Fashion Store"
+    assert data[0]["role"] == "owner"
