@@ -17,7 +17,7 @@ from backend.schemas import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 from backend.auth import router as auth_router
-
+from backend.business import router as business_router
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +28,7 @@ app = FastAPI(
     version="0.1.0"
 )
 app.include_router(auth_router)
+app.include_router(business_router)
 
 
 app.add_middleware(
