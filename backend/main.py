@@ -16,6 +16,8 @@ from backend.schemas import (
     ProductSearchResponse,
 )
 from fastapi.middleware.cors import CORSMiddleware
+from backend.auth import router as auth_router
+
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -25,6 +27,8 @@ app = FastAPI(
     description="Sales forecasting API for DemandLens",
     version="0.1.0"
 )
+app.include_router(auth_router)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,7 +37,7 @@ app.add_middleware(
         "http://127.0.0.1:3000",
     ],
     allow_credentials=False,
-    allow_methods=["GET"],
+    allow_methods=["GET ,POST"],
     allow_headers=["*"],
 )
 
