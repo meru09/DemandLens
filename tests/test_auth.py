@@ -231,3 +231,252 @@ def test_business_list_only_returns_current_users_businesses(client):
     assert len(data) == 1
     assert data[0]["business_name"] == "Meru Fashion Store"
     assert data[0]["role"] == "owner"
+
+
+
+def test_business_member_can_upload_csv(client, monkeypatch, tmp_path):
+    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
+
+    registration = register_user(client)
+    data = registration.json()
+
+    response = client.post(
+        f"/businesses/{data['business']['id']}/datasets/upload",
+        headers={"Authorization": f"Bearer {data['access_token']}"},
+        files={
+            "file": (
+                "sales.csv",
+                b"date,product,quantity\n2026-01-01,Product A,10\n",
+                "text/csv",
+            )
+        },
+    )
+
+    assert response.status_code == 201
+
+    result = response.json()
+    assert result["business_id"] == data["business"]["id"]
+    assert result["original_filename"] == "sales.csv"
+    assert result["status"] == "uploaded"
+    assert result["dataset_id"] is not None
+
+    saved_files = list(tmp_path.rglob("*.csv"))
+    assert len(saved_files) == 1
+    assert saved_files[0].exists()
+
+
+def test_user_cannot_upload_to_another_business(client, monkeypatch, tmp_path):
+    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
+
+    first = register_user(client, email="first@demandlens.com")
+    second = register_user(client, email="second@demandlens.com")
+
+    first_data = first.json()
+    second_data = second.json()
+
+    response = client.post(
+        f"/businesses/{second_data['business']['id']}/datasets/upload",
+        headers={"Authorization": f"Bearer {first_data['access_token']}"},
+        files={"file": ("sales.csv", b"date,quantity\n2026-01-01,10\n")},
+    )
+
+    assert response.status_code == 404
+    assert list(tmp_path.rglob("*")) == []
+
+
+def test_upload_rejects_unsupported_file_extension(
+    client, monkeypatch, tmp_path):
+    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
+
+    registration = register_user(client)
+    data = registration.json()
+
+    response = client.post(
+        f"/businesses/{data['business']['id']}/datasets/upload",
+        headers={"Authorization": f"Bearer {data['access_token']}"},
+        files={"file": ("sales.txt", b"some data")},
+    )
+
+    assert response.status_code == 400
+
+
+def test_upload_rejects_empty_file(client, monkeypatch, tmp_path):
+    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
+
+    registration = register_user(client)
+    data = registration.json()
+
+    response = client.post(
+        f"/businesses/{data['business']['id']}/datasets/upload",
+        headers={"Authorization": f"Bearer {data['access_token']}"},
+        files={"file": ("sales.csv", b"")},
+    )
+
+    assert response.status_code == 400
+
+
+def test_upload_rejects_file_over_size_limit(
+    client, monkeypatch, tmp_path):
+    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
+    monkeypatch.setattr("backend.business.MAX_FILE_SIZE", 10)
+
+    registration = register_user(client)
+    data = registration.json()
+
+    response = client.post(
+        f"/businesses/{data['business']['id']}/datasets/upload",
+        headers={"Authorization": f"Bearer {data['access_token']}"},
+        files={"file": ("sales.csv", b"a" * 20)},
+    )
+
+    assert response.status_code == 413
+
+
+def test_upload_without_token_is_rejected(client, monkeypatch, tmp_path):
+    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
+
+    registration = register_user(client)
+    business_id = registration.json()["business"]["id"]
+
+    response = client.post(
+        f"/businesses/{business_id}/datasets/upload",
+        files={"file": ("sales.csv", b"date,quantity\n2026-01-01,10\n")},
+    )
+
+    assert response.status_code == 401
+
+
+def test_business_member_can_preview_own_dataset(client, monkeypatch, tmp_path):
+    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
+
+    registration = register_user(client)
+    data = registration.json()
+
+    business_id = data["business"]["id"]
+    headers = {"Authorization": f"Bearer {data['access_token']}"}
+
+    upload = client.post(
+        f"/businesses/{business_id}/datasets/upload",
+        headers=headers,
+        files={
+            "file": (
+                "sales.csv",
+                b"date,product,quantity\n2026-01-01,Product A,10\n",
+                "text/csv",
+            )
+        },
+    )
+
+    assert upload.status_code == 201
+    dataset_id = upload.json()["dataset_id"]
+
+    response = client.get(
+        f"/businesses/{business_id}/datasets/{dataset_id}/preview",
+        headers=headers,
+    )
+
+    assert response.status_code == 200
+
+    result = response.json()
+    assert result["business_id"] == business_id
+    assert result["dataset_id"] == dataset_id
+    assert result["columns"] == ["date", "product", "quantity"]
+    assert result["sample_row_count"] == 1
+
+
+def test_business_member_can_preview_own_dataset(client, monkeypatch, tmp_path):
+    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
+
+    registration = register_user(client)
+    data = registration.json()
+
+    business_id = data["business"]["id"]
+    headers = {"Authorization": f"Bearer {data['access_token']}"}
+
+    upload = client.post(
+        f"/businesses/{business_id}/datasets/upload",
+        headers=headers,
+        files={
+            "file": (
+                "sales.csv",
+                b"date,product,quantity\n2026-01-01,Product A,10\n",
+                "text/csv",
+            )
+        },
+    )
+
+    assert upload.status_code == 201
+    dataset_id = upload.json()["dataset_id"]
+
+    response = client.get(
+        f"/businesses/{business_id}/datasets/{dataset_id}/preview",
+        headers=headers,
+    )
+
+    assert response.status_code == 200
+
+    result = response.json()
+    assert result["business_id"] == business_id
+    assert result["dataset_id"] == dataset_id
+    assert result["columns"] == ["date", "product", "quantity"]
+    assert result["sample_row_count"] == 1
+
+
+def test_user_cannot_preview_another_business_dataset(
+    client, monkeypatch, tmp_path
+):
+    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
+
+    first = register_user(client, email="first@demandlens.com")
+    second = register_user(client, email="second@demandlens.com")
+
+    first_data = first.json()
+    second_data = second.json()
+
+    first_business_id = first_data["business"]["id"]
+    second_business_id = second_data["business"]["id"]
+
+    second_headers = {
+        "Authorization": f"Bearer {second_data['access_token']}"
+    }
+
+    upload = client.post(
+        f"/businesses/{second_business_id}/datasets/upload",
+        headers=second_headers,
+        files={
+            "file": (
+                "sales.csv",
+                b"date,product,quantity\n2026-01-01,Product A,10\n",
+                "text/csv",
+            )
+        },
+    )
+
+    assert upload.status_code == 201
+    dataset_id = upload.json()["dataset_id"]
+
+    first_headers = {
+        "Authorization": f"Bearer {first_data['access_token']}"
+    }
+
+    response = client.get(
+        f"/businesses/{first_business_id}/datasets/{dataset_id}/preview",
+        headers=first_headers,
+    )
+
+    assert response.status_code == 404
+
+
+def test_preview_nonexistent_dataset_returns_404(client):
+    registration = register_user(client)
+    data = registration.json()
+
+    business_id = data["business"]["id"]
+    headers = {"Authorization": f"Bearer {data['access_token']}"}
+
+    response = client.get(
+        f"/businesses/{business_id}/datasets/999999/preview",
+        headers=headers,
+    )
+
+    assert response.status_code == 404
