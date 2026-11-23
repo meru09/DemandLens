@@ -45,8 +45,8 @@ def fill_missing_weeks(weekly: pd.DataFrame) -> pd.DataFrame:
 
         product_data["StockCode"] = stock_code
         product_data["UnitsSold"] = (
-        product_data["UnitsSold"].fillna(0).astype("int64")
-)
+        product_data["UnitsSold"].fillna(0)
+        )
         product_data.index.name = "InvoiceDate"
 
         completed.append(product_data.reset_index())

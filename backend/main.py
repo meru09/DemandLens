@@ -18,6 +18,7 @@ from backend.schemas import (
 from fastapi.middleware.cors import CORSMiddleware
 from backend.auth import router as auth_router
 from backend.business import router as business_router
+from backend.database import Base, engine
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -27,6 +28,11 @@ app = FastAPI(
     description="Sales forecasting API for DemandLens",
     version="0.1.0"
 )
+
+@app.on_event("startup")
+def create_database_tables():
+    Base.metadata.create_all(bind=engine)
+
 app.include_router(auth_router)
 app.include_router(business_router)
 
@@ -174,7 +180,7 @@ def get_product_forecast(stock_code: str):
         )
         return result
 
-    
+
     except ValueError as error:
         message = str(error)
 

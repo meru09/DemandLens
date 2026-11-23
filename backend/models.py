@@ -7,6 +7,7 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     String,
+    JSON,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -112,3 +113,48 @@ class Dataset(Base):
     )
 
     business: Mapped["Business"] = relationship(back_populates="datasets")
+
+
+
+class DatasetProcessing(Base):
+    __tablename__ = "dataset_processings"
+
+    id: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+        index=True,
+    )
+
+    dataset_id: Mapped[int] = mapped_column(
+        ForeignKey("datasets.id", ondelete="CASCADE"),
+        unique=True,
+        nullable=False,
+        index=True,
+    )
+
+    business_id: Mapped[int] = mapped_column(
+        ForeignKey("businesses.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+
+    processed_file_path: Mapped[str] = mapped_column(
+        String(500),
+        nullable=False,
+    )
+
+    cleaning_report: Mapped[dict] = mapped_column(
+        JSON,
+        nullable=False,
+    )
+
+    retained_rows: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=utc_now,
+        nullable=False,
+    )

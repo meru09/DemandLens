@@ -14,16 +14,19 @@ from sqlalchemy.orm import Session
 
 from backend.auth import get_current_user
 from backend.database import get_db
-from backend.models import User, Business, BusinessMember, Dataset
+from backend.models import User, Business, BusinessMember, Dataset, DatasetProcessing
 from backend.business_schemas import (
     BusinessMembershipResponse,
     BusinessDetailResponse,
     DatasetUploadResponse,
-    DatasetPreviewResponse
+    DatasetPreviewResponse,
+    DatasetMappingRequest,
+    DatasetMappingResponse,
+    DatasetProcessingResponse
 )
 
 from backend.dataset_validation import ( DatasetValidationError, inspect_dataset,)
-
+from backend.dataset_processing import ( DatasetProcessingError, process_uploaded_dataset,)
 
 
 router = APIRouter(prefix="/businesses", tags=["Businesses"])
@@ -227,4 +230,219 @@ def preview_dataset(
         columns=inspection["columns"],
         preview=inspection["preview"],
         sample_row_count=inspection["sample_row_count"],
+    )
+
+
+@router.put(
+    "/{business_id}/datasets/{dataset_id}/mapping",
+    response_model=DatasetMappingResponse,
+)
+def map_dataset_columns(
+    business_id: int,
+    dataset_id: int,
+    mapping: DatasetMappingRequest,
+    current_business: Business = Depends(get_current_business),
+    db: Session = Depends(get_db),
+):
+    dataset = (
+        db.query(Dataset)
+        .filter(
+            Dataset.id == dataset_id,
+            Dataset.business_id == current_business.id,
+        )
+        .first()
+    )
+
+    if dataset is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Dataset not found.",
+        )
+
+    if not Path(dataset.file_path).is_file():
+        raise HTTPException(
+            status_code=404,
+            detail="Dataset file not found.",
+        )
+
+    try:
+        inspection = inspect_dataset(dataset.file_path)
+    except DatasetValidationError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        ) from exc
+
+    available_columns = inspection["columns"]
+
+    selected_columns = [
+        mapping.date_column,
+        mapping.product_column,
+        mapping.quantity_column,
+    ]
+
+    missing_columns = [
+        column
+        for column in selected_columns
+        if column not in available_columns
+    ]
+
+    if missing_columns:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Columns not found in dataset: {missing_columns}",
+        )
+
+    dataset.date_column = mapping.date_column
+    dataset.product_column = mapping.product_column
+    dataset.quantity_column = mapping.quantity_column
+
+    db.commit()
+    db.refresh(dataset)
+
+    return DatasetMappingResponse(
+        dataset_id=dataset.id,
+        business_id=dataset.business_id,
+        date_column=dataset.date_column,
+        product_column=dataset.product_column,
+        quantity_column=dataset.quantity_column,
+        status=dataset.status,
+    )
+
+
+
+@router.post(
+    "/{business_id}/datasets/{dataset_id}/process",
+    response_model=DatasetProcessingResponse,
+)
+def process_business_dataset(
+    business_id: int,
+    dataset_id: int,
+    current_business: Business = Depends(get_current_business),
+    db: Session = Depends(get_db),
+):
+    # Find a dataset belonging to the authenticated user's business.
+    dataset = (
+        db.query(Dataset)
+        .filter(
+            Dataset.id == dataset_id,
+            Dataset.business_id == current_business.id,
+        )
+        .first()
+    )
+
+    if dataset is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Dataset not found.",
+        )
+
+    if not Path(dataset.file_path).is_file():
+        raise HTTPException(
+            status_code=404,
+            detail="Dataset file not found.",
+        )
+
+    # Require all three column mappings before processing.
+    if not all([
+        dataset.date_column,
+        dataset.product_column,
+        dataset.quantity_column,
+    ]):
+        raise HTTPException(
+            status_code=400,
+            detail="Map the date, product, and quantity columns first.",
+        )
+
+    try:
+        result = process_uploaded_dataset(
+            file_path=dataset.file_path,
+            date_column=dataset.date_column,
+            product_column=dataset.product_column,
+            quantity_column=dataset.quantity_column,
+        )
+    except DatasetProcessingError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        ) from exc
+
+    # Store output separately for this business and dataset.
+    output_directory = (
+        PROJECT_ROOT
+        / "data"
+        / "processed"
+        / f"business_{current_business.id}"
+    )
+    output_directory.mkdir(parents=True, exist_ok=True)
+
+    output_filename = f"dataset_{dataset.id}_{uuid4().hex}.csv"
+    output_path = output_directory / output_filename
+    temporary_path = output_path.with_suffix(".tmp")
+
+    previous_processing = (
+        db.query(DatasetProcessing)
+        .filter(DatasetProcessing.dataset_id == dataset.id)
+        .first()
+    )
+
+    old_output_path = (
+        Path(previous_processing.processed_file_path)
+        if previous_processing is not None
+        else None
+    )
+
+    report = result["cleaning_report"]
+    weekly_sales = result["weekly_sales"]
+
+    try:
+        # Write the new output before changing the database record.
+        weekly_sales.to_csv(temporary_path, index=False)
+        temporary_path.replace(output_path)
+
+        if previous_processing is None:
+            processing_record = DatasetProcessing(
+                dataset_id=dataset.id,
+                business_id=current_business.id,
+                processed_file_path=str(output_path),
+                cleaning_report=report,
+                retained_rows=report["retained_rows"],
+            )
+            db.add(processing_record)
+        else:
+            previous_processing.processed_file_path = str(output_path)
+            previous_processing.cleaning_report = report
+            previous_processing.retained_rows = report["retained_rows"]
+
+        dataset.status = "processed"
+
+        db.commit()
+
+    except Exception:
+        db.rollback()
+
+        if temporary_path.exists():
+            temporary_path.unlink()
+
+        if output_path.exists():
+            output_path.unlink()
+
+        raise
+
+    # Remove the previous output only after the new result is committed.
+    if (
+        old_output_path is not None
+        and old_output_path != output_path
+        and old_output_path.is_file()
+    ):
+        old_output_path.unlink()
+
+    return DatasetProcessingResponse(
+        dataset_id=dataset.id,
+        business_id=current_business.id,
+        status=dataset.status,
+        total_rows=report["total_rows"],
+        retained_rows=report["retained_rows"],
+        removed_rows=report["removed_rows"],
+        cleaning_report=report,
     )
