@@ -63,6 +63,36 @@ def register_user(client, email="owner@demandlens.com"):
     )
 
 
+def upload_test_dataset(client, monkeypatch, tmp_path, email):
+    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
+
+    registration = register_user(client, email=email)
+    data = registration.json()
+
+    business_id = data["business"]["id"]
+    headers = {
+        "Authorization": f"Bearer {data['access_token']}"
+    }
+
+    upload = client.post(
+        f"/businesses/{business_id}/datasets/upload",
+        headers=headers,
+        files={
+            "file": (
+                "sales.csv",
+                b"date,product,quantity\n"
+                b"2026-01-01,Product A,10\n"
+                b"2026-01-02,Product B,20\n",
+                "text/csv",
+            )
+        },
+    )
+
+    assert upload.status_code == 201
+
+    return data, business_id, headers, upload.json()["dataset_id"]
+
+
 def test_register_creates_user_business_and_owner(client, test_session_factory):
     response = register_user(client)
 
@@ -265,6 +295,7 @@ def test_business_member_can_upload_csv(client, monkeypatch, tmp_path):
     assert saved_files[0].exists()
 
 
+
 def test_user_cannot_upload_to_another_business(client, monkeypatch, tmp_path):
     monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
 
@@ -284,6 +315,7 @@ def test_user_cannot_upload_to_another_business(client, monkeypatch, tmp_path):
     assert list(tmp_path.rglob("*")) == []
 
 
+
 def test_upload_rejects_unsupported_file_extension(
     client, monkeypatch, tmp_path):
     monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
@@ -300,6 +332,7 @@ def test_upload_rejects_unsupported_file_extension(
     assert response.status_code == 400
 
 
+
 def test_upload_rejects_empty_file(client, monkeypatch, tmp_path):
     monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
 
@@ -313,6 +346,7 @@ def test_upload_rejects_empty_file(client, monkeypatch, tmp_path):
     )
 
     assert response.status_code == 400
+
 
 
 def test_upload_rejects_file_over_size_limit(
@@ -332,6 +366,7 @@ def test_upload_rejects_file_over_size_limit(
     assert response.status_code == 413
 
 
+
 def test_upload_without_token_is_rejected(client, monkeypatch, tmp_path):
     monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
 
@@ -346,43 +381,6 @@ def test_upload_without_token_is_rejected(client, monkeypatch, tmp_path):
     assert response.status_code == 401
 
 
-def test_business_member_can_preview_own_dataset(client, monkeypatch, tmp_path):
-    monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
-
-    registration = register_user(client)
-    data = registration.json()
-
-    business_id = data["business"]["id"]
-    headers = {"Authorization": f"Bearer {data['access_token']}"}
-
-    upload = client.post(
-        f"/businesses/{business_id}/datasets/upload",
-        headers=headers,
-        files={
-            "file": (
-                "sales.csv",
-                b"date,product,quantity\n2026-01-01,Product A,10\n",
-                "text/csv",
-            )
-        },
-    )
-
-    assert upload.status_code == 201
-    dataset_id = upload.json()["dataset_id"]
-
-    response = client.get(
-        f"/businesses/{business_id}/datasets/{dataset_id}/preview",
-        headers=headers,
-    )
-
-    assert response.status_code == 200
-
-    result = response.json()
-    assert result["business_id"] == business_id
-    assert result["dataset_id"] == dataset_id
-    assert result["columns"] == ["date", "product", "quantity"]
-    assert result["sample_row_count"] == 1
-
 
 def test_business_member_can_preview_own_dataset(client, monkeypatch, tmp_path):
     monkeypatch.setattr("backend.business.UPLOAD_DIR", tmp_path)
@@ -420,6 +418,7 @@ def test_business_member_can_preview_own_dataset(client, monkeypatch, tmp_path):
     assert result["dataset_id"] == dataset_id
     assert result["columns"] == ["date", "product", "quantity"]
     assert result["sample_row_count"] == 1
+
 
 
 def test_user_cannot_preview_another_business_dataset(
@@ -465,6 +464,7 @@ def test_user_cannot_preview_another_business_dataset(
     )
 
     assert response.status_code == 404
+
 
 
 def test_preview_nonexistent_dataset_returns_404(client):

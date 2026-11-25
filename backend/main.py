@@ -1,7 +1,9 @@
-from fastapi import FastAPI, HTTPException, Query
+from contextlib import asynccontextmanager
 from functools import lru_cache
 from pathlib import Path
+
 import pandas as pd
+from fastapi import FastAPI, HTTPException, Query
 from backend.dashboard_service import summarize_dashboard
 from backend.forecast_service import (
     evaluate_product_forecast,
@@ -23,15 +25,18 @@ from backend.database import Base, engine
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    Base.metadata.create_all(bind=engine)
+    yield
+
 app = FastAPI(
+    lifespan=lifespan,
     title="DemandLens API",
     description="Sales forecasting API for DemandLens",
     version="0.1.0"
 )
-
-@app.on_event("startup")
-def create_database_tables():
-    Base.metadata.create_all(bind=engine)
 
 app.include_router(auth_router)
 app.include_router(business_router)
